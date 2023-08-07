@@ -1,0 +1,27 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/common-base}">
+	<!-- 고유 CSS -->
+    <head>
+        <link rel="stylesheet" th:href="@{/css/page/main/home.css}" >
+    </head>
+    <!-- 고유 script -->
+    <th:block layout:fragment="script">
+        <script th:src="@{/js/page/main/home.js}"></script>
+    </th:block>
+    <!-- 고유 content -->
+	<div layout:fragment="content-top" class="container my-3">
+		<div class="row mb-3">
+			<div class="col-12">
+				<h1>홈</h1>
+				<p th:text="${msg}">환영합니다.</p>
+			</div>
+		</div>
+	</div>
+	<!-- 모달 등 추가 div가 필요할 경우만 사용 -->
+	<div layout:fragment="content-bottom">
+		<div class="modal">
+			<h1>modal영역</h1>
+		</div>
+	</div>
+</html>
