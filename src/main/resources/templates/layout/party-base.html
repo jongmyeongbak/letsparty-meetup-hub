@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}">
+	<script th:src="@{/css/common/navbar.css}"></script>
+	<script th:src="@{/css/common/party-side.css}"></script>
+	<title>Letsparty</title>
+	<!-- content의 head가 자동으로 추가된다. -->
+</head>
+<body>
+<nav th:replace="~{/common/navbar :: navbar-fragment}"></nav>
+<aside th:replace="~{/common/navbar :: left-fragment}"></aside>
+<th:block layout:fragment="content-top"></th:block>
+<div th:replace="~{/common/navbar :: right-fragment}"></div>
+<th:block layout:fragment="content-bottom"></th:block>
+<script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.min.js}"></script>
+<script th:src="@{/webjars/jquery/3.6.4/jquery.min.js}"></script>
+<script th:src="@{/js/common/navbar.js}"></script>
+<script th:src="@{/js/common/party-side.js}"></script>
+<th:block layout:fragment="script"></th:block>
+</body>
+</html>
