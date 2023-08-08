@@ -1,0 +1,25 @@
+@charset "UTF-8";
+
+.layout {
+	--bs-gutter-x: 1.5rem;
+	--bs-gutter-y: 0;
+	width: 90%;
+	padding-right: calc(var(--bs-gutter-x) * .5);
+	padding-left: calc(var(--bs-gutter-x) * .5);
+	margin-right: auto;
+	margin-left: auto;
+	display: flex;
+	gap: 3%;
+}
+
+.left {
+	width: 20%;
+}
+
+.right {
+	width: 20%;
+}
+
+.content {
+	width: 54%;
+}
