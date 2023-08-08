@@ -22,4 +22,4 @@ $('html').click(function(e) {
         close($(".message-container"));
         $(".noti-outside").children("i").removeClass("click");
     }
-});    
+});

@@ -6,14 +6,303 @@
     <link rel="stylesheet" th:href="@{/css/page/main/home.css}" >
 </head>
 <!-- 고유 content -->
-<div layout:fragment="content-top" class="container my-3">
-	<div class="row mb-3">
-		<div class="col-12">
-			<h1>홈</h1>
-			<p th:text="${msg}">환영합니다.</p>
-		</div>
-	</div>
-</div>
+<div layout:fragment="content-top" class="container">
+        <h1 class="fs-3">파티(로고)</h1>
+        <div class="container mt-3">
+            <div class="row"> 
+                <!-- 렛츠 파티 게시판 -->
+                <div class="col-6 lets-party">
+                    <div class="row mb-3">
+                        <div class="col-11">
+                            <div class="border fs-5 p-2 ">렛츠 파티</div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-11">
+                            <table class="table table-sm">
+                                <colgroup>
+                                <col width="25%">
+                                <col width="40%">
+                                <col width="20%">
+                                <col width="15%">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th>파티명</th>
+                                        <th>제목</th>
+                                        <th>등록일</th>
+                                        <th>조회수</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>홍길동파티</td>
+                                        <td><a href="#">수영할사람</a></td>
+                                        <td>23.08.12</td>
+                                        <td>10</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-11">
+                            <p class="border p-3"></p>
+                            <div class="text-end">
+                                <a href="#" class="btn btn-sm">더보기</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 나의 파티 가입리스트 -->
+                <div class="col-6 ps-3 my-party-list">   
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <div class="border fs-5 p-2 ">파티 가입리스트</div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <table class="table table-sm">
+                                <colgroup>
+                                    <col width="25%">
+                                    <col width="10%">
+                                    <col width="65%">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th>파티이름</th>
+                                        <th>현재인원</th>
+                                        <th>파티설명</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td colspan="3">당신의 파티를 추가해보세요.</td></tr>
+                                    <tr>
+                                        <td><a href="party/board/home.jsp?no=">파티이름</a></td>
+                                        <td>10 / 5</td>
+                                        <td class ="ellipsis">파티설명</td>      
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-12">
+                            <p class="border p-3"></p>
+                            <div class="text-end">
+                                <a href="#" class="btn btn-sm ">더보기</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 파티 카테고리로 파티 만들기 -->
+        <div class="party-category">
+            <div class="col">
+                <div class="border fs-5 p-2 mt-5">새로운 파티 만들기</div>
+            </div>
+            <div class="category-container py-3">
+                <div class="category-item item">
+                    <a href="#" class="text-black text-decoration-none">
+                        <strong>
+                            <span>취미/동호회</span>
+                        </strong>
+                    </a>
+                </div>
+                <div class="category-item item">
+                    <a href="#" class="text-black text-decoration-none">
+                        <strong>
+                            <span>가족</span>
+                        </strong>
+                    </a>
+                </div>
+                <div class="category-item item">
+                    <a href="#" class="text-black text-decoration-none">
+                        <strong>
+                            <span>스터디</span>
+                        </strong>
+                    </a>
+                </div>
+                <div class="category-item item">
+                    <a href="#" class="text-black text-decoration-none">
+                        <strong>
+                            <span>학교/동아리</span>
+                        </strong>
+                    </a>
+                </div>
+                <div class="category-item item">
+                    <a href="#" class="text-black text-decoration-none">
+                        <strong>
+                            <span>운동</span>
+                        </strong>
+                    </a>
+                </div>
+                <div class="category-item item">
+                    <a href="#" class="text-black text-decoration-none">
+                        <strong>
+                            <span>지역/동네</span>
+                        </strong>
+                    </a>
+                </div>
+                <div class="category-item item">
+                    <a href="#" class="text-black text-decoration-none">
+                        <strong>
+                            <span>재테크</span>
+                        </strong>
+                    </a>
+                </div>
+                <div class="category-item item">
+                    <a href="#" class="text-black text-decoration-none">
+                        <strong>
+                            <span>자유 주제</span>
+                        </strong>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 최근 순으로 파티를 추천하는 파트 -->
+        <div class="party-recent">
+            <div class="col">
+                <div class="border fs-5 p-2 mt-5">새로 생긴 파티</div>
+            </div>
+            <div class="box-container">
+                <div class="box">
+                    <div class="image" onclick="window.location.href='#';">
+                        <img src="/img/sample.png" alt=" ">
+                    </div>
+                    <div class="separator"></div>
+                    <div class="text" onclick="window.location.href='#';">
+                        <ul>
+                            <li class="name">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magnam reiciendis provident recusandae unde odio eaque eveniet hic vitae quaerat rerum doloribus, tempora mollitia esse, delectus nemo natus nulla accusantium ipsam.</li>
+                            <li>파티인원 : 5 명</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="image" onclick="window.location.href='#';">
+                        <img src="/img/sooyeong1.jpeg" alt=" ">
+                    </div>
+                    <div class="separator"></div>
+                    <div class="text" onclick="window.location.href='#';">
+                        <ul>
+                            <li class="name">물놀이</li>
+                            <li>파티인원 : 3 명</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="image" onclick="window.location.href='#';">
+                        <img src="/img/sooyeong2.jpeg" alt=" ">
+                    </div>
+                    <div class="separator"></div>
+                    <div class="text" onclick="window.location.href='#';">
+                        <ul>
+                            <li class="name">반려동물 키우기</li>
+                            <li>파티인원 : 40 명</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="image" onclick="window.location.href='#';">
+                        <img src="/img/sooyeong3.jpeg" alt=" ">
+                    </div>
+                    <div class="separator"></div>
+                    <div class="text" onclick="window.location.href='#';">
+                        <ul>
+                            <li class="name">공구합시다</li>
+                            <li>파티인원 : 130 명</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 인기 게시글  -->
+        <div class="popular-post">
+            <div class="col">
+                <div class="border fs-5 p-2 mt-5">인기 게시글</div>
+            </div>
+            <div class="post-container p-4">
+                <div class="post-item p-2">
+                    <a href="">
+                        <div class="post-name">
+                            <div class="pname">파티명</div>
+                        </div>
+                        <div class="post-content">
+                            <!-- 게시글에 이미지가 있다면 추가(첫번째 이미지) -->
+                            <div class="post-image">
+                                <img src="img/sample.png" alt="">
+                            </div>
+                            <div class="post-text">
+                                <div class="ptext">Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit corporis, minus dolorem pariatur minima explicabo itaque iste architecto fugit. Voluptatum, cum esse? Totam explicabo, recusandae quia error dolor laboriosam a. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Rem eligendi officia harum quaerat quae earum ipsum voluptates dolorem tempora nisi. Corporis dolorum velit tempore exercitationem fuga dolorem perferendis. Vel, nobis?</div>
+                            </div>
+                        </div>
+                        <div class="post-comment">
+                            <div>공감수 &#183 <span>40</span> &nbsp; 댓글수 &#183 <span>23</span></div>
+                        </div>
+                    </a>
+                </div>
+                <div class="post-item p-2">
+                    <a href="">
+                        <div class="post-name">
+                            <div class="pname">파티명</div>
+                        </div>
+                        <div class="post-content">
+                            <div class="post-image">
+                                <img src="img/sample.png" alt="">
+                            </div>
+                            <div class="post-text">
+                                <div class="ptext">게시글</div>
+                            </div>
+                        </div>
+                        <div class="post-comment">
+                            <div>공감수 &#183 <span>40</span> &nbsp; 댓글수 &#183 <span>23</span></div>
+                        </div>
+                    </a>
+                </div>
+                <div class="post-item p-2">
+                    <a href="">
+                        <div class="post-name">
+                            <div class="pname">Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores error, debitis minima corporis, rem iure, commodi libero mollitia nostrum quam optio amet nobis ratione cumque nisi inventore nemo saepe fuga. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Pariatur delectus est eos dolorem quisquam aliquam facilis corporis accusantium provident blanditiis quis mollitia id repellat alias soluta perferendis, architecto in sed.</div>
+                        </div>
+                        <div class="post-content">
+                            <!-- <div class="post-image">
+                                <img src="img/sample.png" alt="">
+                            </div> -->
+                            <div class="post-text">
+                                <div class="ptext">Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis quos unde non sed adipisci rem repellat fugit eos at consequatur, deleniti saepe earum asperiores nesciunt, dolores possimus orem ipsum dolor sit amet consectetur adipisicing elit. Asperiores error, debitis minima corporis, rem iure, commodi libero mollitia nostrum quam optio amet nobis ratione cumque nisi inventore nemo saepe fuga. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Pariatur delectus est eos dolorem quisquam aliquam facilis corporis accusantium provident blanditiis quis mollitia id repellat alias soluta perferendis, architecto in sed.aspernatur commodi. Iste.</div>
+                            </div>
+                        </div>
+                        <div class="post-comment">
+                            <div>공감수 &#183 <span>40</span> &nbsp; 댓글수 &#183 <span>23</span></div>
+                        </div>
+                    </a>
+                </div>
+                <div class="post-item p-2">
+                    <a href="">
+                        <div class="post-name">
+                            <div class="pname">파티명</div>
+                        </div>
+                        <div class="post-content">
+                            <div class="post-image">
+                                <img src="img/sample.png" alt="">
+                            </div>
+                            <div class="post-text">
+                                <div class="ptext">게시글</div>
+                            </div>
+                        </div>
+                        <div class="post-comment">
+                            <div>공감수 &#183 <span>40</span> &nbsp; 댓글수 &#183 <span>23</span></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 <!-- 모달 등 추가 div가 필요할 경우만 사용 -->
 <div layout:fragment="content-bottom">
 	<div class="modal">

@@ -1,39 +1,261 @@
-<nav th:fragment="navbar-fragment" class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom">
-	<div class="container">
-		<a class="navbar-brand" href="/">게시판</a>
-		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
-			aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-				<li class="nav-item">
-					<a class="nav-link" th:href="@{/}">홈</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" th:href="@{/letsparty}">게시판</a>
-				</li>
-			</ul>
-			<!-- <span class="navbar-text me-5" sec:authorize="isAuthenticated()">
-				<strong class="text-white" sec:authentication="principal.name">홍길동</strong>님 환영합니다.</span> -->
-			<ul class="navbar-nav">
-				<li class="nav-item" sec:authorize="isAnonymous()">
-					<a class="nav-link" th:href="@{/login}">로그인</a>
-				</li>
-				<li class="nav-item" sec:authorize="isAuthenticated()">
-					<a class="nav-link" th:href="@{/logout}" onclick="logout(event)">로그아웃</a>
-				</li>
-				<li class="nav-item" sec:authorize="isAnonymous()">
-					<a class="nav-link" th:href="@{/signup}">회원가입</a>
-				</li>
-			</ul>
-		</div>
+<th:block th:fragment="navbar-fragment">
+	<nav class="navbar fixed-top navbar-expand-sm">
+	    <div class="container fixed">
+	        <div class="container">
+	            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+	                <li class="nav-item">
+	                    <a href="#" class="nav-link">렛츠 파티!!</a>
+	                </li>
+	            </ul>
+	        </div>
+	        <div class="container">
+	            <ul class="navbar-nav me-auto justify-content-center">
+	                <h1 class="fs-1 text-center logo"><span id="home" class="align-middle"><a href="">로고</a></span></h1>
+	                <li class="nav-item ms-3">
+	                    <div class="form mt-3">
+	                        <form method="get" action="/party/search.jsp" name="searchParty">
+	                            <div class="inputbox">
+	                                <input type="text" placeholder="파티검색" name="value">
+	                                <div class="search" id="search">
+	                                    <i class="fa-solid fa-magnifying-glass"></i>
+	                                </div>
+	                            </div>
+	                           </form>
+	                    </div>
+	                    </li>
+	            </ul>
+	        </div>
+	        <div class="container">
+	            <ul class="navbar-nav justify-content-end">
+	                <li class="nav-item">
+	                    <a href="/login-form.jsp" class="nav-link">로그인</a>
+	                </li>
+	                <li class="nav-item">
+	                    <a href="/user/form.jsp" class="nav-link">회원가입</a>
+	                </li>
+	            </ul>
+	            <ul class="navbar-nav justify-content-end">
+	                <li class="nav-item me-3">
+	                    <a href="#" class="nav-link noti noti-outside">
+	                        <i class="fa-solid fa-bell noti" id="bell"></i>
+	                        <div class="noti-no-read">
+	                            <span>50</span>
+	                        </div>
+	                    </a>
+	                    <div class="news-container none">
+	                        <div class="arrow"></div>
+	                        <div class="title">새소식</div>
+	                        <div class="news-items">
+	                            <ul>
+	                                <li class="news-item">
+	                                    <a href="">
+	                                        <div class="img-container">
+	                                            <img src="/img/sooyeong1.jpeg" alt="">
+	                                        </div>
+	                                        <div class="news-info">
+	                                            <div class="type">공지</div>
+	                                            <div class="content">새 공지가 등록되었습니다</div>
+	                                            <div class="time"><span>홍길동파티</span> &#183 <span>21시간전</span></div>
+	                                        </div>
+	                                    </a>
+	                                </li>
+	                                <li class="news-item">
+	                                    <a href="">
+	                                        <div class="img-container">
+	                                            <img src="/img/sample.png" alt="">
+	                                        </div>
+	                                        <div class="news-info">
+	                                            <div class="type">댓글</div>
+	                                            <div class="content">내 게시글에 댓글이 달렸습니다.</div>
+	                                            <div class="time"><span>강감찬파티</span> &#183 <span>21시간전</span></div>
+	                                        </div>
+	                                    </a>
+	                                </li>
+	                                <li class="news-item">
+	                                    <a href="">
+	                                        <div class="img-container">
+	                                            <img src="/img/sooyeong1.jpeg" alt="">
+	                                        </div>
+	                                        <div class="news-info">
+	                                            <div class="type">가입</div>
+	                                            <div class="content"><span>홍길동파티</span>파티에 가입되었습니다.</div>
+	                                            <div class="time"><span>홍길동파티</span> &#183 <span>21시간전</span></div>
+	                                        </div>
+	                                    </a>
+	                                </li>
+	                                <li class="news-item">
+	                                    <a href="">
+	                                        <div class="img-container">
+	                                            <img src="/img/sooyeong2.jpeg" alt="">
+	                                        </div>
+	                                        <div class="news-info">
+	                                            <div class="type">강퇴</div>
+	                                            <div class="content">강퇴당하셨습니다.</div>
+	                                            <div class="time"><span>이승규파티</span> &#183 <span>21시간전</span></div>
+	                                        </div>
+	                                    </a>
+	                                </li>
+	                                <li class="news-item">
+	                                    <a href="">
+	                                        <div class="img-container">
+	                                            <img src="/img/sooyeong1.jpeg" alt="">
+	                                        </div>
+	                                        <div class="news-info">
+	                                            <div class="type">일정</div>
+	                                            <div class="content">일정이 등록되었습니다.</div>
+	                                            <div class="time"><span>홍길동파티</span> &#183 <span>21시간전</span></div>
+	                                        </div>
+	                                    </a>
+	                                </li>
+	                            </ul>
+	                            
+	                        </div>
+	                    </div>
+	                </li>
+	                <li class="nav-item me-3">
+	                    <a href="#" class="nav-link noti noti-outside">
+	                        <i class="fa-solid fa-message noti" id="message"></i>
+	                        <div class="message-no-read">
+	                            <span>20</span>
+	                        </div>
+	                    </a>
+	                    <div class="message-container none">
+	                        <div class="arrow"></div>
+	                        <div class="title">메세지</div>
+	                        <div class="message-items">
+	                            <ul>
+	                                <li class="message-item">
+	                                    <a href="">
+	                                        <div class="img-container">
+	                                            <img src="/img/sooyeong1.jpeg" alt="">
+	                                        </div>
+	                                        <div class="message-info">
+	                                            <div class="name">수영</div>
+	                                            <div class="content">언제와??</div>
+	                                            <div class="time"><span>홍길동파티</span></div>
+	                                        </div>
+	                                        <div class="message-noread">
+	                                            <span>8</span>
+	                                        </div>
+	                                    </a>
+	                                </li>
+	                                <li class="message-item">
+	                                    <a href="">
+	                                        <div class="img-container">
+	                                            <img src="/img/sooyeong3.jpeg" alt="">
+	                                        </div>
+	                                        <div class="message-info">
+	                                            <div class="name">감찬</div>
+	                                            <div class="content">내일 잊지 않았지?</div>
+	                                            <div class="time"><span>강감찬파티</span></div>
+	                                        </div>
+	                                        <div class="message-noread">
+	                                            <span>14</span>
+	                                        </div>
+	                                    </a>
+	                                </li>
+	                                <li class="message-item">
+	                                    <a href="">
+	                                        <div class="img-container">
+	                                            <img src="/img/sooyeong3.jpeg" alt="">
+	                                        </div>
+	                                        <div class="message-info">
+	                                            <div class="name">김도박</div>
+	                                            <div class="content">총알 몇 발 가지고 와?</div>
+	                                            <div class="time"><span>김도박의 재태크</span></div>
+	                                        </div>
+	                                        <!-- <div class="message-noread">
+	                                            <span>1</span>
+	                                        </div> -->
+	                                    </a>
+	                                </li>
+	                                <li class="message-item">
+	                                    <a href="">
+	                                        <div class="img-container">
+	                                            <img src="/img/sooyeong2.jpeg" alt="">
+	                                        </div>
+	                                        <div class="message-info">
+	                                            <div class="name">관순</div>
+	                                            <div class="content">축구화 챙기세요</div>
+	                                            <div class="time"><span>유관순파티</span></div>
+	                                        </div>
+	                                        <div class="message-noread">
+	                                            <span>30</span>
+	                                        </div>
+	                                    </a>
+	                                </li>
+	                                <li class="message-item">
+	                                    <a href="">
+	                                        <div class="img-container">
+	                                            <img src="/img/sample.png" alt="">
+	                                        </div>
+	                                        <div class="message-info">
+	                                            <div class="name">웰시코기</div>
+	                                            <div class="content">멍멍멍</div>
+	                                            <div class="time"><span>강감찬파티</span></div>
+	                                        </div>
+	                                        <div class="message-noread">
+	                                            <span>30</span>
+	                                        </div>
+	                                    </a>
+	                                </li>
+	                                <li class="message-item">
+	                                    <a href="">
+	                                        <div class="img-container">
+	                                            <img src="/img/sooyeong3.jpeg" alt="">
+	                                        </div>
+	                                        <div class="message-info">
+	                                            <div class="name">박찬호</div>
+	                                            <div class="content">메세지 하니까 제가 LA에 있을 때 생각나는데요, 당시에 메세지는</div>
+	                                            <div class="time"><span>TMI파티</span></div>
+	                                        </div>
+	                                        <div class="message-noread">
+	                                            <span>172</span>
+	                                        </div>
+	                                    </a>
+	                                </li>
+	                            </ul>
+	                            
+	                        </div>
+	                    </div>
+	                </li>
+	                <li class="nav-item dropdown">
+	                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+	                    MY
+	                    </a>
+	                    <ul class="dropdown-menu dropdown-menu-end">
+	                    <li><span class="align-middle bolder ms-3"><strong class="text-black">홍길동 님</strong></span></li>
+	                        <li><hr class="dropdown-divider"></li>
+	                        <li><a href="/user/detail.jsp" class="dropdown-item">내정보보기</a></li>
+	                        <li><a href="/party/manage-my-party.jsp" class="dropdown-item">내파티관리</a></li>
+	                    <li><hr class="dropdown-divider"></li>
+	                    <li><a href="/logout.jsp" class="dropdown-item">로그아웃</a></li>
+	                    </ul>
+	                </li>
+	            </ul>
+	        </div>
+	    </div>
+	</nav>
+	<div class="blank mb-3">
 	</div>
-	<form id="form-logout" method="post" th:action="@{/logout}"></form>
-	<script type="text/javascript">
-		function logout(event) {
-			event.preventDefault();
-			document.querySelector("#form-logout").submit();
-		}
-	</script>
-</nav>
+	<nav class="navbar fixed-top navbar-expand-sm">
+	    <div class="container justify-content-center">
+	        <ul class="navbar-nav nav2">
+	            <li class="nav-item">
+	                <a href="#" class="nav-link">게시판</a>
+	            </li>
+	            <li class="nav-item">
+	                <a href="#" class="nav-link">첨부</a>
+	            </li>
+	            <li class="nav-item">
+	                <a href="#" class="nav-link">일정</a>
+	            </li>
+	            <li class="nav-item">
+	                <a href="#" class="nav-link">멤버</a>
+	            </li>
+	        </ul>
+	    </div>
+	</nav>
+	<div class="blank-1 mb-3">
+	</div>
+</th:block>
