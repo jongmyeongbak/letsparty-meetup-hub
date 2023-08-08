@@ -10,4 +10,9 @@ public class MainController {
 	public String home() {
 		return "page/main/home";
 	}
+	
+	@GetMapping("/party-create")
+	public String partyCreate() {
+		return "page/main/party-create";
+	}
 }

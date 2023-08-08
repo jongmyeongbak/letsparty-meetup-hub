@@ -14,4 +14,16 @@ public class PartyController {
 		// partyNo를 사용하여 파티 멤버를 조회하고 작업을 수행합니다.
 		return "page/party/member";
 	}
+	
+	@GetMapping("/{partyNo}/modify")
+	public String modify(@PathVariable String partyNo) {
+		// partyNo를 사용하여 파티 정보를 조회하고 수정 작업을 수행합니다.
+		return "page/party/modify";
+	}
+	
+	@GetMapping("/{partyNo}/post")
+	public String post(@PathVariable String partyNo) {
+		// partyNo를 사용하여 파티 게시물을 조회합니다.
+		return "page/party/post";
+	}
 }

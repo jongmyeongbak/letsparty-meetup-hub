@@ -1,0 +1,95 @@
+@charset "UTF-8";
+.add-party-form-card-header {
+    display: flex;
+    align-items: center;
+    height: 70px;
+}
+
+.card-line {
+    border: solid 3px; 
+    color: rgb(194, 225, 255);
+    }
+    
+.card-header-text {
+	color: black;
+}
+
+#btn {
+    border-color: #6DA1FF;
+    background-color: #6DA1FF;
+}
+#btn:hover {
+    color: #ffffff;
+    border-color: #578ae7;;
+    background-color: #578ae7;
+}
+#outline-btn{
+    border-color: #6DA1FF;
+}
+
+#outline-btn:hover{
+    border-color: #6DA1FF;
+    background-color: #6DA1FF;
+}
+
+.coverList-container {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    background-color: rgb(237, 246, 255);
+    border-radius: 10px;
+} 
+
+.coverlist-images {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+#result-container {
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    width: 600px;
+    height: 300px;
+    
+}
+
+#preview {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; 
+}
+
+#result {
+    display: flex;
+    justify-content: center;
+}
+
+
+.coverlist-text {
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.add-img {
+    display: flex;
+    align-items: center;
+    padding: 3px;
+	width: 150px;
+	height: 100px;
+}
+
+.age-select {
+    width: 65%;
+}
+
+.category-select {
+    width: 97%;
+}
+
+.modal-dialog {
+    max-width: 70%; 
+    max-height: 100%; 
+}

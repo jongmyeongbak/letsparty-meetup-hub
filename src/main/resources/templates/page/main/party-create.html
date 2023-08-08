@@ -1,0 +1,175 @@
+<html xmlns:th="http://www.thymeleaf.org"
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+   layout:decorate="~{layout/common-base}">
+<head>
+	<link rel="stylesheet" th:href="@{/css/page/main/party-create.css}" >
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" integrity="sha512-cyzxRvewl+FOKTtpBzYjW6x6IAYUCZy3sGP40hn+DQkqeluGRCax7qztK2ImL64SA+C7kVWdLI6wvdlStawhyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js" integrity="sha512-6lplKUSl86rUVprDIjiW8DuOniNX8UDoRATqZSds/7t6zCQZfaCe3e5zcGaQwxa8Kpn5RTM9Fvl3X2lLV4grPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+   <div layout:fragment="content-top" class="container">
+      <div class="row mb-3">
+        <div class="col-12">
+            <div class="card card-line">
+                <div class="card-header card-header-text" style="background-color: rgb(237, 246, 255);">
+                    <h5 class="pt-1">파티 정보를 입력하고 개설해보세요!</h5>
+                </div>			
+                <form action="party/party-create">
+                    <div class="card-body">
+                        <div class="form-group mb-3 col-12">
+                            <label class="form-label">파티명</label>
+                            <input type="text" class="form-control form-control-lg" placeholder="파티 이름을 입력해주세요.">
+                        </div>
+                        <!-- 파티 이미지 선택 구간 -->
+                        <div class="row">
+                            <div id="coverSelect" class="form-group mb-3 row">
+                                <!-- 메인 커버 - 고른 사진 미리보여주는 곳 -->
+                                <div id="mainCover" class="col-6 mainCover-container">
+                                    <div id="result-container" class="col-12" style="margin: auto;">
+                                        <img class="add-img" id="preview" src="" alt="이미지미리보기">
+                                        <div id="result"></div>
+                                    </div>
+                                </div>
+                            
+                                <!-- 사진을 로컬에서 고르거나 기본 이미지를 고르는 곳 -->
+                                <div id="coverlist" class="col-6 coverList-container">
+                                    <div class="coverlist-text">
+                                        <p class="text-muted">기본 커버를 선택하거나 추가하세요</p>
+                                    </div>
+                                    <div class="coverlist-images">
+                                        <div class="">
+                                            <span id="addPhotoSpan">
+                                                <img class="rounded add-img" src="/images/party/사진추가이미지.png" id="avatar" alt="avatar">
+                                                <input type="file"  class="sr-only" id="input" name="image" accept="image/*" style="display: none;">
+                                            </span>
+                                        </div>
+                                        <div class="">
+                                            <img class="add-img" src="/images/party/기본이미지1.png" alt="">
+                                        </div>
+                                        <div class="">
+                                            <img class="add-img" src="/images/party/기본이미지2.png" alt="">
+                                        </div>
+                                        <div class="">
+                                            <img class="add-img" src="/images/party/기본이미지3.png" alt="">
+                                        </div>
+                                        <div class="">
+                                            <img class="add-img" src="/images/party/기본이미지4.png" alt="">
+                                        </div>
+                                        <div class="">
+                                            <img class="add-img" src="/images/party/기본이미지5.png" alt="">
+                                        </div>
+                                        <div class="">
+                                            <img class="add-img" src="/images/party/기본이미지6.png" alt="">
+                                        </div>
+                                        <div class="">
+                                            <img class="add-img" src="/images/party/기본이미지7.png" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-muted">파티명과 사진은 개설 후에도 변경할 수 있어요</p>
+                        </div>
+                    
+                        <div class="row">
+                            <!-- 카테고리 선택 -->
+                            <div class="mb-3 col-6">
+                                <label class="form-label">파티</label>
+                                <select class="form-select category-select">
+                                    <option selected disabled > 카테고리를 고르세요.</option>
+                                    <option value="" > 취미/동호회</option>
+                                    <option value=""> 가족</option>
+                                    <option value="" > 스터디</option>
+                                    <option value="" > 학교, 동아리</option>
+                                    <option value="" > 운동 모임</option>
+                                </select>
+                            </div>
+                            
+                            <!-- 최대 정원 -->
+                            <div class="mb-3 col-6">
+                                <label class="form-label">최대정원</label>
+                                <input class="form-control" type="number" min="10" max="1000" step="10" placeholder="최대 1000명" >
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <!-- 가입조건 -->
+                            <div class="mb-3 col-6">
+                                <div class="form-group mb-3">
+                                    <label class="form-label">가입조건</label>
+                                    <div class="form-check form-switch" id="req-group">
+                                        <div class="row" id="req">
+                                            <div class="col">
+                                                <div class="row mb-3">
+                                                    <label class="col-4 col-form-label" for="birthStart">최소나이</label>
+                                                    <select class="col-8 age-select form-select" name="birthStart">
+                                                        <option value="9999" selected>제한없음</option>
+                                                        <option value="1997"> 1997년생 (만 26세)</option>
+                                                        <option value="1998"> 1998년생 (만 25세)</option>
+                                                        <option value="1999"> 1999년생 (만 24세)</option>
+                                                        <option value="2000"> 2000년생 (만 23세)</option>
+                                                    </select>
+                                                </div>
+                                                <div class="row">
+                                                    <label class="col-4 col-form-label" for="birthEnd">최대나이</label>
+                                                    <select class="col-8 age-select form-select" name="birthEnd">
+                                                        <option value="9999" selected>제한없음</option>
+                                                        <option value="1997"> 1997년생 (만 26세)</option>
+                                                        <option value="1998"> 1998년생 (만 25세)</option>
+                                                        <option value="1999"> 1999년생 (만 24세)</option>
+                                                        <option value="2000"> 2000년생 (만 23세)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="row">
+                                                    <label class="col-3 col-form-label" for="gender">성별</label>
+                                                    <select class="form-select age-select" name="gender" id="gender">
+                                                        <option value="A" selected>제한없음</option>
+                                                        <option value="M">남</option>
+                                                        <option value="F">여</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 파티설명 -->
+                            <div class="mb-3 col-6">
+                                <label for="" class="form-label">파티설명</label>
+                                <textarea name="" id="" cols="30" rows="4" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer" style="background-color:  rgb(237, 246, 255)" >
+                        <div class="text-end">
+                            <button id="btn" class="btn btn-primary">파티생성</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+   </div>
+   <!-- 사진 자르기 모달 출력 부분 -->
+   <div layout:fragment="content-bottom" class="container my-3">
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalLabel">이미지 편집</h5>
+            </div>
+            <div class="modal-body">
+              <div class="img-container">
+                <img class="add-img" id="image" src="">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-primary" id="cropbutton">Crop</button>
+            </div>
+          </div>
+        </div>
+      </div>
+   </div>
+   <script layout:fragment="script" type="text/javascript" th:src="@{/js/page/main/party-create.js}"></script>
+</html>
