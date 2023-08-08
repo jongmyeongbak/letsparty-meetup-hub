@@ -1,0 +1,126 @@
+<html xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/party-base}">
+<head>
+    <link rel="stylesheet" th:href="@{/css/page/party/member.css}" >
+</head>
+	<div layout:fragment="content-top" class="content">
+		<div class="user-box pt-3 pb-5 px-5">
+			<div class="row pb-1 fs-5"><h5>총 멤버 수 : 7 명</h5></div>
+			<div class="bg col">
+				<div class="user-item">
+					<div class="user-info">
+						<div class="pf-image">
+							<img src="/img/hong.jpeg" alt="">
+						</div>
+						<div class="name">
+							<span>홍길동</span>
+						</div>
+						<div class="role">
+							<span>나</span>
+						</div>
+					</div>
+					<div class="chat">
+						<a class="dropdown-item" href="#">1:1 채팅</a>
+					</div>
+				</div>
+				<div class="user-item">
+					<div class="user-info">
+						<div class="pf-image">
+							<img src="/img/sample.png" alt="">
+						</div>
+						<div class="name">
+							<span>이승규</span>
+						</div>
+						<div class="role">
+							<span>리더</span>
+						</div>
+                       </div>
+					<div class="chat">
+						<a class="dropdown-item" href="#">1:1 채팅</a>
+					</div>
+                   </div>
+                <div class="user-item">
+                    <div class="user-info">
+                        <div class="pf-image">
+                            <img src="/img/lee.jpeg" alt="">
+                        </div>
+                        <div class="name">
+                            <span>이순신</span>
+                        </div>
+                        <div class="role">
+                            <span>공동리더</span>
+                        </div>
+                    </div>
+                    <div class="chat">
+                        <a class="dropdown-item" href="#">1:1 채팅</a>
+                    </div>
+                </div>
+                <div class="user-item">
+                    <div class="user-info">
+                        <div class="pf-image">
+                            <img src="/img/ryu.jpeg" alt="">
+                        </div>
+                        <div class="name">
+                            <span>유관순</span>
+                        </div>
+                        <div class="role">
+                            <span>공동리더</span>
+                        </div>
+                    </div>
+                    <div class="chat">
+                        <a class="dropdown-item" href="#">1:1 채팅</a>
+                    </div>
+                </div>
+                <div class="user-item">
+                    <div class="user-info">
+                        <div class="pf-image">
+                            <img src="/img/kim.png" alt="">
+                        </div>
+                        <div class="name">
+                            <span>김구</span>
+                        </div>
+                        <div class="role">
+                            <span></span>
+                        </div>
+                    </div>
+                    <div class="chat">
+                        <a class="dropdown-item" href="#">1:1 채팅</a>
+                    </div>
+                </div>
+                <div class="user-item">
+                    <div class="user-info">
+                        <div class="pf-image">
+                            <img src="/img/park.jpeg" alt="">
+                        </div>
+                        <div class="name">
+                            <span>공원종명</span>
+                        </div>
+                        <div class="role">
+                            <span></span>
+                        </div>
+                    </div>
+                    <div class="chat">
+                        <a class="dropdown-item" href="#">1:1 채팅</a>
+                    </div>
+                </div>
+                <div class="user-item">
+                       <div class="user-info">
+                           <div class="pf-image">
+                               <img src="/img/mozzi.jpeg" alt="">
+                           </div>
+                           <div class="name">
+                               <span>김모찌</span>
+                           </div>
+                           <div class="role">
+                               <span></span>
+                           </div>
+                       </div>
+                       <div class="chat">
+                           <a class="dropdown-item" href="#">1:1 채팅</a>
+                       </div>
+                   </div>
+			</div>
+		</div>
+	</div>
+</html>
