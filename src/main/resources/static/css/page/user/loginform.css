@@ -1,0 +1,78 @@
+@charset "UTF-8";
+.loginH1 {
+    position: relative;
+    margin: 0 -17px;
+    text-align: center;
+    font-size: 36px;
+    font-weight: 300;
+    letter-spacing: -1px;
+    color: #222;
+    line-height: 1.2;
+    word-break: keep-all;
+    word-wrap: break-word; 
+}
+.login {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    width: 100%;
+    height: 54px;
+    border-radius: 2px;
+    border: 1px solid transparent;
+    color: #fff;
+    font-size: 16px;
+    text-align: center;
+    line-height: 1;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    word-break: break-all;
+}
+.login.-icoType {
+    display: table;
+    width: 300px;
+}
+a.login {
+    min-height: 54px;
+    line-height: 52px;
+    margin-bottom: 10px;
+}
+.login.-icoType .text {
+    display: table-cell;
+    padding: 0 55px;
+    line-height: 20px;
+    vertical-align: middle;
+    border-radius: 3px;
+}
+.loginBtnList .icon img {
+    margin-left: 20px; 
+    margin-right: -30px; 
+}
+.login.-icoType.-facebook {
+    background: #0075ff;
+}
+.login.-icoType.-facebook:hover {
+    background: #0069e5;
+}
+.login.-icoType.-naver {
+    background: #03c75a;
+}
+.login.-icoType.-naver:hover {
+    background: #02b250;
+}
+.login.-icoType.-kakao {
+    background: #f9e000;
+}
+.login.-icoType.-kakao:hover {
+    background: #e6c100;
+}
+.loginBtnList {
+    text-align: center;
+    margin-top: 20px;
+}
+.loginBtnList li {
+    display: inline-block;
+    margin: 0 10px;
+}
+
+ 
