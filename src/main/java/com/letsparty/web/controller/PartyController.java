@@ -1,6 +1,7 @@
 package com.letsparty.web.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,13 +17,13 @@ public class PartyController {
 	}
 	
 	@GetMapping("/{partyNo}/modify")
-	public String modify(@PathVariable String partyNo) {
-		// partyNo를 사용하여 파티 정보를 조회하고 수정 작업을 수행합니다.
+	public String modify(@PathVariable String partyNo, Model model) {
+		// partyNo를 사용하여 파티 정보를 조회하고 작업을 수행합니다.
 		return "page/party/modify";
 	}
 	
 	@GetMapping("/{partyNo}/post")
-	public String post(@PathVariable String partyNo) {
+	public String post(@PathVariable String partyNo, Model model) {
 		// partyNo를 사용하여 파티 게시물을 조회합니다.
 		return "page/party/post";
 	}
