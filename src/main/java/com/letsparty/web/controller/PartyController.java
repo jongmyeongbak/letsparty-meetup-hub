@@ -22,9 +22,9 @@ public class PartyController {
 		return "page/party/modify";
 	}
 	
-	@GetMapping("/{partyNo}/post")
-	public String post(@PathVariable String partyNo, Model model) {
+	@GetMapping("/{partyNo}")
+	public String home(@PathVariable String partyNo, Model model) {
 		// partyNo를 사용하여 파티 게시물을 조회합니다.
-		return "page/party/post";
+		return "page/party/home";
 	}
 }
