@@ -1,0 +1,61 @@
+@charset "UTF-8";
+
+.post-item-text-color {
+    color: #87a3f0;
+}
+
+.post-item-color {
+    color:  #abc1ff;
+}
+
+.post-profile-container {
+    width: 70px;
+    height: 70px;
+}
+
+.post-profile-container-inner {
+    position: relative;
+    height: 0;
+    padding-bottom: 100%;
+}
+
+.post-image{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.post-comment-profile-container {
+    width: 75px;
+    height: 75px;
+}
+
+.post-comment-profile-container-inner {
+    position: relative;
+    height: 0;
+    padding-bottom: 100%;
+}
+
+.comment-image{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.card-line {
+border: solid 3px; 
+color: rgb(194, 225, 255);
+}
+
+.background-color-gray {
+    background-color: #fafafa;
+}
+
+.like-count {
+	padding: 0px 0px 20px;
+}
+

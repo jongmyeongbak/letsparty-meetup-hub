@@ -13,7 +13,7 @@ public class MainController {
 	public String home() {
 		return "page/main/home";
 	}
-	
+  
 	@GetMapping("/login")
 	public String login() {
 		return "page/main/login";
@@ -23,5 +23,10 @@ public class MainController {
 	public String form(Model model) {
 		model.addAttribute("signupForm", new SignupForm());
 		return "page/main/signup";
+	}
+    
+	@GetMapping("/party-create")
+	public String partyCreate() {
+		return "page/main/party-create";
 	}
 }
