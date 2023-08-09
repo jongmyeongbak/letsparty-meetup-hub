@@ -1,0 +1,167 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/common-base}">
+<!-- 고유 CSS -->
+<head>
+    <link rel="stylesheet" th:href="@{/css/page/letparty/home.css}" >
+</head>
+<!-- 고유 content -->
+<div layout:fragment="content-top" class="container">
+	<div class="row mb-3">
+        <div class="col-12">
+            <div class="card card-line">
+                <div class="card-header" style="background-color: rgb(237, 246, 255);">
+                    <ul id="letparty-category" class="nav nav-tabs card-header-tabs" >
+                        <li class="nav-item active">
+                            <a href="#" class="nav-link active" aria-current="true">취미/동호회</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">가족</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">스터디</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">학교/동아리</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" >운동</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">지역</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" >자유주제</a>
+                        </li>
+                    </ul>
+                </div>			
+                <div class="card-body">
+                    <div class="d-flex jutstify-content-start mb-3">
+                        <select class="form-select me-3" style="width: 150px;" name="sort" onchange="changeSort()">
+                            <option value="new" > 최신순</option>
+                            <option value="old" > 오래된순</option>
+                            <option value="name"> 파티명 순</option>
+                            <option value="" > 적당한 거 ㄱㄱ</option>
+                        </select>
+                        <select class="form-select me-3" style="width: 150px;" name="rows" onchange="changeRows()">
+                            <option value="10"> 10개씩</option>
+                            <option value="20"> 20개씩</option>
+                            <option value="50"> 50개씩</option>
+                        </select>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>게시글번호</th>
+                                <th>제목</th>
+                                <th>파티명</th>
+                                <th>날짜</th>
+                                <th>조회수/댓글</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1001</td>
+                                <td>홍길동의 파티에 놀러오세요!</td>
+                                <td>홍길동의 스터디 파티</td>
+                                <td>2023년8월01일</td>
+                                <td>10/5</td>
+                            </tr>
+                            <tr>
+                                <td>1002</td>
+                                <td>김유신의 파티에 놀러오세요!</td>
+                                <td>김유신의 농구 파티</td>
+                                <td>2023년7월31일</td>
+                                <td>10/5</td>
+                            </tr>
+                            <tr>
+                                <td>1003</td>
+                                <td>강감찬의 파티에 놀러오세요!</td>
+                                <td>강감찬의 수채화 파티</td>
+                                <td>2023년7월31일</td>
+                                <td>10/5</td>
+                            </tr>
+                            <tr>
+                                <td>1004</td>
+                                <td>이순신의 파티에 놀러오세요!</td>
+                                <td>이순신의 수영 파티</td>
+                                <td>2023년7월27일</td>
+                                <td>10/5</td>
+                            </tr>
+                            <tr>
+                                <td>1005</td>
+                                <td>유관순의 파티에 놀러오세요!</td>
+                                <td>유관순의 노래 파티</td>
+                                <td>2023년7월26일</td>
+                                <td>10/5</td>
+                            </tr>
+                                <tr>
+                                    <td colspan="5" class="text-center">검색결과가 존재하지 않습니다.</td>
+                                </tr>
+                        </tbody>
+                    </table>
+                    
+                   <div class="card-footer" style="background-color: white;">
+                       <!-- 페이지네이션 구간 -->
+                        <div class="">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item ${first ? 'disabled' : '' }">
+                                    <a href="list?page-${prePage }" class="page-link">이전</a>
+                                </li>
+                       
+                                <li class="page-item ${currentPage eq num ? 'active' :'' }">
+                                    <a href="" class="page-link">1</a>
+                                </li>
+                                <li class="page-item ${currentPage eq num ? 'active' :'' }">
+                                    <a href="" class="page-link">2</a>
+                                </li>
+                                <li class="page-item ${currentPage eq num ? 'active' :'' }">
+                                    <a href="" class="page-link">3</a>
+                                </li>
+                       
+                                <li class="page-item ${last ? 'disabled' : ''}">
+                                    <a href="list?page=${nextPage }" class="page-link">다음</a>
+                                </li>
+                            </ul>
+                        </div>
+                       
+                        <!-- 검색 구간 -->
+                        <div class="d-flex justify-content-center">
+                            <form id="form-employee-search" class="row row-cols-md-auto g-3 align-items-center" method="get" action="list">
+                            <input type="hidden" name="sort" value="${param.sort }"/>
+                            <input type="hidden" name="rows" value="${param.rows }"/>
+                            <input type="hidden" name="page" value="${param.page }"/>
+                                <div class="col-12">
+                                    <select class="form-select" name="opt">
+                                        <option value="">제목</option>
+                                        <option value="">내용</option>
+                                        <option value="">파티명</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <input type="text" class="form-control" name="keyword"/>
+                                </div>
+                                <div class="col-12">
+                                    <button id="outline-btn" type="button" class="btn btn-outline-primary btn-sm" onclick="searchEmployees()">검색</button>
+                                </div>
+                            </form>
+                        </div>
+                       
+                        <div class="text-end">
+                            <a id="btn"class="btn btn-primary btn-sm">게시글 등록</a>
+                        </div>
+                   </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 모달 등 추가 div가 필요할 경우만 사용 -->
+<div layout:fragment="content-bottom">
+	<div class="modal">
+		<h1>modal영역</h1>
+	</div>
+</div>
+<!-- 고유 script -->
+<script layout:fragment="script" th:src="@{/js/page/letparty/home.js}"></script>
+</html>

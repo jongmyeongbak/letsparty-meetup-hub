@@ -1,0 +1,23 @@
+@charset "UTF-8";
+#btn {
+    border-color: #6DA1FF;
+    background-color: #6DA1FF;
+}
+#btn:hover {
+    color: #ffffff;
+    border-color: #578ae7;;
+    background-color: #578ae7;
+}
+#outline-btn{
+    border-color: #6DA1FF;
+}
+
+#outline-btn:hover{
+    border-color: #6DA1FF;
+    background-color: #6DA1FF;
+}
+
+.card-line {
+border: solid 3px; 
+color: rgb(194, 225, 255);
+}
