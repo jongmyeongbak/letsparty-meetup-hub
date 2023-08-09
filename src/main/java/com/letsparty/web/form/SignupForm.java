@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class RegisterUserForm {
+public class SignupForm {
 
 	@NotBlank(message = "아이디는 필수 입력값입니다.")
 	@Size(min = 3, max = 20, message = "아이디는 최소 3글자, 최대 20글자까지만 가능합니다.")
