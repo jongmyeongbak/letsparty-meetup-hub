@@ -17,7 +17,7 @@
                     <div class="card-body">
                         <div class="form-group mb-3 col-12">
                             <label class="form-label">파티명</label>
-                            <input type="text" class="form-control form-control-lg" placeholder="파티 이름을 입력해주세요.">
+                            <input type="text" class="form-control form-control-lg" placeholder="파티 이름을 입력해주세요." required />
                         </div>
                         <!-- 파티 이미지 선택 구간 -->
                         <div class="row">
@@ -38,42 +38,42 @@
                                     <div class="coverlist-images">
                                         <div class="">
                                             <span id="addPhotoSpan">
-                                                <img class="rounded add-img" src="/images/party/사진추가이미지.png" id="avatar" alt="avatar">
+                                                <img class="rounded add-img" src="/images/party/cover-custom.png" id="avatar" alt="avatar">
                                                 <input type="file"  class="sr-only" id="input" name="image" accept="image/*" style="display: none;">
                                             </span>
                                         </div>
                                         <div class="">
-                                            <img class="add-img" src="/images/party/기본이미지1.png" alt="">
+                                            <img class="add-img" src="/images/party/cover-default1.png" alt="">
                                         </div>
                                         <div class="">
-                                            <img class="add-img" src="/images/party/기본이미지2.png" alt="">
+                                            <img class="add-img" src="/images/party/cover-default2.png" alt="">
                                         </div>
                                         <div class="">
-                                            <img class="add-img" src="/images/party/기본이미지3.png" alt="">
+                                            <img class="add-img" src="/images/party/cover-default3.png" alt="">
                                         </div>
                                         <div class="">
-                                            <img class="add-img" src="/images/party/기본이미지4.png" alt="">
+                                            <img class="add-img" src="/images/party/cover-default4.png" alt="">
                                         </div>
                                         <div class="">
-                                            <img class="add-img" src="/images/party/기본이미지5.png" alt="">
+                                            <img class="add-img" src="/images/party/cover-default5.png" alt="">
                                         </div>
                                         <div class="">
-                                            <img class="add-img" src="/images/party/기본이미지6.png" alt="">
+                                            <img class="add-img" src="/images/party/cover-default6.png" alt="">
                                         </div>
                                         <div class="">
-                                            <img class="add-img" src="/images/party/기본이미지7.png" alt="">
+                                            <img class="add-img" src="/images/party/cover-default7.png" alt="">
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <p class="text-muted">파티명과 사진은 개설 후에도 변경할 수 있어요</p>
+                            <p class="text-muted">파티명과 사진은 개설후에도 변경할 수 있어요</p>
                         </div>
                     
                         <div class="row">
                             <!-- 카테고리 선택 -->
                             <div class="mb-3 col-6">
                                 <label class="form-label">파티</label>
-                                <select class="form-select category-select">
+                                <select class="form-select category-select" required>
                                     <option selected disabled > 카테고리를 고르세요.</option>
                                     <option value="" > 취미/동호회</option>
                                     <option value=""> 가족</option>
@@ -86,7 +86,7 @@
                             <!-- 최대 정원 -->
                             <div class="mb-3 col-6">
                                 <label class="form-label">최대정원</label>
-                                <input class="form-control" type="number" min="10" max="1000" step="10" placeholder="최대 1000명" >
+                                <input class="form-control" type="number" min="10" max="1000" step="10" placeholder="최대 1000명" required >
                             </div>
                         </div>
                         
