@@ -1,5 +1,5 @@
 $(function() {
-    $("#letparty-category").on('click', 'a', function(event) { 
+    $("#letsparty-category").on('click', 'a', function(event) { 
         
         event.preventDefault();
     
