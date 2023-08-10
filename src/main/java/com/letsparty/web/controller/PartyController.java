@@ -27,4 +27,11 @@ public class PartyController {
 		// partyNo를 사용하여 파티 게시물을 조회합니다.
 		return "page/party/home";
 	}
+	
+
+	@GetMapping("/{partyNo}/event")
+	public String event(@PathVariable String partyNo) {
+		// partyNo를 사용하여 파티 멤버를 조회하고 작업을 수행합니다.
+		return "page/party/event";
+	}
 }

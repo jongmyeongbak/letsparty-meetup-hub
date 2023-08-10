@@ -1,0 +1,64 @@
+@charset "UTF-8";
+
+/* 일요일 날짜 빨간색 */
+.fc-day-sun a {
+  color: red;
+  text-decoration: none;
+}
+
+/* 토요일 날짜 파란색 */
+.fc-day-sat a {
+  color: blue;
+  text-decoration: none;
+}
+
+.fc-day-mon a {
+  color: black;
+  text-decoration: none;
+}
+
+.fc-day-tue a {
+  color: black;
+  text-decoration: none;
+}
+
+.fc-day-wed a {
+  color: black;
+  text-decoration: none;
+}
+
+.fc-day-thu a {
+  color: black;
+  text-decoration: none;
+}
+
+.fc-day-fri a {
+  color: black;
+  text-decoration: none;
+}
+
+/* 드래그 이벤트 간격띄우기 */
+.fc-event {
+	color: burlywood;
+	margin-top: 5px;
+	cursor: move;
+}
+#eventBox {
+	width: 70%;
+	padding-left: 15%;
+}
+
+.event-list {
+	text-align: center;
+}
+.event-date {
+	margin-top: 8px;
+	text-align: center;
+}
+.event-day {
+	font-size: 20px;
+}
+.event-detail {
+	margin-top: 8px;
+	text-align: left;
+}
