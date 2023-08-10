@@ -27,4 +27,9 @@ public class PartyController {
 		// partyNo를 사용하여 파티 게시물을 조회합니다.
 		return "page/party/home";
 	}
+	
+	@GetMapping("attachment")
+	public String poll(){
+		return"page/party/attachment";
+	}
 }
