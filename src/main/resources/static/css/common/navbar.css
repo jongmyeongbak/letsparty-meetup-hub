@@ -18,7 +18,7 @@
     border-radius: 20px;
     background-color: #fff;
 }
-input {
+.inputbox input {
     border-radius: 20px;
     padding-left: 5px;
     padding-top: 2px;
@@ -53,7 +53,7 @@ nav:nth-of-type(2) {
 }
 
 /* 알림 창 */
-i {
+.nav-item i {
     font-size: 25px;
 }
 .click {
@@ -62,7 +62,7 @@ i {
 .nav-item {
     position: relative;
 }
-i {
+.nav-item i {
     color: #999;
 }
 .news-container .arrow {

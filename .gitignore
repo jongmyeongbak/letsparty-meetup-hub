@@ -1,4 +1,5 @@
 src/main/resources/application-dev.yml
+Src/main/resources/application-auth.yml
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar

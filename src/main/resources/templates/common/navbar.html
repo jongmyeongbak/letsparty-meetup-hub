@@ -28,10 +28,10 @@
 	        <div class="container">
 	            <ul class="navbar-nav justify-content-end">
 	                <li class="nav-item">
-	                    <a href="/login" class="nav-link">로그인</a>
+	                    <a th:href="@{/login}" class="nav-link">로그인</a>
 	                </li>
 	                <li class="nav-item">
-	                    <a href="/signup" class="nav-link">회원가입</a>
+	                    <a th:href="@{/signup}" class="nav-link">회원가입</a>
 	                </li>
 	            </ul>
 	            <ul class="navbar-nav justify-content-end">
@@ -229,7 +229,7 @@
 	                        <li><a href="/user/detail.jsp" class="dropdown-item">내정보보기</a></li>
 	                        <li><a href="/party/manage-my-party.jsp" class="dropdown-item">내파티관리</a></li>
 	                    <li><hr class="dropdown-divider"></li>
-	                    <li><a href="/logout.jsp" class="dropdown-item">로그아웃</a></li>
+	                    <li><a th:href="@{/logout}" class="dropdown-item">로그아웃</a></li>
 	                    </ul>
 	                </li>
 	            </ul>
@@ -245,7 +245,7 @@
 	                <a href="#" class="nav-link">게시판</a>
 	            </li>
 	            <li class="nav-item">
-	                <a href="#" class="nav-link">첨부</a>
+	                <a th:href="@{/party/attachment}" class="nav-link">첨부</a>
 	            </li>
 	            <li class="nav-item">
 	                <a href="#" class="nav-link">일정</a>

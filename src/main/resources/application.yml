@@ -14,6 +14,7 @@ spring:
   profiles:
     include:
     - dev
+    - auth
 
 mybatis:
   mapper-locations:
