@@ -125,7 +125,6 @@
 
 		    calendar.render();
 		  });
-	   
 //        var calendar = new FullCalendar.Calendar(calendarEl, {
 //          initialView: 'dayGridMonth',
 //          locale:"ko"
