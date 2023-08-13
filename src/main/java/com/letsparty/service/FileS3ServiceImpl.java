@@ -44,7 +44,6 @@ public class FileS3ServiceImpl implements FileService {
 		UploadFileResponse uploadFileResponse = null;
 
 		try {
-//			final TransferManager transferManager = TransferManagerBuilder.defaultTransferManager();
 			final TransferManager tm = TransferManagerBuilder.standard().withS3Client(s3Client).build();
 			final String uuid = UUID.randomUUID().toString();
 			final String key = keyPath + uuid;
