@@ -21,6 +21,8 @@ public interface FileService {
 			return upload("images/covers/", file);
 		case "profile":
 			return upload("images/profiles/", file);
+		case "testparty":
+			return upload("testparty/", file);
 		default:
 			throw new IllegalArgumentException();
 		}

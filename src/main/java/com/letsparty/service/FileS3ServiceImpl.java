@@ -20,6 +20,7 @@ import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 import com.amazonaws.services.s3.transfer.Upload;
 import com.amazonaws.services.s3.transfer.model.UploadResult;
 import com.amazonaws.util.IOUtils;
+import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 import com.letsparty.dto.UploadFileResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -45,8 +46,8 @@ public class FileS3ServiceImpl implements FileService {
 
 		try {
 			final TransferManager tm = TransferManagerBuilder.standard().withS3Client(s3Client).build();
-			final String uuid = UUID.randomUUID().toString();
-			final String key = keyPath + uuid;
+			final String NanoId = NanoIdUtils.randomNanoId();
+			final String key = keyPath + NanoId;
 			final PutObjectRequest request =
 					new PutObjectRequest(bucketName, key, file.getInputStream(), getMetadataValue(file));
 			
@@ -60,7 +61,7 @@ public class FileS3ServiceImpl implements FileService {
 				log.info("Object 업로드 성공 -> {}", file.getOriginalFilename());
 				uploadFileResponse = new UploadFileResponse(
 						file.getOriginalFilename(),
-						uuid,
+						NanoId,
 						result.getETag(),
 						getMetadataValue(file).getContentType(),
 						file.getSize());
