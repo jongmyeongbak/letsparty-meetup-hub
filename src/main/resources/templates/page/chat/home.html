@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <script
+      src="https://kit.fontawesome.com/46a6014d50.js"
+      crossorigin="anonymous"
+    ></script>
+    <title>즐거운 만남 | 채팅</title>
+    <style>
+      * {
+        background-color: azure;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Malgun Gothic", "맑은 고딕", sans-serif;
+        color: #333;
+        letter-spacing: -0.03em;
+        scroll-behavior: smooth;
+      }
+      .material-symbols-rounded {
+        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+      }
+      .submit-wrap .material-symbols-rounded {
+        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 48;
+      }
+      .chat-container {
+        padding-top: 5px;
+        width: 97%;
+        margin: auto;
+        overflow-x: hidden;
+        background-color: antiquewhite;
+      }
+      header * {
+        background-color: inherit;
+      }
+      .chat-head {
+        display: flex;
+        justify-content: space-between;
+        background-color: inherit;
+      }
+      .chat-head button {
+        font-size: 0.6em;
+      }
+      .chat-head h1 {
+        font-size: 0.95em;
+      }
+      .chat-head h2 {
+        font-size: 0.7em;
+      }
+      .chat-dialogue {
+        background-color: antiquewhite;
+        height: calc(100vh - 200px);
+        overflow-x: hidden;
+        overflow-y: scroll;
+      }
+      .chat-dialogue::-webkit-scrollbar {
+        background-color: inherit;
+      }
+      .chat-dialogue::-webkit-scrollbar-thumb {
+        background-color: rgb(255, 201, 130);
+        border-radius: 10px;
+      }
+      .chat-write {
+        width: 97%;
+        position: absolute;
+        bottom: 0;
+        padding: 10px;
+      }
+      .mentions-wrap {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .mentions-input {
+        width: 100%;
+      }
+      .mentions {
+        width: 100%;
+        font-size: 0.8em;
+      }
+      .submit-wrap {
+        position: relative;
+        right: 0;
+      }
+      textarea {
+        resize: none;
+        border: none;
+        padding: 10px;
+        outline: none;
+      }
+      /* .submit-wrap button {
+        
+      } */
+    </style>
+  </head>
+  <body>
+    <div class="chat-container">
+      <header class="chat-head justify-content-between">
+        <div class="align-self-center">
+          <button class="btn btn-go-party">
+            <span class="material-symbols-rounded"> exit_to_app </span>
+          </button>
+        </div>
+        <div class="">
+          <h1 class="text-center">홍길동</h1>
+          <h2 class="text-center">렛츠파티</h2>
+        </div>
+        <div class="align-self-center text-end">
+          <button class="btn btn-setting">
+            <span class="material-symbols-rounded"> menu </span>
+          </button>
+        </div>
+      </header>
+      <div class="chat-dialogue mb-0">
+        <div class="log-data">
+          <div class="log-date text-center">
+            <time>2023년 8월 11일 금요일</time>
+          </div>
+          <div class="log-friend">
+            <div class="pf-image"></div>
+            <div class="log-content">
+              <div class="nickname"></div>
+              <div class="log-bubble"></div>
+            </div>
+            <div class="log-aside">
+              <div class="read"></div>
+              <div class="time"></div>
+            </div>
+          </div>
+          <div class="log-my">
+            <div class="log-aside">
+              <div class="read"></div>
+              <div class="time"></div>
+            </div>
+            <div class="log-content">
+              <div class="log-bubble"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <section class="chat-write">
+        <div class="mentions-wrap">
+          <div class="mentions-input">
+            <textarea class="mentions" rows="3"></textarea>
+          </div>
+          <div class="submit-wrap">
+            <button class="btn">
+              <span class="material-symbols-rounded"> send </span>
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.7.0.min.js"
+      integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
