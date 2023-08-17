@@ -1,18 +1,15 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/party-base}">
 <head>
-<link rel="stylesheet" th:href="@{/css/page/party/attachment.css}">
+<link rel="stylesheet" th:href="@{/css/page/party/album.css}">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
-
 <body>
 <div layout:fragment="content-top" class="content">
 	<div class="attachment-container">
 		<div class="col">
 			<h5>첨부 모아보기</h5>
 		</div>
-		<div class="col bg">
 			<div class="col bg">
 				<div class="attachment-tag">
 				    <button class="tag-name" id="albumButton">
@@ -25,214 +22,117 @@
 				        파일
 				    </button>
 				</div>
-			</div>
 			
 			<div class="attachment-content">
 				<div class="attachment-poll">
 					<div class="inputWrap">
-						<div class="poll-Search">
-							<input class="poll-Search-input border border-end-0" type="text" id="input_search" placeholder="글 내용, #태그, @작성자 검색">
-							<button class="poll-Search-icon btn border border-start-0" type="submit"><i class="bi bi-search"></i></button>
+						<div class="file-Search">
+							<input class="file-Search-input border border-end-0" type="text" id="input_search" placeholder="파일명 혹은 작성자 검색">
+							<button class="file-Search-icon btn border border-start-0" type="submit"><i class="bi bi-search"></i></button>
 							<span class="border"></span>
 						</div>
 					</div>
 				</div>
 				<div class="cd">
 					<div class="menu">
-						<div class="item">
-							<div class="btns">
-								<button type="button">Excel 다운로드</button>
-								<button type="button">인쇄하기</button>
-							</div>
-						</div>
+					    <div class="item">
+					        <div class="searchFilter">
+					            <select class="_searchFilter">
+					                <option value="all">최신순</option>
+					                <option value="participated">날짜별로보기</option>
+					            </select>
+					        </div>
+					    </div>
+					      <div class="item">
+					        <div class="searchFilter">
+					            <select class="_searchFilter">
+					                <option value="participated">2023년 8월</option>
+					                <option value="participated">2023년 9월</option>
+					                <option value="participated">2023년 10월</option>
+					                <option value="participated">2023년 11월</option>
+					                <option value="participated">2023년 12월</option>
+					            </select>
+					        </div>
+					    </div>
+					    
+					    <div class="item">
+					        <div class="top-btn">
+					            <button type="button">관리하기</button>
+					        </div>
+					    </div>
 					</div>
 				</div>
+				<div class="flex-box">
 				<div class="searchResultWrap">
-					<h2 class="whole-title">투표</h2>
-					<div class="searchFilter">
-						<select class="_searchFilter">
-							<option value="all">최신순</option>
-							<option value="participated">참여한 투표</option>
-							<option value="not_participated">미참여투표</option>
-						</select>
-					</div>
+						<h2 class="whole-title">사진첩</h2>
 				</div>
-				<div class="poll-container">
-					<div class="poll-list">
-						<ul>
-							<li class="poll-item">
-							<a class="poll-a" href="#">
-							<i class="poll-icon fa-solid fa-square-poll-horizontal fa-xl post-item-color"></i>
-							<div class="poll-details">
-								<div class="poll-name">투표이름</div>
-								<div class="d-flex">
-								<strong class="poll-status text-color">투표상태</strong>
-								<div class="poll-status">참여인원수</div>
-								</div>
-								<div class="d-flex">
-								<div class="poll-date">투표생성일자</div>
-								<div class="poll-date">투표만든이</div>
-								</div>								
-							</div>
-							</a>
-							</li>
-							<li class="poll-item">
-							<a class="poll-a" href="#">
-							<i class="poll-icon fa-solid fa-square-poll-horizontal fa-xl post-item-color"></i>
-							<div class="poll-details">
-								<div class="poll-name">투표이름</div>
-								<div class="d-flex">
-								<strong class="poll-status text-color">투표상태</strong>
-								<div class="poll-status">참여인원수</div>
-								</div>
-								<div class="d-flex">
-								<div class="poll-date">투표생성일자</div>
-								<div class="poll-date">투표만든이</div>
-								</div>								
-							</div>
-							</a>
-							</li><li class="poll-item">
-							<a class="poll-a" href="#">
-							<i class="poll-icon fa-solid fa-square-poll-horizontal fa-xl post-item-color"></i>
-							<div class="poll-details">
-								<div class="poll-name">투표이름</div>
-								<div class="d-flex">
-								<strong class="poll-status text-color">투표상태</strong>
-								<div class="poll-status">참여인원수</div>
-								</div>
-								<div class="d-flex">
-								<div class="poll-date">투표생성일자</div>
-								<div class="poll-date">투표만든이</div>
-								</div>								
-							</div>
-							</a>
-							</li><li class="poll-item">
-							<a class="poll-a" href="#">
-							<i class="poll-icon fa-solid fa-square-poll-horizontal fa-xl post-item-color"></i>
-							<div class="poll-details">
-								<div class="poll-name">투표이름</div>
-								<div class="d-flex">
-								<strong class="poll-status text-color">투표상태</strong>
-								<div class="poll-status">참여인원수</div>
-								</div>
-								<div class="d-flex">
-								<div class="poll-date">투표생성일자</div>
-								<div class="poll-date">투표만든이</div>
-								</div>								
-							</div>
-							</a>
-							</li><li class="poll-item">
-							<a class="poll-a" href="#">
-							<i class="poll-icon fa-solid fa-square-poll-horizontal fa-xl post-item-color"></i>
-							<div class="poll-details">
-								<div class="poll-name">투표이름</div>
-								<div class="d-flex">
-								<strong class="poll-status text-color">투표상태</strong>
-								<div class="poll-status">참여인원수</div>
-								</div>
-								<div class="d-flex">
-								<div class="poll-date">투표생성일자</div>
-								<div class="poll-date">투표만든이</div>
-								</div>								
-							</div>
-							</a>
-							</li><li class="poll-item">
-							<a class="poll-a" href="#">
-							<i class="poll-icon fa-solid fa-square-poll-horizontal fa-xl post-item-color"></i>
-							<div class="poll-details">
-								<div class="poll-name">투표이름</div>
-								<div class="d-flex">
-								<strong class="poll-status text-color">투표상태</strong>
-								<div class="poll-status">참여인원수</div>
-								</div>
-								<div class="d-flex">
-								<div class="poll-date">투표생성일자</div>
-								<div class="poll-date">투표만든이</div>
-								</div>								
-							</div>
-							</a>
-							</li><li class="poll-item">
-							<a class="poll-a" href="#">
-							<i class="poll-icon fa-solid fa-square-poll-horizontal fa-xl post-item-color"></i>
-							<div class="poll-details">
-								<div class="poll-name">투표이름</div>
-								<div class="d-flex">
-								<strong class="poll-status text-color">투표상태</strong>
-								<div class="poll-status">참여인원수</div>
-								</div>
-								<div class="d-flex">
-								<div class="poll-date">투표생성일자</div>
-								<div class="poll-date">투표만든이</div>
-								</div>								
-							</div>
-							</a>
-							</li><li class="poll-item">
-							<a class="poll-a" href="#">
-							<i class="poll-icon fa-solid fa-square-poll-horizontal fa-xl post-item-color"></i>
-							<div class="poll-details">
-								<div class="poll-name">투표이름</div>
-								<div class="d-flex">
-								<strong class="poll-status text-color">투표상태</strong>
-								<div class="poll-status">참여인원수</div>
-								</div>
-								<div class="d-flex">
-								<div class="poll-date">투표생성일자</div>
-								<div class="poll-date">투표만든이</div>
-								</div>								
-							</div>
-							</a>
-							</li><li class="poll-item">
-							<a class="poll-a" href="#">
-							<i class="poll-icon fa-solid fa-square-poll-horizontal fa-xl post-item-color"></i>
-							<div class="poll-details">
-								<div class="poll-name">투표이름</div>
-								<div class="d-flex">
-								<strong class="poll-status text-color">투표상태</strong>
-								<div class="poll-status">참여인원수</div>
-								</div>
-								<div class="d-flex">
-								<div class="poll-date">투표생성일자</div>
-								<div class="poll-date">투표만든이</div>
-								</div>								
-							</div>
-							</a>
-							</li><li class="poll-item">
-							<a class="poll-a" href="#">
-							<i class="poll-icon fa-solid fa-square-poll-horizontal fa-xl post-item-color"></i>
-							<div class="poll-details">
-								<div class="poll-name">투표이름</div>
-								<div class="d-flex">
-								<strong class="poll-status text-color">투표상태</strong>
-								<div class="poll-status">참여인원수</div>
-								</div>
-								<div class="d-flex">
-								<div class="poll-date">투표생성일자</div>
-								<div class="poll-date">투표만든이</div>
-								</div>								
-							</div>
-							</a>
-							</li><li class="poll-item">
-							<a class="poll-a" href="#">
-							<i class="poll-icon fa-solid fa-square-poll-horizontal fa-xl post-item-color"></i>
-							<div class="poll-details">
-								<div class="poll-name">투표이름</div>
-								<div class="d-flex">
-								<strong class="poll-status text-color">투표상태</strong>
-								<div class="poll-status">참여인원수</div>
-								</div>
-								<div class="d-flex">
-								<div class="poll-date">투표생성일자</div>
-								<div class="poll-date">투표만든이</div>
-								</div>								
-							</div>
-							</a>
-							</li>
-						</ul>
+				</div>
+				  <div class="line"></div>      
+					<div class="albumHeader">
+					    <div class="item">
+					        <h2 class="title">
+					            <a href="/band/91511654/album/total">
+					                <strong>전체사진</strong>
+					                <em>6</em>
+					            </a>
+					        </h2>
+					        <time class="info">2023년 8월</time>
+					    </div>
+				    <div class="item">
+				        <button class="custom-button">사진올리기</button>
+				   		 </div>
 					</div>
+				
+					<ul class="albumImages -sizeL">
+					   <li class="album">
+						   <a href="#" role="button" class="_thumbnailImage">
+						        <img src="https://coresos-phinf.pstatic.net/a/361j88/5_jj8Ud018svc1kad1ghfcpd6j_2re044.jpg?type=s276" alt="">
+						   </a>
+					    </li>
+					    <li class="album">
+						   <a href="#" role="button" class="_thumbnailImage">
+						       <img src="https://coresos-phinf.pstatic.net/a/362035/0_73jUd018svcnwvvohtzl6r7_gm045d.jpg?type=s276" alt="">
+						   </a>
+					    </li>
+					    <li class="album">
+						   <a href="#" role="button" class="_thumbnailImage">
+						       <img src="https://coresos-phinf.pstatic.net/a/362035/0_73jUd018svcnwvvohtzl6r7_gm045d.jpg?type=s276" alt="">
+						   </a>
+					    </li>
+					    <li class="album">
+						   <a href="#" role="button" class="_thumbnailImage">
+						       <img src="https://coresos-phinf.pstatic.net/a/362035/0_73jUd018svcnwvvohtzl6r7_gm045d.jpg?type=s276" alt="">
+						   </a>
+					    </li>
+					    <li class="album">
+						   <a href="#" role="button" class="_thumbnailImage">
+						       <img src="https://coresos-phinf.pstatic.net/a/362035/0_73jUd018svcnwvvohtzl6r7_gm045d.jpg?type=s276" alt="">
+						   </a>
+					    </li>
+					    <li class="album">
+						   <a href="#" role="button" class="_thumbnailImage">
+						       <img src="https://coresos-phinf.pstatic.net/a/362035/0_73jUd018svcnwvvohtzl6r7_gm045d.jpg?type=s276" alt="">
+						   </a>
+					    </li>
+					    <li class="album">
+						   <a href="#" role="button" class="_thumbnailImage">
+						       <img src="https://coresos-phinf.pstatic.net/a/362035/0_73jUd018svcnwvvohtzl6r7_gm045d.jpg?type=s276" alt="">
+						   </a>
+					    </li>
+					    <li class="album">
+						   <a href="#" role="button" class="_thumbnailImage">
+						       <img src="https://coresos-phinf.pstatic.net/a/362035/0_73jUd018svcnwvvohtzl6r7_gm045d.jpg?type=s276" alt="">
+						   </a>
+					    </li>
+					    <li class="album">
+						   <a href="#" role="button" class="_thumbnailImage">
+						       <img src="https://coresos-phinf.pstatic.net/a/362035/0_73jUd018svcnwvvohtzl6r7_gm045d.jpg?type=s276" alt="">
+						   </a>
+					    </li>
+					</ul>    
+				</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</div>
 </body>
 </html>
