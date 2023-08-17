@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import com.letsparty.service.CategoryService;
 import com.letsparty.vo.Category;
 
+
 public class PartyDataUtils {
 	
 	private PartyDataUtils() {};
@@ -28,4 +29,5 @@ public class PartyDataUtils {
 	    List<Category> categories = categoryService.getAllCategories();
 	    model.addAttribute("categories", categories);
 	}
+	
 }

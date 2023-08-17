@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.letsparty.mapper.PartyTagMapper">
+	
+	<!-- 파티 태그 추가 -->
+	<insert id="insertTag" parameterType="com.letsparty.vo.PartyTag">
+		insert into party_tag (category_no, party_no, party_tag_name)
+		values (#{category.no}, #{party.no}, #{name})
+	</insert>
+	
+	<!-- 파티 태그 조회 -->
+	<select id="findTagByPartyNo" parameterType="map" resultType="com.letsparty.vo.PartyTag">
+		select 
+			category_no, party_no, party_tag_name
+		form 
+			party_tag
+		where 
+			party_no = #{partyNo}
+		and
+			party_tag_name = #{tagName}
+	</select>
+
+</mapper>

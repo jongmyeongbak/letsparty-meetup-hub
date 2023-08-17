@@ -33,9 +33,7 @@ $(function() {
   	var $alert = $('.alert');
   	var $modal = $('#modal');
  	var cropper;
-
-	$('[data-toggle="tooltip"]').tooltip();
-
+ 	
 	$input.on('change', function (e) {
 		var files = e.target.files;
 		let size = input.files[0].size / 1024 / 1024;
