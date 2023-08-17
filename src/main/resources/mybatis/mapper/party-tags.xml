@@ -9,15 +9,15 @@
 	</insert>
 	
 	<!-- 파티 태그 조회 -->
-	<select id="findTagByPartyNo" parameterType="map" resultType="com.letsparty.vo.PartyTag">
+	<select id="getTagsByPartyNo" parameterType="int" resultType="com.letsparty.vo.PartyTag">
 		select 
-			category_no, party_no, party_tag_name
-		form 
+			category_no		as "category.no",
+			party_no		as "party.no",
+			party_tag_name	as name
+		from
 			party_tag
 		where 
-			party_no = #{partyNo}
-		and
-			party_tag_name = #{tagName}
+			party_no = #{value}
 	</select>
 
 </mapper>

@@ -140,7 +140,7 @@
                             <!-- 파티설명 -->
                             <div class="mb-3 col-6">
                                 <label for="" class="form-label">파티설명</label>
-                                <textarea name="" id="" cols="30" rows="4" class="form-control" th:field="*{description}" 
+                                <textarea name="" id="description" cols="30" rows="4" class="form-control" th:field="*{description}" 
                                 	th:classappend="${#fields.hasErrors('*{description}') ? 'is-invalid' : ''}"></textarea>
                                 <div th:errors="*{description}" th:classappend="${#fields.hasErrors('description') ? 'invalid-feedback' : ''}"></div>
                             </div>

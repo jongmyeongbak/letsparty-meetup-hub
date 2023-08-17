@@ -104,7 +104,7 @@ $(function() {
 	    cropper = null;
 	});
 
-	// base64 -> file 변환 코드
+	// base64 -> file 변환 함수
 	function dataURLtoBlob(dataurl) {
     var base64Data = dataurl.split(',')[1];
     var byteString = atob(base64Data);
@@ -114,9 +114,33 @@ $(function() {
         uint8Array[i] = byteString.charCodeAt(i);
   	  }
     return new Blob([uint8Array], { type: 'image/png' });
-	}	  
+	}	 
+	
+	// 파티 태그 추출 함수
+	function extractHashTags(description) {
+    var regex = /#[^\s#]+/g;
+    var match;
+    var tags = [];
+
+    while ((match = regex.exec(description)) !== null) {
+        tags.push(match[0].substring(1)); // #제거
+    }
+    return tags;
+}
+
 	  // 파티 생성 버튼을 눌렀을 때
 	$('#btn').on('click', function(e) {
+		var description = $('#description').val();
+		var tags = extractHashTags(description);
+		
+		$.each(tags, function(index, tag){
+			$('<input>').attr({
+				type: 'hidden',
+				name: 'tags',
+				value: tag
+			}).appendTo('#party-form');
+			
+		})
 		if ($("#imageFile").val() !== "") {
 			e.preventDefault();
 			// 쓰이지 않는 필드 삭제

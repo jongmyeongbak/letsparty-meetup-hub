@@ -1,5 +1,7 @@
 package com.letsparty.web.form;
 
+import java.util.List;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -9,10 +11,12 @@ import org.springframework.web.multipart.MultipartFile;
 import groovy.transform.ToString;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 @Getter
 @Setter
 @ToString
+@Slf4j
 public class PartyCreateForm {
 	
 	private int categoryNo;
@@ -34,5 +38,7 @@ public class PartyCreateForm {
 	private MultipartFile imageFile;
 	private String defaultImagePath;
 	private String savedName;
+	
+	private List<String> tags;
 	
 }
