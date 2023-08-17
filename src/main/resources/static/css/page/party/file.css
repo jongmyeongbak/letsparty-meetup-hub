@@ -22,12 +22,12 @@
     background: none;  
 }
 /*수정한부분  시작*/
-.poll-Search{
+.file-Search{
   padding: 15px;
   display: flex;
   align-items: center;
 }
-.poll-Search-input{
+.file-Search-input{
   position: relative;
   width: 99%;
   height: 40px;
@@ -37,7 +37,7 @@
   border: 1px solid #ccc;
   border-radius: 0%;
 }    
-.poll-search-icon {
+.file-search-icon {
   position: relative;
 }
  /*메뉴부분 */
@@ -47,87 +47,101 @@
   z-index: 0;
   background: #edf6ff;
   color: white;
-  padding: 30px;
+  padding: 5px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
-.btns {
-  position: absolute; 
-  bottom: 0; 
-  right: 0; 
+.item .top-btn{
+	margin-left: 550px;
 }
-.btns button {
-  border: none;  /* 버튼속성 */
-  background-color: transparent; 
-  margin-bottom: 10px;  
+
+.menu button {
+    border: none;
+    background-color: transparent;
 }
-.btns button + button { 
-  margin-left: 10px;  /*버튼 간격 */
-}
+
   /*투표/선택박스*/
 .searchResultWrap { 
   align-items: center; 
   margin-top: 10px; 
 }
-.poll-bar {
+.file-bar {
   margin-left: 30px;
+  margin-bottom: 40px;
 }
 .searchFilter {
   flex: 1;
   text-align: right;
   margin-right: 20px;
 }
-.poll-container {
+.file-container {
   margin-top: 10px;
 } 
 ul {
   list-style: none;
 } 
-.poll-icon {
+
+.file-icon {
   position: relative;
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  margin-right: 10px;
+  margin-right: 20px;
   align-items: center;
   justify-content: center;
   display: flex;
+  font-size: 30px;
 } 
-.poll-details {
+.file-details {
   flex: 1;
   margin-left: 5px; 
 }  
-.poll-name {
+.file-name {
   font-weight: bold;
+  font-size: 20px;
 } 
-.poll-status {
+.file-status {
   color: #777;
-  font-size: 14px;
+  font-size: 15px;
   margin-right: 10px;
 } 
-.poll-date {
+.file-date {
   color: #777;
-  font-size: 14px;
+  font-size: 15px;
   margin-right: 10px;
 }
-.post-item-color {
+.file-item-color {
   color: #abc1ff;
   background-color: #ddd;
 }
-li.poll-item {
-  border-bottom: 1px solid #ddd;
+.text-upload{
+  font-size: 20px;
+}
+li.file-upload {
   padding-bottom: 10px;
   align-items: center;
-  margin-bottom: 10px;
-  min-height: 85px;
 } 
-.poll-a {
+
+li.file-item {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 20px;
+  align-items: center;
+  margin-bottom: 20px;
+  min-height: 30px;
+} 
+.filecover {
+  display:flex; 
+  align-items: center;
+  text-decoration: none;
+} 
+.file-a {
   display:flex; 
   align-items: center;
   text-decoration: none; 
 } 
+
 i {
+  
   font-size: 19px;
   vertical-align: middle; /* 아이콘을 세로로 중앙 정렬 */
 }
@@ -140,11 +154,37 @@ i {
 .text-color{
   color: #abc1ff;
 }
+.uploadButtonBox .inputFile {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 70%;
+    opacity: 0;
+    cursor: pointer;
+}
+.uploadButtonBox .uploadButton {
+    font-weight: 400;
+    color: #333;
+    display: flex;
+    position: relative;
+    align-items: center;
+    width: 100%;
+   
+}
+.line{
+	border-bottom: 2px solid #ddd;
+	margin-top: -10px;
+	margin-bottom: 20px;
+	}
 .whole-title{
 	font-size: 30px;
     font-weight: 600;
     color: #333;
+    margin-top: 20px;
    	margin-left: 30px;
-   	margin-bottom: 20px;
+   	margin-bottom: 30px;
 }
  

@@ -1,0 +1,172 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/party-base}">
+<head>
+<link rel="stylesheet" th:href="@{/css/page/party/file.css}">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+<div layout:fragment="content-top" class="content">
+	<div class="attachment-container">
+		<div class="col">
+			<h5>첨부 모아보기</h5>
+		</div>
+		<div class="col bg">
+			<div class="attachment-tag">
+			    <button class="tag-name" id="albumButton">
+			        사진첩
+			    </button>
+			    <button class="tag-name" id="pollButton">
+			        투표
+			    </button>
+			    <button class="tag-name" id="fileButton">
+			        파일
+			    </button>
+			</div>
+			<div class="attachment-content">
+				<div class="attachment-poll">
+					<div class="inputWrap">
+						<div class="file-Search">
+							<input class="file-Search-input border border-end-0" type="text" id="input_search" placeholder="파일명 혹은 작성자 검색">
+							<button class="file-Search-icon btn border border-start-0" type="submit"><i class="bi bi-search"></i></button>
+							<span class="border"></span>
+						</div>
+					</div>
+				</div>
+				<div class="cd">
+					<div class="menu">
+					<div class="item">
+						<div class="searchResultWrap">
+							<div class="searchFilter">
+								<select class="_searchFilter">
+									<option value="all">최신순</option>
+									<option value="participated">이름순</option>
+								</select>
+							</div>
+					   	 </div>
+					   </div> 
+					   <div class="item">
+					        <div class="top-btn">
+					            <button type="button">관리하기</button>
+					        </div>
+				       </div>
+					</div>
+				</div>
+				<h2 class="whole-title">전체파일</h2>
+				<div class="file-container">
+						<div class="uploadButtonBox">
+					        <div class="uploadButton _fileInput js-fileapi-wrapper">
+					            <ul>
+									<li class="file-upload">
+										<div class="filecover">
+											<i class="file-icon fa-solid fa-file-arrow-up fa-xl post-item-color"></i>
+										<div class="file-details">
+											<strong class="file-name text-upload">파일업로드</strong>
+										<div class="d-flex"></div>	
+										</div>
+									</div>
+							            <input type="file" title="파일 올리기" name="attachment" class="inputFile" multiple="" accept="*/*">
+							        </div>
+									</li>
+								</ul>
+							</div>
+					<div class="line"></div>
+					
+					<div class="file-list">
+						<ul>
+							<li class="file-item">
+							<a class="file-a" href="#">
+							<i class="file-icon fa-regular fa-file fa-xl post-item-color"></i>
+							<div class="file-details">
+								<strong class="file-name text-color">파일명</strong>
+								<div class="d-flex">
+								<div class="file-date">파일크기</div>
+								<div class="file-date">올린일자</div>
+								<div class="file-date">파일올린이</div>
+								</div>								
+							</div>
+							</a>
+							</li>
+							<li class="file-item">
+							<a class="file-a" href="#">
+							<i class="file-icon fa-regular fa-file fa-xl post-item-color"></i>
+							<div class="file-details">
+								<strong class="file-name text-color">파일명</strong>
+								<div class="d-flex">
+								<div class="file-date">파일크기</div>
+								<div class="file-date">올린일자</div>
+								<div class="file-date">파일올린이</div>
+								</div>								
+							</div>
+							</a>
+							</li>
+							<li class="file-item">
+							<a class="file-a" href="#">
+							<i class="file-icon fa-solid fa-video fa-xl post-item-color"></i>
+							<div class="file-details">
+								<strong class="file-name text-color">파일명</strong>
+								<div class="d-flex">
+								<div class="file-date">파일크기</div>
+								<div class="file-date">올린일자</div>
+								<div class="file-date">파일올린이</div>
+								</div>								
+							</div>
+							</a>
+							</li>
+							<li class="file-item">
+							<a class="file-a" href="#">
+							<i class="file-icon fa-solid fa-video fa-xl post-item-color"></i>
+							<div class="file-details">
+								<strong class="file-name text-color">파일명</strong>
+								<div class="d-flex">
+								<div class="file-date">파일크기</div>
+								<div class="file-date">올린일자</div>
+								<div class="file-date">파일올린이</div>
+								</div>								
+							</div>
+							</a>
+							</li><li class="file-item">
+							<a class="file-a" href="#">
+							<i class="file-icon fa-solid fa-video fa-xl post-item-color"></i>
+							<div class="file-details">
+								<strong class="file-name text-color">파일명</strong>
+								<div class="d-flex">
+								<div class="file-date">파일크기</div>
+								<div class="file-date">올린일자</div>
+								<div class="file-date">파일올린이</div>
+								</div>								
+							</div>
+							</a>
+							</li><li class="file-item">
+							<a class="file-a" href="#">
+							<i class="file-icon fa-solid fa-video fa-xl post-item-color"></i>
+							<div class="file-details">
+								<strong class="file-name text-color">파일명</strong>
+								<div class="d-flex">
+								<div class="file-date">파일크기</div>
+								<div class="file-date">올린일자</div>
+								<div class="file-date">파일올린이</div>
+								</div>								
+							</div>
+							</a>
+							</li><li class="file-item">
+							<a class="file-a" href="#">
+							<i class="file-icon fa-solid fa-video fa-xl post-item-color"></i>
+							<div class="file-details">
+								<strong class="file-name text-color">파일명</strong>
+								<div class="d-flex">
+								<div class="file-date">파일크기</div>
+								<div class="file-date">올린일자</div>
+								<div class="file-date">파일올린이</div>
+								</div>								
+							</div>
+							</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

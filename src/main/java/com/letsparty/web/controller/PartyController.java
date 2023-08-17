@@ -28,8 +28,8 @@ public class PartyController {
 		return "page/party/home";
 	}
 	
-	@GetMapping("attachment")
-	public String poll(){
-		return"page/party/attachment";
+	@GetMapping("/{partyNo}attachment")
+	public String attachment(){
+		return"page/party/album";
 	}
 }
