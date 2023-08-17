@@ -28,3 +28,5 @@ mybatis:
     jdbc-type-for-null: 'NULL'
     log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl
 
+
+

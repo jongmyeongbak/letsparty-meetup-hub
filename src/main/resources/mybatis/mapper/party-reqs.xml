@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.letsparty.mapper.PartyReqMapper">
+
+	<!-- 파티 가입 조건 추가 -->
+	<insert id="insertPartyReq" parameterType="com.letsparty.vo.PartyReq">
+		insert into party_req
+		(party_no, req_name, req_value, req_description)
+		values
+		(#{party.no}, #{name}, #{value}, #{description})
+	</insert>
+	
+	<!-- 파티 가입 조건 수정 --> 
+	
+</mapper>

@@ -1,0 +1,131 @@
+<html xmlns:th="http://www.thymeleaf.org"
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+   layout:decorate="~{layout/party-base}">
+<head>
+	<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
+	<script th:src="@{/js/page/party/ko.global.min.js}"></script>
+	<link rel="stylesheet" th:href="@{/css/page/party/event.css}" >
+</head>
+   <div layout:fragment="content-top" class="container">
+            <div id="calendar"></div>
+			<!-- 일정등록 Modal -->
+		    <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+		        aria-hidden="true">
+		        <div class="modal-dialog" role="document">
+		            <div class="modal-content">
+		                <div class="modal-header">
+		                    <h5 class="modal-title" id="exampleModalLabel">일정을 입력하세요.</h5>
+		                    <!--  
+		                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		                        <span aria-hidden="true">&times;</span>
+		                    </button>
+		                    -->
+		                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		                </div>
+		                <div class="modal-body">
+		                    <div class="form-group">
+		                        <label for="taskId" class="col-form-label">일정 제목</label>
+		                        <input type="text" class="form-control" id="event_content" name="event_title">
+		                        <label for="taskId" class="col-form-label">일정 내용</label>
+		                        <input type="text" class="form-control" id="event_content" name="event_content">
+		                        <label for="taskId" class="col-form-label">시작 날짜</label>
+		                        <input type="date" class="form-control" id="event_start_date" name="event_start_date">
+		                        <label for="taskId" class="col-form-label">종료 날짜</label>
+		                        <input type="date" class="form-control" id="event_end_date" name="event_end_date">
+		                        <label for="taskId" class="col-form-label">시작 시간</label>
+		                        <input type="time" class="form-control" id="event_start_time" name="event_start_time">
+		                        <label for="taskId" class="col-form-label">종료 시간</label>
+		                        <input type="time" class="form-control" id="event_end_time" name="event_end_time">
+		                        <label for="taskId" class="col-form-label">하루 종일</label>
+		                        <input type="checkbox" name="option" value="event_all_day" >
+		                        <label for="taskId" class="col-form-label">음력</label>
+		                        <input type="checkbox" name="option" value="lunar_calendar" ><br/>
+		                        <label for="taskId" class="col-form-label">장소</label>
+		                        <input type="text" class="form-control" id="evnet_palce" name="evnet_palce">
+		                        <label for="taskId" class="col-form-label">미리 알림</label>
+		                        <input type="text" class="form-control" id="evnet_noti" name="evnet_noti">
+		                        <label for="taskId" class="col-form-label">게시글로 공유</label>
+		                        <input type="checkbox" name="option" value="submit_post" >
+		                    </div>
+		                </div>
+		                <div class="modal-footer">
+		                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+		                    <button type="button" class="btn btn-primary" id="addEvent">등록</button>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+        	<div id='external-events'>
+			    <p>
+			      <strong>원하는 날짜에 일정을 옮겨 등록하세요.</strong>
+			    </p>
+			
+			    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+			   		  <div class='fc-event-main'>국어</div>
+			    </div>
+			    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+			     	 <div class='fc-event-main'>수학</div>
+			    </div>
+			    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+			    	  <div class='fc-event-main'>영어</div>
+			    </div>
+			    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+			     	 <div class='fc-event-main'>체육</div>
+			    </div>
+			    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+			    	  <div class='fc-event-main'>음악</div>
+			    </div>
+				
+			    <p>
+			      <input type='checkbox' id='drop-remove' />
+			      <label for='drop-remove'>일정 등록 후 제거하기</label>
+			    </p>
+			    
+			    <div class="event-list">
+			    	<div class="border d-flex align-items-center" >
+                        <div class="col-1 me-2 ms-1 d-flex justify-content-center align-items-center">
+                            <div class="event-date">
+                                <h6 class="event-day">3</h6>
+                                <small>목요일</small>
+                            </div>
+                        </div>
+                        <div class="col-11">
+                            <div class="event-detail">
+                                <h6><strong>볼링 동호회</strong></h6>
+                                <small>오전 10:00</small>
+                            </div>
+                        </div>
+                   </div>
+			       <div class="border d-flex align-items-center" >
+                        <div class="col-1 me-2 ms-1 d-flex justify-content-center align-items-center">
+                            <div class="event-date">
+                                <h6 class="event-day">29</h6>
+                                <small>화요일</small>
+                            </div>
+                        </div>
+                        <div class="col-11">
+                            <div class="event-detail">
+                                <h6><strong>데이트</strong></h6>
+                                <small>오후 07:00</small>
+                            </div>
+                        </div>
+                   </div>
+			       <div class="border d-flex align-items-center" >
+                        <div class="col-1 me-2 ms-1 d-flex justify-content-center align-items-center">
+                            <div class="event-date">
+                                <h6 class="event-day">31</h6>
+                                <small>목요일</small>
+                            </div>
+                        </div>
+                        <div class="col-11">
+                            <div class="event-detail">
+                                <h6><strong>월말 정산</strong></h6>
+                                <small>오후 01:00</small>
+                            </div>
+                        </div>
+                   </div>
+			  </div>
+			</div>
+       	 </div>
+   <script layout:fragment="script" type="text/javascript" th:src="@{/js/page/party/event.js}"></script>
+</html>

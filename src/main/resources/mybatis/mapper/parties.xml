@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.letsparty.mapper.PartyMapper">
+
+	<!-- 파티 생성 -->
+	<insert id="createParty" parameterType="com.letsparty.vo.Party" useGeneratedKeys="true" keyProperty="no">
+		 insert into party (leader_id, category_no, party_name, party_quota, party_description, party_filename)
+	     values (#{leader.id}, #{category.no}, #{name}, #{quota}, #{description}, #{filename})
+	</insert>
+	
+	<!-- 파티 시퀀스 추가 -->
+	<insert id="createPartySequence" parameterType="int">
+		insert into party_sequence values (#{value}, 0)
+	</insert>
+	
+	<!-- 파티 조회 -->
+	<select id="getPartyByNo" parameterType="int" resultType="com.letsparty.vo.Party">
+		select 
+			party_no			as no,
+			leader_id			as leaderId,
+	        category_no			as categoryNo,
+	        party_name			as partyName,
+	        party_cur_cnt		as partyCurCnt,
+	        party_quota			as partyQuota,
+	        party_status		as partyStatus,
+	        created_at			as createAt,
+	        updated_at 			as updateAt,
+	        party_description	as partyDescription,
+	        party_filename		as partyFilename
+	    from party
+	    where 
+	    	party_no = #{value}
+	</select>
+	
+	<!-- 파티 수정 -->
+	<update id="modifyParty" parameterType="com.letsparty.vo.Party">
+	    update party
+	    <set>
+	        leader_id = #{leaderId},
+	        category_no = #{categoryNo},
+	        party_name = #{partyName},
+	        party_cur_cnt = #{partyCurCnt},
+	        party_quota = #{partyQuota},
+	        party_status = #{partyStatus},
+	        updated_at = NOW(),
+	        party_description = #{partyDescription},
+	        party_filename = #{partyFilename}
+	    </set>
+	    where party_no = #{no}
+	</update>
+
+</mapper>

@@ -1,5 +1,5 @@
 src/main/resources/application-dev.yml
-Src/main/resources/application-auth.yml
+src/main/resources/application-auth.yml
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
@@ -33,3 +33,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Mac OS ###
+.DS_Store
