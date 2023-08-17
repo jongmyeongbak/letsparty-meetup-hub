@@ -1,0 +1,150 @@
+@charset "UTF-8";
+.bg {
+  background-color: #fff;
+  padding: 10px 0;
+  margin-bottom: 20px;
+}
+.attachment-container {
+  background-color: #edf6ff;
+  padding: 15px 50px;
+  /* background-color: aquamarine; */
+}
+.attachment-container h4 {
+  font-size: 20px;
+  padding: 5px 0 4px 0;
+}
+.attachment-tag {
+  display: flex;
+  justify-content: space-evenly;
+}
+.tag-name{
+    border: none;      
+    background: none;  
+}
+/*수정한부분  시작*/
+.poll-Search{
+  padding: 15px;
+  display: flex;
+  align-items: center;
+}
+.poll-Search-input{
+  position: relative;
+  width: 99%;
+  height: 40px;
+  font-size: 15px;
+  padding: 0;
+  background: #f1f3f5;
+  border: 1px solid #ccc;
+  border-radius: 0%;
+}    
+.poll-search-icon {
+  position: relative;
+}
+ /*메뉴부분 */
+.menu {
+  position: sticky;
+  top: 0;
+  z-index: 0;
+  background: #edf6ff;
+  color: white;
+  padding: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.btns {
+  position: absolute; 
+  bottom: 0; 
+  right: 0; 
+}
+.btns button {
+  border: none;  /* 버튼속성 */
+  background-color: transparent; 
+  margin-bottom: 10px;  
+}
+.btns button + button { 
+  margin-left: 10px;  /*버튼 간격 */
+}
+  /*투표/선택박스*/
+.searchResultWrap { 
+  align-items: center; 
+  margin-top: 10px; 
+}
+.poll-bar {
+  margin-left: 30px;
+}
+.searchFilter {
+  flex: 1;
+  text-align: right;
+  margin-right: 20px;
+}
+.poll-container {
+  margin-top: 10px;
+} 
+ul {
+  list-style: none;
+} 
+.poll-icon {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+} 
+.poll-details {
+  flex: 1;
+  margin-left: 5px; 
+}  
+.poll-name {
+  font-weight: bold;
+} 
+.poll-status {
+  color: #777;
+  font-size: 14px;
+  margin-right: 10px;
+} 
+.poll-date {
+  color: #777;
+  font-size: 14px;
+  margin-right: 10px;
+}
+.post-item-color {
+  color: #abc1ff;
+  background-color: #ddd;
+}
+li.poll-item {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+  min-height: 85px;
+} 
+.poll-a {
+  display:flex; 
+  align-items: center;
+  text-decoration: none; 
+} 
+i {
+  font-size: 19px;
+  vertical-align: middle; /* 아이콘을 세로로 중앙 정렬 */
+}
+.strong {
+  font-weight: bolder;
+}
+.d-flex {
+  display: flex!important;
+}
+.text-color{
+  color: #abc1ff;
+}
+.whole-title{
+	font-size: 30px;
+    font-weight: 600;
+    color: #333;
+   	margin-left: 30px;
+   	margin-bottom: 20px;
+}
+ 

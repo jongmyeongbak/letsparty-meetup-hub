@@ -42,27 +42,24 @@
 }
  /*메뉴부분 */
 .menu {
-    position: sticky;
-    top: 0;
-    z-index: 0;
-    background: #edf6ff;
-    color: white;
-    padding: 15px;
-    display: flex;
-    align-items: center;
-}
-.menu .searchFilter {
-    text-align: left;
-    margin-left: 20px;
+  position: sticky;
+  top: 0;
+  z-index: 0;
+  background: #edf6ff;
+  color: white;
+  padding: 5px;
+  display: flex;
+  align-items: center;
 }
 .item .top-btn{
-	margin-left: 280px;
+	margin-left: 550px;
 }
 
 .menu button {
     border: none;
     background-color: transparent;
 }
+
   /*투표/선택박스*/
 .searchResultWrap { 
   align-items: center; 
@@ -70,6 +67,7 @@
 }
 .file-bar {
   margin-left: 30px;
+  margin-bottom: 40px;
 }
 .searchFilter {
   flex: 1;
@@ -82,15 +80,17 @@
 ul {
   list-style: none;
 } 
+
 .file-icon {
   position: relative;
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  margin-right: 10px;
+  margin-right: 20px;
   align-items: center;
   justify-content: center;
   display: flex;
+  font-size: 30px;
 } 
 .file-details {
   flex: 1;
@@ -98,20 +98,24 @@ ul {
 }  
 .file-name {
   font-weight: bold;
+  font-size: 20px;
 } 
 .file-status {
   color: #777;
-  font-size: 14px;
+  font-size: 15px;
   margin-right: 10px;
 } 
 .file-date {
   color: #777;
-  font-size: 14px;
+  font-size: 15px;
   margin-right: 10px;
 }
 .file-item-color {
   color: #abc1ff;
   background-color: #ddd;
+}
+.text-upload{
+  font-size: 20px;
 }
 li.file-upload {
   padding-bottom: 10px;
@@ -120,9 +124,9 @@ li.file-upload {
 
 li.file-item {
   border-bottom: 1px solid #ddd;
-  padding-bottom: 10px;
+  padding-bottom: 20px;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   min-height: 30px;
 } 
 .filecover {
@@ -137,6 +141,7 @@ li.file-item {
 } 
 
 i {
+  
   font-size: 19px;
   vertical-align: middle; /* 아이콘을 세로로 중앙 정렬 */
 }
@@ -169,95 +174,17 @@ i {
     width: 100%;
    
 }
- 
 .line{
 	border-bottom: 2px solid #ddd;
-	margin-top: 25px;
+	margin-top: -10px;
+	margin-bottom: 20px;
 	}
-	
-.albumImages {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px; 
-}
-
-.album {
-    width: calc(33.33% - 20px); 
-    display: inline-flex;
-    justify-content: center;
-}
-
-._thumbnailImage img {
-    max-width: 100%;
-    height: auto;
-}
 .whole-title{
 	font-size: 30px;
     font-weight: 600;
     color: #333;
+    margin-top: 20px;
    	margin-left: 30px;
-   	margin-bottom: 20px;
+   	margin-bottom: 30px;
 }
-.albumHeader {
-    display: flex;
-    padding-top: 22px;
-    align-items: center;
-    margin-bottom: 20px;
-}
-.albumHeader .title a {
-    display: -webkit-inline-box;
-    display: inline-flex;
-    max-width: 100%;
-    align-items: center;
-    text-decoration: none;
-}
-.albumHeader .title strong {
-    flex: 0 1 auto;
-    font-size: 25px;
-    font-weight: 600;
-    color: #333;
-    display: block;
-    overflow: hidden;
-    margin-left: 30px;
-    max-width: 100%
-}
-.albumHeader .title em {
-    -webkit-box-flex: 0;
-    flex: 0 0 auto;
-    margin-left: 6px;
-    font-size: 30px;
-    font-weight: 500;
-    color: #777;
-}
-.albumHeader .info{
-	margin-left: 30px;
-	font-size: 20px;
-}
-.albumHeader .item:first-child {
-    flex: 1 1 auto;
-    width: 100%;
-    min-width: 0;
-}
-.albumHeader .item:last-child {
-    flex: 0 0 auto;
-    margin-left: 20px;
-}
- .custom-button {
-    background-color: transparent;
-    border: 2px solid #abc1ff; 
-    color: #abc1ff;
-    padding: 15px 25px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-right: 50px;
-}
-
-.custom-button:hover {
-    background-color: #abc1ff; 
-    color: white;
-}
-._thumbnailImage:hover{
-	color:black;
-	opacity: 95%;
-}
+ 
