@@ -29,5 +29,9 @@ public class LoginUser {
 		this.tel = user.getTel();
 	}
 	
+	public String getRealname() {
+		return name;
+	}
+	
 	
 }
