@@ -8,13 +8,14 @@ import lombok.Setter;
 @Setter
 public class UserProfileForm {
 
+	private int no;
 	private String id;
 	private String nickname;
 	private String filename;
-	private boolean isDefault;
+	private Boolean isDefault;
 	
 	@Builder
-	public UserProfileForm(String id, String nickname, String filename, boolean isDefault) {
+	public UserProfileForm(String id, String nickname, String filename, Boolean isDefault) {
 		this.id = id;
 		this.nickname = nickname;
 		this.filename = filename;

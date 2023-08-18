@@ -34,14 +34,16 @@
 <div layout:fragment="content-top" class="container my-3">
 	<h1>회원가입이 완료되었습니다.</h1>
 	<div>기본 프로필을 수정하시겠습니까?</div>
-	<form method="post" th:action="@{my/profile}" id="profile-form">
+	<form method="post" th:action="@{/my/profile}" id="profile-form" enctype="multipart/form-data">
 		<input type="hidden" th:value="${user.id}" name="id">
+		<input type="hidden" th:value="${user.isDefault}" name="isDefault">
+		<input type="hidden" th:value="${profileNo}" name="no">
 		
 		<label>닉네임 변경</label>
-		<input type="text" th:value="${user.name}" name="nickname">
+		<input type="text" th:value="${user.nickname}" name="nickname">
 		
 		<label class="label" data-toggle="tooltip" title="Change your avatar">
-			<input  type="file" class="sr-only" id="input" name="image">
+			<input type="file" class="sr-only" id="input" name="filename" value="profile-default.png">
 		</label>
 		 
 		<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">

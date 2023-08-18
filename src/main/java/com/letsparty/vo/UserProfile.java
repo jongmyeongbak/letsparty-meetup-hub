@@ -9,6 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserProfile {
 
+	private int no;
 	private String id;
 	private String nickname;
 	private String filename;

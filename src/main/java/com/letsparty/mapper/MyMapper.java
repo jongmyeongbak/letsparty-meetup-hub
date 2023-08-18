@@ -9,4 +9,6 @@ public interface MyMapper {
 
 	void addProfile(UserProfile userProfile);
 
+	void updateProfile(UserProfile userProfile);
+
 }

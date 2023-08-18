@@ -142,9 +142,12 @@ public class SignupController {
 				.isDefault(true)
 				.build();
 		
-		myService.addProfile(userProfileForm);
+		int profileNo = myService.addProfile(userProfileForm);
 		
-		redirectAttributes.addFlashAttribute("user", signupForm);
+		log.info("유저 프로필번호 -> {}", profileNo);
+		
+		redirectAttributes.addFlashAttribute("user", userProfileForm);
+		redirectAttributes.addFlashAttribute("profileNo", profileNo);
 		
 		sessionStatus.setComplete();
 		

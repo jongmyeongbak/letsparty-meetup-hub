@@ -15,12 +15,23 @@ public class MyService {
 	
 	private final MyMapper myMapper;
 	
-	public void addProfile(UserProfileForm userProfileForm) {
+	public int addProfile(UserProfileForm userProfileForm) {
 		UserProfile userProfile = new UserProfile();
 		
 		BeanUtils.copyProperties(userProfileForm, userProfile);
 		
 		myMapper.addProfile(userProfile);
+		
+		return userProfile.getNo();
+	}
+
+	public void changeProfile(UserProfileForm userProfileForm) {
+
+		UserProfile userProfile = new UserProfile();
+		
+		BeanUtils.copyProperties(userProfileForm, userProfile);
+		
+		myMapper.updateProfile(userProfile);
 	}
 
 }

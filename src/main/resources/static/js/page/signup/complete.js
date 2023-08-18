@@ -52,7 +52,7 @@ $approve.on("click", function(){
 		let savedName = response.savedName;
 		$("<input>").attr({
 			type: "hidden",
-			name: "fileName",
+			name: "filename",
 			value: savedName
 		}).appendTo($profileForm);
 		input.remove();
