@@ -26,7 +26,7 @@
 	            </ul>
 	        </div>
 	        <div class="container">
-	            <ul class="navbar-nav justify-content-end">
+	            <ul class="navbar-nav justify-content-end" sec:authorize="isAnonymous()">
 	                <li class="nav-item">
 	                    <a th:href="@{/login}" class="nav-link">로그인</a>
 	                </li>
@@ -34,7 +34,7 @@
 	                    <a th:href="@{/signup}" class="nav-link">회원가입</a>
 	                </li>
 	            </ul>
-	            <ul class="navbar-nav justify-content-end">
+	            <ul class="navbar-nav justify-content-end" sec:authorize="isAuthenticated()">
 	                <li class="nav-item me-3">
 	                    <a href="#" class="nav-link noti noti-outside">
 	                        <i class="fa-solid fa-bell noti" id="bell"></i>
@@ -108,7 +108,6 @@
 	                                    </a>
 	                                </li>
 	                            </ul>
-	                            
 	                        </div>
 	                    </div>
 	                </li>
@@ -224,7 +223,7 @@
 	                    MY
 	                    </a>
 	                    <ul class="dropdown-menu dropdown-menu-end">
-	                    <li><span class="align-middle bolder ms-3"><strong class="text-black">홍길동 님</strong></span></li>
+	                    <li><span class="align-middle bolder ms-3"><strong class="text-black" sec:authentication="principal.name"></strong> 님</span></li>
 	                        <li><hr class="dropdown-divider"></li>
 	                        <li><a href="/user/detail.jsp" class="dropdown-item">내정보보기</a></li>
 	                        <li><a href="/party/manage-my-party.jsp" class="dropdown-item">내파티관리</a></li>
