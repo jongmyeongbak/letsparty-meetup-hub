@@ -1,0 +1,76 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/common-base}">
+<head>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" integrity="sha512-cyzxRvewl+FOKTtpBzYjW6x6IAYUCZy3sGP40hn+DQkqeluGRCax7qztK2ImL64SA+C7kVWdLI6wvdlStawhyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js" integrity="sha512-6lplKUSl86rUVprDIjiW8DuOniNX8UDoRATqZSds/7t6zCQZfaCe3e5zcGaQwxa8Kpn5RTM9Fvl3X2lLV4grPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<style>
+		.showImg {
+			width: 100px;
+			height: 100px;
+		}
+		.showImg img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			border-radius: 50%;
+		}
+		.label {
+		  cursor: pointer;
+		}
+	
+		.progress {
+		  display: none;
+		  margin-bottom: 1rem;
+		}
+	
+		.alert {
+		  display: none;
+		}
+	
+		.img-container img {
+		  max-width: 100%;
+		}
+	</style>
+</head>
+<div layout:fragment="content-top" class="container my-3">
+	<h1>회원가입이 완료되었습니다.</h1>
+	<div>기본 프로필을 수정하시겠습니까?</div>
+	<form method="post" th:action="@{my/profile}" id="profile-form">
+		<input type="hidden" th:value="${user.id}" name="id">
+		
+		<label>닉네임 변경</label>
+		<input type="text" th:value="${user.name}" name="nickname">
+		
+		<label class="label" data-toggle="tooltip" title="Change your avatar">
+			<input  type="file" class="sr-only" id="input" name="image">
+		</label>
+		 
+		<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<h5 class="modal-title" id="modalLabel">이미지 편집</h5>
+				<button type="button" class="btn close" data-bs-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+				</button>
+			  </div>
+			  <div class="modal-body">
+				<div class="img-container">
+				  <img id="image" src="">
+				</div>
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+				<button type="button" class="btn btn-primary" id="crop">자르기</button>
+			  </div>
+			</div>
+		  </div>
+		</div>
+		<div class="showImg"><img id="avatar" th:src="@{/images/party/profile-default.png}" alt="avatar"></div>
+		<button type="button" class="btn btn-primary btn-sm" id="change">사진 변경</button>
+	</form>
+	<button class="btn btn-danger" id="cancel">아니오</button>
+	<button class="btn btn-primary" id="approve">등록</button>
+</div>
+<script layout:fragment="script" th:src="@{/js/page/signup/complete.js}"></script>
+	
+</html>
