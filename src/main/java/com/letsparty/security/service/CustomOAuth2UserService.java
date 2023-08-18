@@ -51,7 +51,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 		user.setId(userInfo.getId());
 		user.setEmail(userInfo.getEmail());
 		user.setName(userInfo.getName());
-		user.setGender('M');
+		user.setGender("M");
 		user.setProviderType(providerType);
 		user.setTel("010-2313-1231");
 		user.setBirthday(new Date());

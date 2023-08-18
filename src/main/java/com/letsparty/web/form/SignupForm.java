@@ -27,5 +27,4 @@ public class SignupForm {
 	private Date birthday;
 
 	private String gender;
-
 }

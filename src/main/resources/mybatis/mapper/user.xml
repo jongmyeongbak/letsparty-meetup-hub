@@ -12,6 +12,7 @@
 	<select id="getUserById" parameterType="string" resultType="com.letsparty.vo.User">
 		select
 			user_id				as id,
+			user_no				as no,
 			user_name			as name,
 			user_birthday		as birthday,
 			user_gender			as gender,
