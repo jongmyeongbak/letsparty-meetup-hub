@@ -1,9 +1,14 @@
 $(function() {
     let randomImageIndex = Math.floor(Math.random() * 7) + 1;
     // 페이지 로딩 완료 후 실행 로드 되자마자 랜덤 이미지를 선택하게 함
-    let defaultImageSrc = $("#coverlist img:eq("+randomImageIndex+")").attr('src');  // coverlist 내의 랜덤index에 해당하는 이미지를 가져옴
-    $('#mainCover img').attr('src', defaultImageSrc);  // mainCover의 img 태그의 src에 랜덤으로 선택된 이미지의 src를 설정
-
+    let randomImage = $("#coverlist img:eq("+randomImageIndex+")");
+    
+    // mainCover에 랜덤으로 선택된 이미지의 src를 설정
+	$('#mainCover img').attr('src', randomImage.attr('src'));
+	
+	// 필드에 랜덤으로 선택된 이미지의 name 속성을 설정
+	$("#defaultImage").val(randomImage.attr('name'));
+	
     // 사용자가 사이트에서 기본으로 제공되는 이미지를 클릭했을 때의 스크립트
     $("#coverlist img:not(#addPhotoSpan img)").click(function() {
         // 마우스포인터가 옮겨가 썸네일 이미지 엘리먼트의 src 속성값을 조회한다.
@@ -72,23 +77,27 @@ $(function() {
 	// 사진 편집 모달
 	$modal.on('shown.bs.modal', function () {
 		cropper = new Cropper(image, {
+			// 크롭 box 설정
 			aspectRatio: 6/5,
-    		viewMode: 2,
+    		viewMode: 1,
 			minContainerHeight: 600,
-      		zoomable: false,
+      		zoomable: true,
       		cropBoxResizable: false,
       		dragMode: 'move',
-
-			data: {
-        		width: 300,
-        		height: 250,
-			},
+      		background: false
 		});
     
 		$cropbutton.on("click", function() {
-			let croppedCanvas = cropper.getCroppedCanvas();
+			let croppedCanvas;
+			if (cropper) {
+				// 최종적으로 여러 옵션을 지정해서 얻게 될 편집 이미지
+				croppedCanvas = cropper.getCroppedCanvas({
+					width: 300,
+					height: 250,
+				});
+			}
 			let editedImage = croppedCanvas.toDataURL();
-			
+
 	        $result.html('');
 	        $result.append(croppedCanvas);
 	        $("#imageFile").val(editedImage);

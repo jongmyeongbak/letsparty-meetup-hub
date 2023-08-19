@@ -3,10 +3,14 @@
 <mapper namespace="com.letsparty.mapper.PartyTagMapper">
 	
 	<!-- 파티 태그 추가 -->
-	<insert id="insertTag" parameterType="com.letsparty.vo.PartyTag">
-		insert into party_tag (category_no, party_no, party_tag_name)
-		values (#{category.no}, #{party.no}, #{name})
+	<insert id="insertTags" parameterType="java.util.List">
+	    insert into party_tag (category_no, party_no, party_tag_name)
+	    values
+	    <foreach collection="list" item="tag" separator=",">
+	        (#{tag.category.no}, #{tag.party.no}, #{tag.name})
+	    </foreach>
 	</insert>
+	
 	
 	<!-- 파티 태그 조회 -->
 	<select id="getTagsByPartyNo" parameterType="int" resultType="com.letsparty.vo.PartyTag">

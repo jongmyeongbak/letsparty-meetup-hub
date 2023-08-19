@@ -59,7 +59,7 @@ public class PartyCreateController {
 			error.rejectValue("birthStart", null, "최소나이는 최대나이보다 적어야 합니다.");
 		}
 		
-		// 태그의 글자수 검증
+		// 각 태그의 글자수 검증
 		List<String> tags = partyCreateForm.getTags();
 		if (tags != null && !tags.isEmpty()) {
 			for (String tag : tags) {

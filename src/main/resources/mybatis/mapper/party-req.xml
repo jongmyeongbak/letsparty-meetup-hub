@@ -3,11 +3,12 @@
 <mapper namespace="com.letsparty.mapper.PartyReqMapper">
 
 	<!-- 파티 가입 조건 추가 -->
-	<insert id="insertPartyReq" parameterType="com.letsparty.vo.PartyReq">
+	<insert id="insertPartyReqs" parameterType="java.util.List">
 		insert into party_req
-		(party_no, req_name, req_value, req_description)
 		values
-		(#{party.no}, #{name}, #{value}, #{description})
+		<foreach collection="list" item="req" separator=",">
+			(#{req.party.no}, #{req.name}, #{req.value}, #{req.description})
+		</foreach>
 	</insert>
 	
 	<!-- 파티 가입 조건 수정 --> 

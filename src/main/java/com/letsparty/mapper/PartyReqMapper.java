@@ -1,5 +1,7 @@
 package com.letsparty.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.letsparty.vo.PartyReq;
@@ -8,5 +10,5 @@ import com.letsparty.vo.PartyReq;
 public interface PartyReqMapper {
 	
 	// 파티 가입 조건 추가
-	void insertPartyReq(PartyReq partyReq);
+	void insertPartyReqs(List<PartyReq> partyReqs);
 }
