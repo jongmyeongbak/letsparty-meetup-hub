@@ -4,10 +4,10 @@
 
 	<!-- 파티 가입 조건 추가 -->
 	<insert id="insertPartyReqs" parameterType="java.util.List">
-		insert into party_req
+		insert into party_req (party_no, req_name, req_value)
 		values
 		<foreach collection="list" item="req" separator=",">
-			(#{req.party.no}, #{req.name}, #{req.value}, #{req.description})
+			(#{req.party.no}, #{req.name}, #{req.value})
 		</foreach>
 	</insert>
 	

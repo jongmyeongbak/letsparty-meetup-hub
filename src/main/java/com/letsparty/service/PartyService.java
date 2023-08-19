@@ -65,11 +65,11 @@ public class PartyService {
 		List<PartyReq> partyReqs = new ArrayList<>();
 		
 		// 최소나이 조건 추가
-		partyReqs.add(createPartyReq(party, "생년1", birthStart, "가입할 수 있는 최소생년 (예: "+ birthStart +"년 이전 출생자)"));
+		partyReqs.add(createPartyReq(party, "생년1", birthStart));
 		// 최대나이 조건 추가
-		partyReqs.add(createPartyReq(party, "생년2", birthEnd, "가입할 수 있는 최대생년 (예: "+ birthEnd +"년 이후 출생자)"));
+		partyReqs.add(createPartyReq(party, "생년2", birthEnd));
 		// 성별 조건 추가
-		partyReqs.add(createPartyReq(party, "성별", gender, "가입할 수 있는 성별"));
+		partyReqs.add(createPartyReq(party, "성별", gender));
 
 		partyReqMapper.insertPartyReqs(partyReqs);
 		
@@ -96,12 +96,11 @@ public class PartyService {
 	}
 	
 	// PartyReq 객체를 생성해주는 메서드
-	private PartyReq createPartyReq(Party party, String name, String value, String description) {
+	private PartyReq createPartyReq(Party party, String name, String value) {
 	    PartyReq partyReq = new PartyReq();
 	    partyReq.setParty(party);
 	    partyReq.setName(name);
 	    partyReq.setValue(value);
-	    partyReq.setDescription(description);
 	    return partyReq;
 	}
 	

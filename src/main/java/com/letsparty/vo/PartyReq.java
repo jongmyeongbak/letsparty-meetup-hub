@@ -12,6 +12,5 @@ public class PartyReq {
 	private Party party;
 	private String name;
 	private String value;
-	private String description;
 	
 }
