@@ -132,7 +132,7 @@ $(function() {
     var tags = [];
 
     while ((match = regex.exec(description)) !== null) {
-        tags.push(match[0].substring(1)); // #제거
+        tags.push(match[0].substring(1)); // #제거하고 태그만 추출
     }
     return tags;
 }
@@ -142,6 +142,7 @@ $(function() {
 		var description = $('#description').val();
 		var tags = extractHashTags(description);
 		
+		// 각 태그마다 입력 필드를 만들어 값으로 대입
 		$.each(tags, function(index, tag){
 			$('<input>').attr({
 				type: 'hidden',
@@ -166,7 +167,7 @@ $(function() {
 	        
 	       // AJAX를 사용하여 폼 데이터 제출
 			$.ajax({
-		        url:"/upload/cover", // 서버 URL 실제 커버 업로드는 /upload/cover로
+		        url:"/upload/cover",
 		        type: 'POST',
 		        data: formData,
 		        processData: false, // jQuery가 데이터를 처리하지 않도록 설정
