@@ -65,7 +65,7 @@ public class PartyService {
 		List<PartyReq> partyReqs = new ArrayList<>();
 		
 		// 최소나이 조건 추가
-		partyReqs.add(createPartyReq(party, "생년1", birthStart, "가입할 수 있는 최대생년 (예: "+ birthStart +"년 이후 출생자)"));
+		partyReqs.add(createPartyReq(party, "생년1", birthStart, "가입할 수 있는 최소생년 (예: "+ birthStart +"년 이후 출생자)"));
 		// 최대나이 조건 추가
 		partyReqs.add(createPartyReq(party, "생년2", birthEnd, "가입할 수 있는 최대생년 (예: "+ birthEnd +"년 이전 출생자)"));
 		// 성별 조건 추가
