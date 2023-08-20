@@ -1,8 +1,4 @@
 $(function() {
-    let randomImageIndex = Math.floor(Math.random() * 7) + 1;
-    // 페이지 로딩 완료 후 실행 로드 되자마자 랜덤 이미지를 선택하게 함
-    let defaultImageSrc = $("#coverlist img:eq("+randomImageIndex+")").attr('src');  // coverlist 내의 랜덤index에 해당하는 이미지를 가져옴
-    $('#mainCover img').attr('src', defaultImageSrc);  // mainCover의 img 태그의 src에 랜덤으로 선택된 이미지의 src를 설정
 
     // 사용자가 사이트에서 기본으로 제공되는 이미지를 클릭했을 때의 스크립트
     $("#coverlist img:not(#addPhotoSpan img)").click(function() {
@@ -21,8 +17,8 @@ $(function() {
     })
 
     // 사용자가 사진추가 이미지를 눌러 로컬에서 이미지를 선택할 수 있게 하는 스크립트
-    $('#addPhotoSpan img').on('click', function() {
-        $('#input').click();
+    $("#addPhotoSpan img").on('click', function() {
+        $("#input").click();
     });
 
 	var $image = $("#image");
@@ -30,20 +26,22 @@ $(function() {
   	var $result = $("#result");
   	var $cropbutton = $("#cropbutton");
 
-  	var $alert = $('.alert');
-  	var $modal = $('#modal');
+  	var $modal = $("#modal");
  	var cropper;
-
-	$('[data-toggle="tooltip"]').tooltip();
-
-	$input.on('change', function (e) {
+ 	
+	$input.on("change", function (e) {
 		var files = e.target.files;
+		let size = input.files[0].size / 1024 / 1024;
+        if(size > 30) {
+               alert("이미지 파일 크기가 너무 큽니다. 30MB 이하의 파일을 업로드 해주세요.");
+               $input.value = ""
+               return;
+		}
 		var done = function (url) {
         
 		$input.val("");
 		$image.attr("src", url);
-     	$alert.hide();
-     	$modal.modal('show');
+     	$modal.modal("show");
     };
     
 	var reader;
@@ -51,7 +49,7 @@ $(function() {
 	
 	// 이미지 미리보기 
     if (files && files.length > 0) {
-      file = files[0];
+		file = files[0];
 
       if (URL) {
         done(URL.createObjectURL(file));
@@ -66,41 +64,45 @@ $(function() {
   });
 
 	// 사진 편집 모달
-	$modal.on('shown.bs.modal', function () {
+	$modal.on("shown.bs.modal", function () {
 		cropper = new Cropper(image, {
+			// 크롭 box 설정
 			aspectRatio: 6/5,
-    		viewMode: 2,
+    		viewMode: 1,
 			minContainerHeight: 600,
-      		zoomable: false,
+      		zoomable: true,
       		cropBoxResizable: false,
       		dragMode: 'move',
-
-			data: {
-        		width: 300,
-        		height: 250,
-			},
+      		background: false
 		});
     
 		$cropbutton.on("click", function() {
-			let croppedCanvas = cropper.getCroppedCanvas();
+			let croppedCanvas;
+			if (cropper) {
+				// 최종적으로 여러 옵션을 지정해서 얻게 될 편집 이미지
+				croppedCanvas = cropper.getCroppedCanvas({
+					width: 300,
+					height: 250,
+				});
+			}
 			let editedImage = croppedCanvas.toDataURL();
-			
-	        $result.html('');
-	        $result.append(cropper.getCroppedCanvas());
+
+	        $result.html("");
+	        $result.append(croppedCanvas);
 	        $("#imageFile").val(editedImage);
-	        $modal.modal('hide');
+	        $modal.modal("hide");
 	        
 	        // result를 보이게 하고, preview를 숨긴다.
 	        $("#result").show();
 	        $("#preview").hide();
 			})
 	    
-		}).on('hidden.bs.modal', function () {
+		}).on("hidden.bs.modal", function () {
 	    cropper.destroy();
 	    cropper = null;
 	});
 
-	// base64 -> file 변환 코드
+	// base64 -> file 변환 함수
 	function dataURLtoBlob(dataurl) {
     var base64Data = dataurl.split(',')[1];
     var byteString = atob(base64Data);
@@ -110,13 +112,38 @@ $(function() {
         uint8Array[i] = byteString.charCodeAt(i);
   	  }
     return new Blob([uint8Array], { type: 'image/png' });
-	}	  
+	}	 
+	
+	// 파티 태그 추출 함수
+	function extractHashTags(description) {
+    var regex = /#[^\s#]+/g;
+    var match;
+    var tags = [];
+
+    while ((match = regex.exec(description)) !== null) {
+        tags.push(match[0].substring(1)); // #제거하고 태그만 추출
+    }
+    return tags;
+}
+
 	  // 파티 생성 버튼을 눌렀을 때
-	$('#btn').on('click', function(e) {
+	$("#btn").on("click", function(e) {
+		var description = $('#description').val();
+		var tags = extractHashTags(description);
+		
+		// 각 태그마다 입력 필드를 만들어 값으로 대입
+		$.each(tags, function(index, tag){
+			$('<input>').attr({
+				type: 'hidden',
+				name: 'tags',
+				value: tag
+			}).appendTo('#party-form');
+			
+		})
 		if ($("#imageFile").val() !== "") {
 			e.preventDefault();
 			// 쓰이지 않는 필드 삭제
-			$('#defaultImage').remove();
+			$("#defaultImage").remove();
 			
 		    // hidden input에서 base64 데이터를 가져옴
 			let base64Data = $("#imageFile").val();
@@ -129,7 +156,7 @@ $(function() {
 	        
 	       // AJAX를 사용하여 폼 데이터 제출
 			$.ajax({
-		        url:"/upload/cover", // 서버 URL 실제 커버 업로드는 /upload/cover로
+		        url:"/upload/cover",
 		        type: 'POST',
 		        data: formData,
 		        processData: false, // jQuery가 데이터를 처리하지 않도록 설정
@@ -156,6 +183,21 @@ $(function() {
 	        // 기본 이미지를 사용하는 경우 폼 제출 방식으로 전송
 	        $('#imageFile').remove();
 	        $('#party-form').submit();
-    	}
+    	} else {
+			// 사용자가 아무것도 수정하지 않았을때 그대로 다시 저장하기 위한 코드
+			let extractedFileName = $("#preview").attr("src").replace("https://d2j14nd8cs76n6.cloudfront.net/images/covers/", "");
+			
+			// 쓰이지 않는 필드 삭제
+			$("#defaultImage").remove();
+			$('#imageFile').remove();
+			
+			$('<input>').attr({
+				type: 'hidden',
+	          	name: 'savedName',
+	          	value: extractedFileName  // 도메인 제거 후 파일 이름만 저장
+	        }).appendTo('#party-form');
+	        
+	        $('#party-form').submit();
+		}
     })
 });	

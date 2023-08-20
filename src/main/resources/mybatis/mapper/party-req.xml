@@ -11,6 +11,32 @@
 		</foreach>
 	</insert>
 	
+	<!-- 파티 가입 조건 조회 --> 
+	<select id="getPartyReqsByNo" parameterType="int" resultType="com.letsparty.vo.PartyReq">
+		select 
+			party_no			as "party.no",
+			req_name			as name,
+			req_value			as value
+		from 
+			party_req
+		where 
+			party_no = #{value}
+	</select>
+	
+	
 	<!-- 파티 가입 조건 수정 --> 
+	<update id="updatePartyReqs" parameterType="map">
+	    update party_req
+	    set req_value = case req_name
+				        when '생년1' then #{birthStart}
+				        when '생년2' then #{birthEnd}
+				        when '성별' then #{gender}
+				        else req_value
+	   					end
+	    where party_no = #{partyNo}
+	    and req_name in ('생년1', '생년2', '성별')
+	</update>
+
+	
 	
 </mapper>

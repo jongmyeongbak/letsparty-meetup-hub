@@ -93,3 +93,8 @@
     max-width: 70%; 
     max-height: 100%; 
 }
+
+select[readonly] {
+  background-color: rgb(229, 229, 229);
+  pointer-events: none;
+}

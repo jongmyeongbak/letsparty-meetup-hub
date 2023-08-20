@@ -17,6 +17,6 @@ public interface PartyMapper {
 	Party getPartyByNo(int partyNo);
 	
 	// 파티 수정
-	void modifyParty(Party party);
+	void updateParty(Party party);
 	
 }
