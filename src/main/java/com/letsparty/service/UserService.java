@@ -48,5 +48,25 @@ public class UserService {
 			throw new DuplicateEmailException(email);
 		}
 	}
+	
+	/*
+	 * 유저 정보 가져오기 (id, email)
+	 */
+	public User getUserByName(String id) {
+		User user = userMapper.getUserById(id);
+		return user;
+	}
+	
+	public User getUserByEmail(String email) {
+		User user = userMapper.getUserByEmail(email);
+		return user;
+	}
+
+	public void updateUser(SignupForm signupForm) {
+		User savedUser = new User();
+		BeanUtils.copyProperties(signupForm, savedUser);
+		
+		userMapper.updateUser(savedUser);
+	}
 
 }

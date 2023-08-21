@@ -68,7 +68,7 @@
 		  </div>
 		</div>
 		<div class="showImg">
-			<img id="avatar" th:src="@{/images/party/profile-default.png}" alt="avatar">
+			<img id="avatar" th:src="${user.filename}" alt="avatar">
 		</div>
 		<button type="button" class="btn btn-primary btn-sm" id="change">사진 변경</button>
 	</form>

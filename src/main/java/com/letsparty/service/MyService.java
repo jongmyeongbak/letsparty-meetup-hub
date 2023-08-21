@@ -33,5 +33,11 @@ public class MyService {
 		
 		myMapper.updateProfile(userProfile);
 	}
+	
+	public UserProfile getDefaultProfile(String id) {
+		UserProfile userProfile = myMapper.getDefaultProfileById(id);
+		
+		return userProfile;
+	}
 
 }

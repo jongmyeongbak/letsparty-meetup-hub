@@ -1,7 +1,5 @@
 package com.letsparty.security.service;
 
-import java.util.Date;
-
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -9,20 +7,25 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import com.letsparty.mapper.MyMapper;
 import com.letsparty.mapper.UserMapper;
 import com.letsparty.security.oauth.exception.OAuthProviderMissMatchException;
 import com.letsparty.security.oauth.info.OAuth2UserInfo;
 import com.letsparty.security.oauth.info.OAuth2UserInfoFactory;
 import com.letsparty.security.user.CustomOAuth2User;
 import com.letsparty.vo.User;
+import com.letsparty.vo.UserProfile;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 	
 	private final UserMapper userMapper;
+	private final MyMapper myMapper;
 
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -41,6 +44,15 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 			
 		} else {
 			savedUser = createUser(userInfo, providerType);
+			UserProfile userProfile = UserProfile.builder()
+					.id(userInfo.getId())
+					.nickname(userInfo.getName())
+					.filename(userInfo.getImage())
+					.isDefault(true)
+					.build();
+			log.info("이미지URL -> {}", userInfo.getImage());
+			
+			myMapper.addProfile(userProfile);
 		}
 		
 		return new CustomOAuth2User(savedUser, userInfo.getAttributes());
@@ -51,10 +63,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 		user.setId(userInfo.getId());
 		user.setEmail(userInfo.getEmail());
 		user.setName(userInfo.getName());
-		user.setGender("M");
 		user.setProviderType(providerType);
-		user.setTel("010-2313-1231");
-		user.setBirthday(new Date());
 		
 		userMapper.createUser(user);
 		

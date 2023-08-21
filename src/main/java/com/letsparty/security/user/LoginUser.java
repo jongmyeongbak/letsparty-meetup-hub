@@ -16,6 +16,7 @@ public class LoginUser {
 	private Date birthday;
 	private String gender;
 	private String tel;
+	private String imageName;
 	
 	
 	public LoginUser(User user) {
@@ -33,5 +34,8 @@ public class LoginUser {
 		return name;
 	}
 	
+	public String getImageName() {
+		return imageName;
+	}
 	
 }

@@ -20,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class WebSecurityConfig {
 
 	private final CustomOAuth2UserService customOAuth2UserService;
+	private final OauthSuccessHandler oauthSuccessHandler;
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -37,7 +38,7 @@ public class WebSecurityConfig {
 				.invalidateHttpSession(true))
 			.oauth2Login(oauth2 -> oauth2
 				.loginPage("/login")
-				.defaultSuccessUrl("/")
+				.successHandler(oauthSuccessHandler)
 				.failureUrl("/login?error=fail")
 				.userInfoEndpoint()
 				.userService(customOAuth2UserService))

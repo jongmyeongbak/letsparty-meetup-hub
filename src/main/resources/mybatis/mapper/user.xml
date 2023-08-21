@@ -42,5 +42,19 @@
 			user_email = #{value}
 	</select>
 	
+	<update id="updateUser" parameterType="com.letsparty.vo.User">
+		update user
+		set
+			user_name = #{name},
+			user_birthday = #{birthday},
+			user_gender = #{gender},
+			user_email = #{email},
+			user_tel = #{tel},
+			user_email = #{email}
+		where
+			user_id = #{id}
+			
+	</update>
+	
 	
 </mapper>

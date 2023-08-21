@@ -1,5 +1,6 @@
 package com.letsparty.web.controller;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -14,8 +15,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.letsparty.exception.DuplicateEmailException;
 import com.letsparty.exception.DuplicateUserIdException;
+import com.letsparty.security.user.CustomOAuth2User;
 import com.letsparty.service.MyService;
 import com.letsparty.service.UserService;
+import com.letsparty.vo.UserProfile;
 import com.letsparty.web.form.SignupForm;
 import com.letsparty.web.form.UserProfileForm;
 
@@ -138,7 +141,7 @@ public class SignupController {
 		UserProfileForm userProfileForm = UserProfileForm.builder()
 				.id(signupForm.getId())
 				.nickname(signupForm.getName())
-				.filename("profile-default.png")
+				.filename("/images/party/profile-default.png")
 				.isDefault(true)
 				.build();
 		
@@ -150,6 +153,32 @@ public class SignupController {
 		redirectAttributes.addFlashAttribute("profileNo", profileNo);
 		
 		sessionStatus.setComplete();
+		
+		return "redirect:/signup/complete";
+	}
+	
+	@GetMapping("/oauth-signup")
+	public String ouathSignup() {
+		return "page/signup/oauth-signup";
+	}
+	
+	@PostMapping("/oauth-signup")
+	public String oauthSignup(@AuthenticationPrincipal CustomOAuth2User user, SignupForm signupForm, RedirectAttributes redirectAttributes) {
+//		oauth 관련 추가 회원가입 정보 기입
+		signupForm.setId(user.getId());
+		signupForm.setEmail(user.getEmail());
+		signupForm.setName(user.getRealname());
+
+		userService.updateUser(signupForm);
+		
+		log.info("유저의 아이디 -> {}", user.getId());
+		
+		UserProfile userProfile = myService.getDefaultProfile(user.getId());
+		
+		log.info("유저프로필 정보 -> {}", userProfile.toString());
+		
+		redirectAttributes.addFlashAttribute("user", userProfile);
+		redirectAttributes.addFlashAttribute("profileNo", userProfile.getNo());
 		
 		return "redirect:/signup/complete";
 	}

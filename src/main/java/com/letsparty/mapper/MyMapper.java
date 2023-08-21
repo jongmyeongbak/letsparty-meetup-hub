@@ -11,4 +11,6 @@ public interface MyMapper {
 
 	void updateProfile(UserProfile userProfile);
 
+	UserProfile getDefaultProfileById(String id);
+
 }

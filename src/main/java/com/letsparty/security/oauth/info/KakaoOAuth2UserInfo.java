@@ -32,5 +32,15 @@ public class KakaoOAuth2UserInfo extends OAuth2UserInfo{
 		}
 		return (String) kakaoAccount.get("email");
 	}
-
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public String getImage() {
+			Map<String, Object> properties = (Map<String, Object>) getAttributes().get("properties");
+			if (properties == null) {
+				return null;
+			}
+			return (String) properties.get("profile_image");
+		
+	}
 }

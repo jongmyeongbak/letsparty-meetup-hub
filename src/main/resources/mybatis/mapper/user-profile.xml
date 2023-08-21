@@ -9,6 +9,21 @@
 		(#{id}, #{nickname}, #{filename}, #{isDefault})
 	</insert>
 	
+	<select id="getDefaultProfileById" parameterType="string" resultType="com.letsparty.vo.UserProfile">
+		select 
+			profile_no as no,
+			user_id as id,
+			profile_nickname nickname, 
+			image_filename as filename,
+			is_default
+		from
+			user_profile
+		where 
+			user_id = #{id}
+		and 
+			is_default = 1
+	</select>
+	
 	<update id="updateProfile" parameterType="com.letsparty.vo.UserProfile">
 		update user_profile
 		set
