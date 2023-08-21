@@ -23,5 +23,11 @@
 		where 
 			party_no = #{value}
 	</select>
+	
+	<!-- 파티 태그 삭제 -->
+	<delete id="deleteTagByPartyNo" parameterType="int">
+		delete from party_tag
+	    where party_no = #{value}
+	</delete>
 
 </mapper>

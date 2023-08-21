@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,6 +34,8 @@ public class PartyController {
 	
 	private final PartyService partyService;
 	private final CategoryService categoryService;
+	@Value("${s3.path.covers}")
+	private String coversPath;
 
 	
 	@GetMapping("/{partyNo}/member")
@@ -78,10 +81,9 @@ public class PartyController {
 		}
 		
 		// 커버 조회
-		// 클라우드 프론트 도메인 
-		String cloudFrontDomain = "https://d2j14nd8cs76n6.cloudfront.net/images/covers/";
+		// 클라우드 프론트 도메인과 DB에 저장된 파일이름 결합
 		String savedFileName = savedParty.getFilename();
-		partyModifyForm.setSavedName(cloudFrontDomain + savedFileName);
+		partyModifyForm.setSavedName(coversPath + savedFileName);
 
 		model.addAttribute("partyModifyForm", partyModifyForm );
 		
@@ -112,6 +114,9 @@ public class PartyController {
 		
 		// 최소나이가 최대나이보다 많거나, 제목이 없거나, 정원 수가 10미만일 때
 		if (error.hasErrors()) {
+			Party savedParty = partyService.getPartyByNo(partyNo);
+			String savedFileName = savedParty.getFilename();
+			partyModifyForm.setSavedName(coversPath + savedFileName);
 			PartyDataUtils.addBirthYearAndCategoryList(model, categoryService);
 			model.addAttribute("partyCreateForm", partyModifyForm);
 			return "page/party/modify";

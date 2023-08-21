@@ -15,4 +15,6 @@ public interface PartyTagMapper {
 	// 파티 번호로 파티 태그 모두 조회
 	List<PartyTag> getTagsByPartyNo(int partyNo);
 
+	void deleteTagByPartyNo(int partyNo);
+
 }

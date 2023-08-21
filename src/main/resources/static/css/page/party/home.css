@@ -59,3 +59,13 @@ color: rgb(194, 225, 255);
 	padding: 0px 0px 20px;
 }
 
+#btn {
+    border-color: #6DA1FF;
+    background-color: #6DA1FF;
+}
+#btn:hover {
+    color: #ffffff;
+    border-color: #578ae7;;
+    background-color: #578ae7;
+}
+

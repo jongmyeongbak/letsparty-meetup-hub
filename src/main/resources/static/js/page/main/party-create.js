@@ -134,7 +134,7 @@ $(function() {
     while ((match = regex.exec(description)) !== null) {
         tags.push(match[0].substring(1)); // #제거하고 태그만 추출
     }
-    return tags;
+    return [...new Set(tags)]; // tags의 값을 Set객체에 담아 중복 태그를 없앤 후 다시 값(태그)들을 펼쳐 배열에 저장
 }
 
 	  // 파티 생성 버튼을 눌렀을 때
