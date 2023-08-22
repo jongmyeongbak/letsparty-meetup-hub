@@ -4,8 +4,8 @@
 
 	<!-- 파티 생성 -->
 	<insert id="createParty" parameterType="com.letsparty.vo.Party" useGeneratedKeys="true" keyProperty="no">
-		 insert into party (leader_id, category_no, party_name, party_quota, party_description, party_filename)
-	     values (#{leader.id}, #{category.no}, #{name}, #{quota}, #{description}, #{filename})
+		 insert into party (leader_id, category_no, party_name, party_quota, party_description, party_filename, visibility_status)
+	     values (#{leader.id}, #{category.no}, #{name}, #{quota}, #{description}, #{filename}, #{visibilityStatus})
 	</insert>
 	
 	<!-- 파티 시퀀스 추가 -->
@@ -26,7 +26,8 @@
 	        updated_at 			as updateAt,
 	        created_at			as createAt,
 	        party_description	as description,
-	        party_filename		as filename
+	        party_filename		as filename,
+	       	visibility_status	as visibilityStatus
 	    from party
 	    where 
 	    	party_no = #{value}
@@ -42,6 +43,7 @@
 	        party_cur_cnt = #{curCnt},
 	        party_quota = #{quota},
 	        party_status = #{status},
+	        visibility_status = #{visibilityStatus},
 	        updated_at = NOW(),
 	        <if test="description != null">
 		        party_description = #{description},

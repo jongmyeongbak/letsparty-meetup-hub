@@ -13,7 +13,7 @@
                 <div class="card-header card-header-text" style="background-color: rgb(237, 246, 255);">
                     <h5 class="pt-1">파티 정보를 입력하고 개설해보세요!</h5>
                 </div>			
-                <form method="post" id="party-form" th:action="@{/party-create}" th:object="${partyCreateForm}" enctype="multipart/form-data">
+                <form method="post" id="party-form" th:action="@{/party-create}" th:object="${partyForm}" enctype="multipart/form-data">
                     <div class="card-body">
                         <div class="form-group mb-3 col-12">
                             <label class="form-label">파티명</label>
@@ -105,7 +105,7 @@
                                             <div class="col">
                                                 <div class="row mb-3">
                                                     <label class="col-4 col-form-label" for="birthStart">최소나이</label>
-                                                    <select class="col-8 age-select form-select" th:field="*{birthStart}" th:classappend="${#fields.hasErrors('*{birthStart}') ? 'is-invalid' : ''}">
+                                                    <select class="col-8 custom-select form-select" th:field="*{birthStart}" th:classappend="${#fields.hasErrors('*{birthStart}') ? 'is-invalid' : ''}">
                                                         <option value="9999" selected>제한없음</option>
 													    <th:block th:each="birthYear : ${birthYears}">
 													        <option th:value="${birthYear}" th:text="|${birthYear}년생 (만 ${currentYear - birthYear}세)|"></option>
@@ -115,7 +115,7 @@
                                                 </div>
                                                 <div class="row">
                                                     <label class="col-4 col-form-label" for="birthEnd">최대나이</label>
-                                                    <select class="col-8 age-select form-select" th:field="*{birthEnd}">
+                                                    <select class="col-8 custom-select form-select" th:field="*{birthEnd}">
                                                         <option th:value="${0000}" selected>제한없음</option>
                                                         <th:block th:each="birthYear : ${birthYears}">
 													        <option th:value="${birthYear}" th:text="|${birthYear}년생 (만 ${currentYear - birthYear}세)|"></option>
@@ -124,12 +124,19 @@
                                                 </div>
                                             </div>
                                             <div class="col">
-                                                <div class="row">
-                                                    <label class="col-3 col-form-label" for="gender">성별</label>
-                                                    <select class="form-select age-select" th:field="*{gender}" id="gender">
+                                                <div class="row mb-3">
+                                                    <label class="col-4 col-form-label text-center" for="gender">성별</label>
+                                                    <select class="form-select custom-select" th:field="*{gender}" id="gender">
                                                         <option th:value="${'A'}" selected>제한없음</option>
                                                         <option th:value="${'M'}">남</option>
                                                         <option th:value="${'F'}">여</option>
+                                                    </select>
+                                                </div>
+                                                <div class="row">
+                                                    <label class="col-4 col-form-label" for="visibilityStatus">공개여부</label>
+                                                    <select class="form-select custom-select" th:field="*{visibilityStatus}" id="visibilityStatus">
+                                                        <option th:value="${0}" selected>공개</option>
+                                                        <option th:value="${1}">비공개</option>
                                                     </select>
                                                 </div>
                                             </div>

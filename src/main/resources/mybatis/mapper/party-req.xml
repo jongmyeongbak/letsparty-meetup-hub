@@ -28,13 +28,12 @@
 	<update id="updatePartyReqs" parameterType="map">
 	    update party_req
 	    set req_value = case req_name
-				        when '생년1' then #{birthStart}
-				        when '생년2' then #{birthEnd}
-				        when '성별' then #{gender}
-				        else req_value
+					        when '생년1' then #{birthStart}
+					        when '생년2' then #{birthEnd}
+					        when '성별' then #{gender}
+					        else req_value
 	   					end
 	    where party_no = #{partyNo}
-	    and req_name in ('생년1', '생년2', '성별')
 	</update>
 
 	

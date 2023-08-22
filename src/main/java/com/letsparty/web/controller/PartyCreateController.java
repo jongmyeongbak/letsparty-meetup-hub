@@ -16,7 +16,7 @@ import com.letsparty.security.user.LoginUser;
 import com.letsparty.service.CategoryService;
 import com.letsparty.service.PartyService;
 import com.letsparty.util.PartyDataUtils;
-import com.letsparty.web.form.PartyCreateForm;
+import com.letsparty.web.form.PartyForm;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,28 +39,28 @@ public class PartyCreateController {
 		PartyDataUtils.addBirthYearAndCategoryList(model, categoryService);
 
 		// 클릭한 카테고리가 셀렉트 되어있도록 함
-		PartyCreateForm partyCreateForm = new PartyCreateForm();
-		partyCreateForm.setCategoryNo(catNo);
+		PartyForm partyForm = new PartyForm();
+		partyForm.setCategoryNo(catNo);
 
-		model.addAttribute("partyCreateForm", partyCreateForm);
+		model.addAttribute("partyForm", partyForm);
 
 		return "page/main/party-create";
 	}
 
 	// 파티생성을 수행
 	@PostMapping("/party-create")
-	public String partyCreate(@AuthenticationPrincipal LoginUser user, @Valid PartyCreateForm partyCreateForm,
+	public String partyCreate(@AuthenticationPrincipal LoginUser user, @Valid PartyForm partyForm,
 			BindingResult error, Model model) {
 		
 		// 최소나이(birthStart)와 최대나이(birthEnd) 검증
-		int birthStart = Integer.parseInt(partyCreateForm.getBirthStart());
-		int birthEnd = Integer.parseInt(partyCreateForm.getBirthEnd());
+		int birthStart = Integer.parseInt(partyForm.getBirthStart());
+		int birthEnd = Integer.parseInt(partyForm.getBirthEnd());
 		if (birthStart < birthEnd) {
 			error.rejectValue("birthStart", null, "최소나이는 최대나이보다 적어야 합니다.");
 		}
 		
 		// 각 태그의 글자수 검증
-		List<String> tags = partyCreateForm.getTags();
+		List<String> tags = partyForm.getTags();
 		if (tags != null && !tags.isEmpty()) {
 			for (String tag : tags) {
 				if (tag.length() > 20) {
@@ -70,15 +70,15 @@ public class PartyCreateController {
 			}
 		}
 		
-		// 최소나이가 최대나이보다 많거나, 제목이 없거나, 정원 수가 10미만일 때
+		// 유효성 검사 실패시에 수정 폼으로 돌아간다.
 		if (error.hasErrors()) {
 			PartyDataUtils.addBirthYearAndCategoryList(model, categoryService);
-			model.addAttribute("partyCreateForm", partyCreateForm);
+			model.addAttribute("partyCreateForm", partyForm);
 			return "page/main/party-create";
 		}
 		
 		String leaderId = user.getId();
-		int partyNo = partyService.createParty(partyCreateForm, leaderId);
+		int partyNo = partyService.createParty(partyForm, leaderId);
 		return "redirect:/party/" + partyNo;
 	}
 }

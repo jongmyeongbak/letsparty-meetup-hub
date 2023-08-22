@@ -18,8 +18,7 @@ import com.letsparty.vo.Party;
 import com.letsparty.vo.PartyReq;
 import com.letsparty.vo.PartyTag;
 import com.letsparty.vo.User;
-import com.letsparty.web.form.PartyCreateForm;
-import com.letsparty.web.form.PartyModifyForm;
+import com.letsparty.web.form.PartyForm;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +34,7 @@ public class PartyService {
 	private final PartyReqMapper partyReqMapper;
 	private final PartyTagMapper partyTagMapper;
 	
-	public int createParty(PartyCreateForm partyCreateForm, String leaderId) {	
+	public int createParty(PartyForm partyCreateForm, String leaderId) {	
 		Party party = new Party();
 		BeanUtils.copyProperties(partyCreateForm, party);
 		party.setName(party.getName().trim()); 
@@ -78,39 +77,30 @@ public class PartyService {
 		int partyNo = party.getNo();
 		
 		// 파티 태그 추가 - 클라이언트에서 구분해서 받아옴
-		List<String> tagsFromForm = partyCreateForm.getTags();
-		
-		if (!tagsFromForm.isEmpty() || tagsFromForm != null) {
-			List<PartyTag> newTags = new ArrayList<>();
-			for (String tag : tagsFromForm) {
-				PartyTag newTag = new PartyTag();
-				newTag.setParty(party); 		// 파티 번호
-				newTag.setCategory(category);	// 카테고리 번호
-				newTag.setName(tag);
-				newTags.add(newTag);
-			}
-			partyTagMapper.insertTags(newTags);
+		if (partyCreateForm.getTags() != null && !partyCreateForm.getTags().isEmpty()  ) {
+			List<String> tagsFromForm = partyCreateForm.getTags();
+			insertTags(tagsFromForm, party);
 		}
 				
 		return partyNo;
 	}
 	
-	public void modifyParty(PartyModifyForm partyModifyForm, int partyNo) {
-		// 1. 기존 파티 정보 조회
+	public void modifyParty(PartyForm partyModifyForm, int partyNo) {
+		// 기존 파티 정보 조회
 	    Party party = partyMapper.getPartyByNo(partyNo);
 	    
-	    // 2. 파티 기존 파티 정보 복사
+	    // 파티 기존 파티 정보 복사
 	    BeanUtils.copyProperties(partyModifyForm, party);
 	    party.setName(party.getName().trim());
 	    
-	    // 3. 파일 이름 수정
+	    // 파일 이름 수정
 	    String filename = (partyModifyForm.getSavedName() != null) ? partyModifyForm.getSavedName() : partyModifyForm.getDefaultImagePath();
 	    party.setFilename(filename);
 	    
 	    // 파티 테이블에 변경사항 저장
 	    partyMapper.updateParty(party);
 	    
-	    // 4. 가입 조건 수정
+	    // 가입 조건 수정
 	    Map<String, Object> updatePartyReqs = new HashMap<>();
 	    String birthStart = partyModifyForm.getBirthStart();
 	    String birthEnd = partyModifyForm.getBirthEnd();
@@ -123,23 +113,28 @@ public class PartyService {
 	    
 	    partyReqMapper.updatePartyReqs(updatePartyReqs);
 	    
-	    // 5. 기존의 모두 태그 삭제
+	    // 기존의 모두 태그 삭제
 	    partyTagMapper.deleteTagByPartyNo(partyNo);
 	    
-	    // 6. 수정폼에서 입력한 태그 저장
+	    // 수정폼에서 입력한 태그 저장
  		List<String> tagsFromForm = partyModifyForm.getTags();
  		
  		if (tagsFromForm != null && !tagsFromForm.isEmpty()) {
- 			List<PartyTag> newTags = new ArrayList<>();
- 			for (String tag : tagsFromForm) {
- 				PartyTag newTag = new PartyTag();
- 				newTag.setParty(party); 		// 파티 번호
- 				newTag.setCategory(party.getCategory());	// 카테고리 번호
- 				newTag.setName(tag);
- 				newTags.add(newTag);
- 			}
- 			partyTagMapper.insertTags(newTags);
+ 			insertTags(tagsFromForm, party);
  		}
+	}
+	
+	// Tag를 추가해주는 메서드
+	public void insertTags(List<String> tagsFromForm, Party party) {
+		List<PartyTag> newTags = new ArrayList<>();
+		for (String tag : tagsFromForm) {
+			PartyTag newTag = new PartyTag();
+			newTag.setParty(party);
+			newTag.setCategory(party.getCategory());
+			newTag.setName(tag);
+			newTags.add(newTag);
+		}
+		partyTagMapper.insertTags(newTags);
 	}
 	
 	// PartyReq 객체를 생성해주는 메서드

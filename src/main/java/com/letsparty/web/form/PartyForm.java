@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @Setter
 @ToString
 @Slf4j
-public class PartyCreateForm {
+public class PartyForm {
 	
 	private int categoryNo;
 	
@@ -31,6 +31,7 @@ public class PartyCreateForm {
 	private String birthStart;
 	private String birthEnd;
 	private String gender;
+	private int visibilityStatus;
 	
 	@Size(max = 255, message = "파티 설명은 255자를 넘길 수 없습니다.")
 	private String description;

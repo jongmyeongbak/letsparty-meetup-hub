@@ -20,8 +20,7 @@ import com.letsparty.service.PartyService;
 import com.letsparty.util.PartyDataUtils;
 import com.letsparty.vo.Party;
 import com.letsparty.vo.PartyReq;
-import com.letsparty.vo.PartyTag;
-import com.letsparty.web.form.PartyModifyForm;
+import com.letsparty.web.form.PartyForm;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,38 +43,41 @@ public class PartyController {
 		return "page/party/member";
 	}
 	
-	@GetMapping("/{partyNo}/modify")
-	public String modify(@PathVariable int partyNo, Model model) {
+	@GetMapping("/{partyNo}/setting/modify")
+	public String modify(@PathVariable int partyNo, Model model, @AuthenticationPrincipal LoginUser user) {
+		// 저장된 파티 기본 정보 조회
+		Party savedParty = partyService.getPartyByNo(partyNo);
+		
+		// 수정을 시도한 유저가 파티의 리더가 아니라면 설정화면으로 리다이렉트
+		if(!user.getId().equals(savedParty.getLeader().getId())) {
+			return "redirect:/party/{partyNo}/setting";
+		}
 		
 		PartyDataUtils.addBirthYearAndCategoryList(model, categoryService);
 		
 		// 수정폼 생성
-		PartyModifyForm partyModifyForm = new PartyModifyForm();
+		PartyForm partyForm = new PartyForm();
 		
-		// 저장된 파티 기본 정보 조회
-		Party savedParty = partyService.getPartyByNo(partyNo);
-		
-		partyModifyForm.setCategoryNo(savedParty.getCategory().getNo());
-		partyModifyForm.setName(savedParty.getName());
-		partyModifyForm.setQuota(savedParty.getQuota());
-		partyModifyForm.setGender(savedParty.getName());
+		partyForm.setCategoryNo(savedParty.getCategory().getNo());
+		partyForm.setName(savedParty.getName());
+		partyForm.setQuota(savedParty.getQuota());
+		partyForm.setGender(savedParty.getName());
 		if (savedParty.getDescription() != null) {
-			partyModifyForm.setDescription(savedParty.getDescription());
+			partyForm.setDescription(savedParty.getDescription());
 		}
 		
 		// 저장된 파티 조건 조회
 		List<PartyReq> savedPartyReqs = partyService.getPartyReqsByNo(partyNo);
-		log.info("저장된 조건===> {}", savedPartyReqs.toString());
 		for (PartyReq req : savedPartyReqs) {
 			switch (req.getName()) {
 			case "생년1":
-				partyModifyForm.setBirthStart(req.getValue());
+				partyForm.setBirthStart(req.getValue());
 				break;
 			case "생년2":
-				partyModifyForm.setBirthEnd(req.getValue());
+				partyForm.setBirthEnd(req.getValue());
 				break;
 			case "성별":
-				partyModifyForm.setGender(req.getValue());
+				partyForm.setGender(req.getValue());
 				break;
 			}
 		}
@@ -83,26 +85,25 @@ public class PartyController {
 		// 커버 조회
 		// 클라우드 프론트 도메인과 DB에 저장된 파일이름 결합
 		String savedFileName = savedParty.getFilename();
-		partyModifyForm.setSavedName(coversPath + savedFileName);
+		partyForm.setSavedName(coversPath + savedFileName);
 
-		model.addAttribute("partyModifyForm", partyModifyForm );
+		model.addAttribute("partyForm", partyForm );
 		
 		return "page/party/modify";
 	}
 	
 	// 파티 정보 수정
-	@PostMapping("/{partyNo}/modify") 
-	public String modify(@PathVariable int partyNo, @AuthenticationPrincipal LoginUser user, 
-			@Valid PartyModifyForm partyModifyForm, BindingResult error, Model model) {
+	@PostMapping("/{partyNo}/setting/modify") 
+	public String modify(@PathVariable int partyNo, @Valid PartyForm partyForm, BindingResult error, Model model) {
 		// 최소나이(birthStart)와 최대나이(birthEnd) 검증
-		int birthStart = Integer.parseInt(partyModifyForm.getBirthStart());
-		int birthEnd = Integer.parseInt(partyModifyForm.getBirthEnd());
+		int birthStart = Integer.parseInt(partyForm.getBirthStart());
+		int birthEnd = Integer.parseInt(partyForm.getBirthEnd());
 		if (birthStart < birthEnd) {
 			error.rejectValue("birthStart", null, "최소나이는 최대나이보다 적어야 합니다.");
 		}
 		
 		// 각 태그의 글자수 검증
-		List<String> tags = partyModifyForm.getTags();
+		List<String> tags = partyForm.getTags();
 		if (tags != null && !tags.isEmpty()) {
 			for (String tag : tags) {
 				if (tag.length() > 20) {
@@ -112,25 +113,31 @@ public class PartyController {
 			}
 		}
 		
-		// 최소나이가 최대나이보다 많거나, 제목이 없거나, 정원 수가 10미만일 때
+		// 유효성 검사 실패시에 수정 폼으로 돌아간다.
 		if (error.hasErrors()) {
 			Party savedParty = partyService.getPartyByNo(partyNo);
 			String savedFileName = savedParty.getFilename();
-			partyModifyForm.setSavedName(coversPath + savedFileName);
+			partyForm.setSavedName(coversPath + savedFileName);
+			
 			PartyDataUtils.addBirthYearAndCategoryList(model, categoryService);
-			model.addAttribute("partyCreateForm", partyModifyForm);
+			model.addAttribute("partyForm", partyForm);
 			return "page/party/modify";
 		}
 		
-		partyService.modifyParty(partyModifyForm, partyNo);
+		partyService.modifyParty(partyForm, partyNo);
 		
-		return "redirect:/party/" + partyNo;
+		return "redirect:/party/" + partyNo + "/setting" ;
 	}
 	
 	@GetMapping("/{partyNo}")
 	public String home(@PathVariable int partyNo, Model model) {
 		// partyNo를 사용하여 파티 게시물을 조회합니다.
 		return "page/party/home";
+	}
+	
+	@GetMapping("/{partyNo}/setting")
+	public String setting() {
+		return "page/party/psetting";
 	}
 	
 	@GetMapping("/{partyNo}/attachment")

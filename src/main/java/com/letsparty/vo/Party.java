@@ -22,5 +22,6 @@ public class Party {
 	private LocalDateTime createdAt;
 	private String description;
 	private String filename;
+	private int visibilityStatus;
 
 }

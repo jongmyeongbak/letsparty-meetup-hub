@@ -13,8 +13,7 @@
                 <div class="card-header card-header-text" style="background-color: rgb(237, 246, 255);">
                     <h5 class="pt-1">파티 정보를 입력하고 수정해보세요!</h5>
                 </div>			
-                <!-- th:object="${partyModifyForm}" 이 부분은 수정 form도 생성폼과 코드가 같다면 form을 합칠 수도 있습니다. -->
-                <form method="post" id="party-form" th:action="@{/party/{partyNo}/modify(partyNo=${partyNo})}" th:object="${partyModifyForm}" enctype="multipart/form-data">
+                <form method="post" id="party-form" th:action="@{/party/{partyNo}/setting/modify(partyNo=${partyNo})}" th:object="${partyForm}" enctype="multipart/form-data">
                     <div class="card-body">
                         <div class="form-group mb-3 col-12">
                             <label class="form-label">파티명</label>
@@ -30,7 +29,7 @@
                                     <div id="result-container" class="col-12" style="margin: auto;">
 										<input type="hidden" id="imageFile" name="imageFile" th:field="*{imageFile}" />
 										<input type="hidden" id="defaultImage" name="defaultImage" th:field="*{defaultImagePath}" />
-                                        <img class="add-img" th:src="${partyModifyForm.savedName}" id="preview" src="" alt="이미지미리보기">
+                                        <img class="add-img" th:src="${partyForm.savedName}" id="preview" src="" alt="이미지미리보기">
                                         <div id="result"></div>
                                     </div>
                                 </div>
@@ -106,16 +105,17 @@
                                             <div class="col">
                                                 <div class="row mb-3">
                                                     <label class="col-4 col-form-label" for="birthStart">최소나이</label>
-                                                    <select class="col-8 age-select form-select" th:field="*{birthStart}">
+                                                    <select class="col-8 custom-select form-select" th:field="*{birthStart}" th:classappend="${#fields.hasErrors('*{birthStart}') ? 'is-invalid' : ''}">
                                                         <option value="9999" selected>제한없음</option>
 													    <th:block th:each="birthYear : ${birthYears}">
 													        <option th:value="${birthYear}" th:text="|${birthYear}년생 (만 ${currentYear - birthYear}세)|"></option>
 													    </th:block>
                                                     </select>
+                                                    <div th:errors="*{birthStart}" th:classappend="${#fields.hasErrors('birthStart') ? 'invalid-feedback' : ''}"></div>
                                                 </div>
                                                 <div class="row">
                                                     <label class="col-4 col-form-label" for="birthEnd">최대나이</label>
-                                                    <select class="col-8 age-select form-select" th:field="*{birthEnd}">
+                                                    <select class="col-8 custom-select form-select" th:field="*{birthEnd}">
                                                         <option th:value="${0000}" selected>제한없음</option>
                                                         <th:block th:each="birthYear : ${birthYears}">
 													        <option th:value="${birthYear}" th:text="|${birthYear}년생 (만 ${currentYear - birthYear}세)|"></option>
@@ -123,13 +123,20 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="row">
-                                                    <label class="col-3 col-form-label" for="gender">성별</label>
-                                                    <select class="form-select age-select" th:field="*{gender}" id="gender">
+                                             <div class="col">
+                                                <div class="row mb-3">
+                                                    <label class="col-4 col-form-label text-center" for="gender">성별</label>
+                                                    <select class="form-select custom-select" th:field="*{gender}" id="gender">
                                                         <option th:value="${'A'}" selected>제한없음</option>
                                                         <option th:value="${'M'}">남</option>
                                                         <option th:value="${'F'}">여</option>
+                                                    </select>
+                                                </div>
+                                                <div class="row">
+                                                    <label class="col-4 col-form-label" for="visibilityStatus">공개여부</label>
+                                                    <select class="form-select custom-select" th:field="*{visibilityStatus}" id="visibilityStatus">
+                                                        <option th:value="${0}" selected>공개</option>
+                                                        <option th:value="${1}">비공개</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -140,7 +147,9 @@
                             <!-- 파티설명 -->
                             <div class="mb-3 col-6">
                                 <label for="" class="form-label">파티설명</label>
-                                <textarea name="" id="" cols="30" rows="4" class="form-control" th:field="*{description}"></textarea>
+                                <textarea name="" id="" cols="30" rows="4" class="form-control" th:field="*{description}"
+                               		 th:classappend="${#fields.hasErrors('*{description}') ? 'is-invalid' : ''}"></textarea>
+                           		 <div th:errors="*{description}" th:classappend="${#fields.hasErrors('description') ? 'invalid-feedback' : ''}"></div>
                             </div>
                         </div>
                     </div>

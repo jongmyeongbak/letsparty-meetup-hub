@@ -11,7 +11,9 @@ $(function() {
         // preview를 보이게 하고, result를 숨긴다.
         $("#preview").show();
         $("#result").hide();
-        
+		
+		// 편집된 이미지 정보 비우기        
+        $("#imageFile").val("");
         // editedImage 대신 defaultImage를 입력 필드에 설정
     	$("#defaultImage").val(saveImageName);
     })
@@ -90,6 +92,8 @@ $(function() {
 	        $result.html("");
 	        $result.append(croppedCanvas);
 	        $("#imageFile").val(editedImage);
+	        // 기본 이미지 설정 정보 비우기
+	        $("#defaultImage") .val("");
 	        $modal.modal("hide");
 	        
 	        // result를 보이게 하고, preview를 숨긴다.
