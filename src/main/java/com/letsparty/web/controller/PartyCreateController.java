@@ -73,7 +73,7 @@ public class PartyCreateController {
 		// 유효성 검사 실패시에 수정 폼으로 돌아간다.
 		if (error.hasErrors()) {
 			PartyDataUtils.addBirthYearAndCategoryList(model, categoryService);
-			model.addAttribute("partyCreateForm", partyForm);
+			model.addAttribute("partyForm", partyForm);
 			return "page/main/party-create";
 		}
 		
