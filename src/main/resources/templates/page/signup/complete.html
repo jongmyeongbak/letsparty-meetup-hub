@@ -16,7 +16,7 @@
 		<input type="text" th:value="${user.nickname}" name="nickname" class="">
 		
 		<label class="label" data-toggle="tooltip" title="Change your avatar">
-			<input type="file" class="sr-only" id="input" name="filename" value="profile-default.png" accept="image/*">
+			<input type="file" class="sr-only" id="input" name="filename" th:value="${user.filename}" accept="image/*">
 		</label>
 		 
 		<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
@@ -41,7 +41,7 @@
 		  </div>
 		</div>
 		<div class="showImg">
-			<img id="avatar" th:src="@{/images/party/profile-default.png}" alt="avatar">
+			<img id="avatar" th:src="${user.filename}" alt="avatar">
 		</div>
 		<button type="button" class="btn btn-primary btn-sm" id="change">사진 변경</button>
 	</form>

@@ -7,6 +7,7 @@ let $modal = $('#modal');
 let cropper;
 let $cancel = $("#cancel");
 let $profileForm = $("#profile-form")
+let isChanged = false;
 console.log(avatar.src);
 
 // b64데이터를 Blob객체로 변환하는 함수
@@ -104,13 +105,15 @@ document.getElementById('crop').addEventListener('click', function () {
 		// 미리보기 이미지 src에 편집한 이미지의 url을 넣는다.
 		avatar.src = canvas.toDataURL();
 	}
+	isChanged = true;
 });
 
 
 $approve.on("click", function(){
 	let src = avatar.src;	
 	// 사진이 변경된 경우
-	if (src != "http://localhost/images/party/profile-default.png") {
+	if (isChanged) {
+		console.log(isChanged);
 		// 미리보기 이미지의 src를 b64데이터에서 Blob객체로 변환
 		let blob = b64toBlob(src, 'image/png');
 		
@@ -149,6 +152,7 @@ $approve.on("click", function(){
 		})
 		// 사진을 변경하지 않은 경우
 	} else {
+		console.log(isChanged);
 		// input의 타입을 file에서 text롭 변환해서 파일명을 그대로 저장한다.
 		input.type = "text";
 		$profileForm.submit();
