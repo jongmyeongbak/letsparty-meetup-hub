@@ -7,6 +7,7 @@ let $modal = $('#modal');
 let cropper;
 let $cancel = $("#cancel");
 let $profileForm = $("#profile-form")
+console.log(avatar.src);
 
 // b64데이터를 Blob객체로 변환하는 함수
 function b64toBlob(b64Data, contentType = '') {
@@ -148,6 +149,8 @@ $approve.on("click", function(){
 		})
 		// 사진을 변경하지 않은 경우
 	} else {
-			$profileForm.submit();		
+		// input의 타입을 file에서 text롭 변환해서 파일명을 그대로 저장한다.
+		input.type = "text";
+		$profileForm.submit();
 	}
 })
