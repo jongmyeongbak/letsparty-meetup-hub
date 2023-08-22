@@ -79,7 +79,7 @@ $modal.on('shown.bs.modal', function () {
 	cropper = new Cropper(image, {
 		aspectRatio: 1,
 		viewMode: 1,
-		minContainerHeight: 600,
+		minContainerHeight: 400,
 		cropBoxResizable: false,
 		dragMode: 'move',
 		background: false

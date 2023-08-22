@@ -1,0 +1,46 @@
+@charset "UTF-8";
+.showImg {
+	width: 100px;
+	height: 100px;
+}
+.showImg img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 50%;
+}
+.label {
+  cursor: pointer;
+}
+
+.progress {
+  display: none;
+  margin-bottom: 1rem;
+}
+
+.alert {
+  display: none;
+}
+
+.img-container img {
+  max-width: 100%;
+}
+form {
+	margin-bottom: 15px;
+}
+form .btn {
+    border: 1px solid #6DA1FF;
+    color: #6DA1FF;
+    background-color: #fff;
+    border-radius: 10px;
+}
+form .btn:hover {
+    color: #ffffff;
+    border-color: #6DA1FF;
+    background-color: #6DA1FF;
+}
+.inputname {
+	border: 1px solid black;
+	border-radius: 15px;
+	padding-left: 10px;
+}
