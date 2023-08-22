@@ -189,7 +189,7 @@ $(function() {
 	        $('#party-form').submit();
     	} else {
 			// 사용자가 아무것도 수정하지 않았을때 그대로 다시 저장하기 위한 코드
-			let extractedFileName = $("#preview").attr("src").replace("https://d2j14nd8cs76n6.cloudfront.net/images/covers/", "");
+			let savedName = $("#preview").attr("src");
 			
 			// 쓰이지 않는 필드 삭제
 			$("#defaultImage").remove();
@@ -198,7 +198,7 @@ $(function() {
 			$('<input>').attr({
 				type: 'hidden',
 	          	name: 'savedName',
-	          	value: extractedFileName  // 도메인 제거 후 파일 이름만 저장
+	          	value: savedName
 	        }).appendTo('#party-form');
 	        
 	        $('#party-form').submit();

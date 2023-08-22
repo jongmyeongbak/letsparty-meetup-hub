@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.letsparty.mapper.CategoryMapper;
@@ -33,6 +34,8 @@ public class PartyService {
 	private final CategoryMapper categoryMapper;
 	private final PartyReqMapper partyReqMapper;
 	private final PartyTagMapper partyTagMapper;
+	@Value("${s3.path.covers}")
+	private String coversPath;
 	
 	public int createParty(PartyForm partyCreateForm, String leaderId) {	
 		Party party = new Party();
@@ -93,9 +96,12 @@ public class PartyService {
 	    BeanUtils.copyProperties(partyModifyForm, party);
 	    party.setName(party.getName().trim());
 	    
-	    // 파일 이름 수정
-	    String filename = (partyModifyForm.getSavedName() != null) ? partyModifyForm.getSavedName() : partyModifyForm.getDefaultImagePath();
-	    party.setFilename(filename);
+	    String fullPath = (partyModifyForm.getSavedName() != null) ? partyModifyForm.getSavedName() : partyModifyForm.getDefaultImagePath();
+	    
+	    // 유저가 편집한 사진 정보를 변경하지 않았을 때 
+	    // 도메인을 제거한 후, 파일 이름만 다시 저장
+    	String filename = fullPath.replace(coversPath, "");
+    	party.setFilename(filename);
 	    
 	    // 파티 테이블에 변경사항 저장
 	    partyMapper.updateParty(party);
