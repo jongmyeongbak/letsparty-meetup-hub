@@ -180,6 +180,8 @@ public class SignupController {
 		redirectAttributes.addFlashAttribute("user", userProfile);
 		redirectAttributes.addFlashAttribute("profileNo", userProfile.getNo());
 		
+		userService.updateRoleById(user.getId(), 4);
+		
 		return "redirect:/signup/complete";
 	}
 	
