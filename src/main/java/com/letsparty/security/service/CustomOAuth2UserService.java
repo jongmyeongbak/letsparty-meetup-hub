@@ -37,10 +37,12 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 		OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
 		OAuth2User oAuth2User = delegate.loadUser(userRequest);
 		
-		// 로그인방식 가져오기(Naver, Kakao)
+		// 로그인방식 가져오기(Google, Naver, Kakao)
 		String providerType = userRequest.getClientRegistration().getRegistrationId();
 		OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getAuth2UserInfo(providerType, oAuth2User.getAttributes());
 		User savedUser = userMapper.getUserById(userInfo.getId());
+		
+		log.info("userInfo -> {}, {}", userInfo, userInfo.getId());
 		
 		if (savedUser != null) {
 			if (!providerType.equals(savedUser.getProviderType())) {
@@ -48,6 +50,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 			}
 			
 		} else {
+			System.out.println("null이라서 else구문으로");
 			savedUser = createUser(userInfo, providerType);
 			UserProfile userProfile = UserProfile.builder()
 					.id(userInfo.getId())
@@ -55,8 +58,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 					.filename(userInfo.getImage())
 					.isDefault(true)
 					.build();
-			log.info("이미지URL -> {}", userInfo.getImage());
-			
+			System.out.println(userProfile.toString());
 			myMapper.addProfile(userProfile);
 		}
 		
