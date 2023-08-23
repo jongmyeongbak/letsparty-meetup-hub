@@ -3,7 +3,6 @@ package com.letsparty.web.controller;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,6 +18,7 @@ import com.letsparty.security.user.CustomOAuth2User;
 import com.letsparty.service.AuthenticationService;
 import com.letsparty.service.MyService;
 import com.letsparty.service.UserService;
+import com.letsparty.service.ValidationService;
 import com.letsparty.vo.UserProfile;
 import com.letsparty.web.form.SignupForm;
 import com.letsparty.web.form.UserProfileForm;
@@ -36,6 +36,7 @@ public class SignupController {
 	private final UserService userService;
 	private final MyService myService;
 	private final AuthenticationService authenticationService;
+	private final ValidationService validationService;
 		
 	//	첫번째 회원가입 화면 진입
 	@GetMapping
@@ -54,48 +55,11 @@ public class SignupController {
 		
 		log.info("signupForm 정보 -> {}", signupForm.toString());
 		
-		// id 유효값 검사
-		if (!StringUtils.hasText(signupForm.getId())) {
-			errors.rejectValue("id", null, "아이디는 필수입력값입니다.");
-			checkDuplicate = true;
-		} else {
-			try {
-				userService.checkDuplicateUserId(signupForm.getId());
-			} catch (DuplicateUserIdException ex) {
-				errors.rejectValue("id", null, "사용할 수 없는 아이디입니다.");
-				checkDuplicate = true;
-			}
-		}
-		
-		// 비밀번호 유효값 검사
-		if (!StringUtils.hasText(signupForm.getPassword())) {
-			errors.rejectValue("password", null, "비밀번호는 필수입력값입니다.");
-			checkDuplicate = true;
-		}
-		
-		// 이름 유효값 검사
-		if (!StringUtils.hasText(signupForm.getName())) {
-			errors.rejectValue("name", null, "이름은 필수입력값입니다.");
-			checkDuplicate = true;
-		}
-		
-		// 이메일 유효값 검사
-		if (!StringUtils.hasText(signupForm.getEmail())) {
-			errors.rejectValue("email", null, "이메일은 필수입력값입니다.");
-			checkDuplicate = true;
-		} else {
-			try {
-				userService.checkDuplicateEmail(signupForm.getEmail());
-			} catch (DuplicateEmailException ex) {
-				errors.rejectValue("email", null, "사용할 수 없는 이메일입니다.");
-				checkDuplicate = true;
-			}
-		}
+		checkDuplicate = validationService.checkstep1(signupForm, errors);
 		
 		if (checkDuplicate) {
 			return "page/signup/step1";
 		}
-		
 		
 		return "page/signup/step2";
 	}
@@ -107,25 +71,9 @@ public class SignupController {
 		boolean checkDuplicate = false;
 		
 		log.info("signupForm 정보 -> {}", signupForm.toString());
+		
+		checkDuplicate = validationService.checkstep2(signupForm, errors);
 	
-		// 전화번호 유효값 검사
-		if (!StringUtils.hasText(signupForm.getTel())) {
-			errors.rejectValue("tel", null, "전화번호는 필수입력값입니다.");
-			checkDuplicate = true;
-		}
-		
-		// 생년월일 유효값 검사
-		if (signupForm.getBirthday() == null) {
-			errors.rejectValue("birthday", null, "생년월일은 필수입력값입니다.");
-			checkDuplicate = true;
-		}
-		
-		// 성별 유효값 검사
-		if (!StringUtils.hasText(signupForm.getGender())) {
-			errors.rejectValue("gender", null, "성별은 필수입력값입니다.");
-			checkDuplicate = true;
-		}
-		
 		if (checkDuplicate ) {
 			return "page/signup/step2";
 		}
