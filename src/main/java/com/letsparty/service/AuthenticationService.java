@@ -23,13 +23,13 @@ public class AuthenticationService {
 	public void changeAuthentication(String id) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
-		List<GrantedAuthority> newAuthority = new ArrayList<>();
+		List<GrantedAuthority> newAuthorities = new ArrayList<>();
 		
 		String roleName = userRoleMapper.getRoleNameById(id);
 		
-		newAuthority.add(new SimpleGrantedAuthority(roleName));
+		newAuthorities.add(new SimpleGrantedAuthority(roleName));
 		
-		Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getPrincipal(), auth.getCredentials(), newAuthority);
+		Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getPrincipal(), auth.getCredentials(), newAuthorities);
 		
 		SecurityContextHolder.getContext().setAuthentication(newAuth);
 	}

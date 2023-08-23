@@ -74,7 +74,7 @@ public class SignupController {
 		
 		checkDuplicate = validationService.checkstep2(signupForm, errors);
 	
-		if (checkDuplicate ) {
+		if (checkDuplicate) {
 			return "page/signup/step2";
 		}
 	
@@ -106,24 +106,33 @@ public class SignupController {
 	}
 	
 	@GetMapping("/oauth-signup")
-	public String ouathSignup() {
+	public String ouathSignup(Model model) {
+		SignupForm signupForm = new SignupForm();
+		model.addAttribute("signupForm", signupForm);
+	
 		return "page/signup/oauth-signup";
 	}
 	
 	@PostMapping("/oauth-signup")
-	public String oauthSignup(@AuthenticationPrincipal CustomOAuth2User user, SignupForm signupForm, RedirectAttributes redirectAttributes) {
+	public String oauthSignup(@AuthenticationPrincipal CustomOAuth2User user, SignupForm signupForm, BindingResult errors, RedirectAttributes redirectAttributes) {
 //		oauth 관련 추가 회원가입 정보 기입
 		signupForm.setId(user.getId());
 		signupForm.setEmail(user.getEmail());
 		signupForm.setName(user.getRealname());
+		System.out.println("되돌앋오기");
 
+		boolean checkDuplicate = false;
+		
+		checkDuplicate = validationService.checkstep2(signupForm, errors);
+		System.out.println(errors);
+		
+		if (checkDuplicate) {
+			return "page/signup/oauth-signup";
+		}
+		
 		userService.updateUser(signupForm);
 		
-		log.info("유저의 아이디 -> {}", user.getId());
-		
 		UserProfile userProfile = myService.getDefaultProfile(user.getId());
-		
-		log.info("유저프로필 정보 -> {}", userProfile.toString());
 		
 		redirectAttributes.addFlashAttribute("user", userProfile);
 		redirectAttributes.addFlashAttribute("profileNo", userProfile.getNo());

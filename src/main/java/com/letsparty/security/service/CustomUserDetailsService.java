@@ -27,8 +27,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 		}
 		CustomUserDetails user = new CustomUserDetails(savedUser);
 		
-		
-		
 		String roleName = userRoleMapper.getRoleNameById(user.getId());
 		
 		user.setRoleName(roleName);
