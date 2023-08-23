@@ -42,7 +42,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 		OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getAuth2UserInfo(providerType, oAuth2User.getAttributes());
 		User savedUser = userMapper.getUserById(userInfo.getId());
 		
-		log.info("userInfo -> {}, {}", userInfo, userInfo.getId());
+		log.info(userInfo.toString());
 		
 		if (savedUser != null) {
 			if (!providerType.equals(savedUser.getProviderType())) {
@@ -50,7 +50,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 			}
 			
 		} else {
-			System.out.println("null이라서 else구문으로");
 			savedUser = createUser(userInfo, providerType);
 			UserProfile userProfile = UserProfile.builder()
 					.id(userInfo.getId())
@@ -58,7 +57,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 					.filename(userInfo.getImage())
 					.isDefault(true)
 					.build();
-			System.out.println(userProfile.toString());
 			myMapper.addProfile(userProfile);
 		}
 		
