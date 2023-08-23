@@ -41,8 +41,6 @@ public class SignupController {
 		SignupForm signupForm = new SignupForm();
 		model.addAttribute("signupForm", signupForm);
 	
-		log.info("첫번째 단계 비밀번호 -> {}", signupForm.getPassword());
-		
 		return "page/signup/step1";
 	}
 	
@@ -51,6 +49,9 @@ public class SignupController {
 	public String signup1(@ModelAttribute("signupForm") SignupForm signupForm, BindingResult errors) {
 		
 		boolean checkDuplicate = false;
+		
+		log.info("signupForm 정보 -> {}", signupForm.toString());
+		
 		// id 유효값 검사
 		if (!StringUtils.hasText(signupForm.getId())) {
 			errors.rejectValue("id", null, "아이디는 필수입력값입니다.");
@@ -93,7 +94,6 @@ public class SignupController {
 			return "page/signup/step1";
 		}
 		
-		log.info("두번째 단계 비밀번호 -> {}", signupForm.getPassword());
 		
 		return "page/signup/step2";
 	}
@@ -102,9 +102,9 @@ public class SignupController {
 	@PostMapping("/step2")
 	public String signup2(@ModelAttribute("signupForm") SignupForm signupForm, BindingResult errors, SessionStatus sessionStatus, RedirectAttributes redirectAttributes) {
 		
-		log.info("세번째 단계 비밀번호 -> {}", signupForm.getPassword());
-	
 		boolean checkDuplicate = false;
+		
+		log.info("signupForm 정보 -> {}", signupForm.toString());
 	
 		// 전화번호 유효값 검사
 		if (!StringUtils.hasText(signupForm.getTel())) {
@@ -146,8 +146,6 @@ public class SignupController {
 				.build();
 		
 		int profileNo = myService.addProfile(userProfileForm);
-		
-		log.info("유저 프로필번호 -> {}", profileNo);
 		
 		redirectAttributes.addFlashAttribute("user", userProfileForm);
 		redirectAttributes.addFlashAttribute("profileNo", profileNo);

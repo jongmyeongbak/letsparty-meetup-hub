@@ -61,10 +61,7 @@ a.login {
     background: #02b250;
 }
 .login.-icoType.-kakao {
-    background: #f9e000;
-}
-.login.-icoType.-kakao:hover {
-    background: #e6c100;
+    background: #FEE500;
 }
 .loginBtnList {
     text-align: center;
