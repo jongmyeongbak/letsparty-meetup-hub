@@ -50,7 +50,7 @@
 	</select>
 	
 	<delete id="deleteEvent" parameterType="int">
-		delete form 
+		delete from
 			event
 		where 
 			event_no = #{value}
