@@ -129,6 +129,16 @@ public class PartyController {
 		return "redirect:/party/" + partyNo + "/setting" ;
 	}
 	
+	@GetMapping("/add-post")
+	public String addPost() {
+		return "/page/party/post";
+	}
+	
+	@GetMapping("/place-id")
+	public String placeId() {
+		return "/page/party/placeId";
+	}
+	
 	@GetMapping("/{partyNo}")
 	public String home(@PathVariable int partyNo, Model model) {
 		// partyNo를 사용하여 파티 게시물을 조회합니다.
