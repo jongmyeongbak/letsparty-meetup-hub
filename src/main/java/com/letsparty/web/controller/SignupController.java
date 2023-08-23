@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.letsparty.exception.DuplicateEmailException;
 import com.letsparty.exception.DuplicateUserIdException;
 import com.letsparty.security.user.CustomOAuth2User;
+import com.letsparty.service.AuthenticationService;
 import com.letsparty.service.MyService;
 import com.letsparty.service.UserService;
 import com.letsparty.vo.UserProfile;
@@ -34,6 +35,7 @@ public class SignupController {
 	
 	private final UserService userService;
 	private final MyService myService;
+	private final AuthenticationService authenticationService;
 		
 	//	첫번째 회원가입 화면 진입
 	@GetMapping
@@ -179,6 +181,8 @@ public class SignupController {
 		redirectAttributes.addFlashAttribute("profileNo", userProfile.getNo());
 		
 		userService.updateRoleById(user.getId(), 4);
+		
+		authenticationService.changeAuthentication(user.getId());
 		
 		return "redirect:/signup/complete";
 	}
