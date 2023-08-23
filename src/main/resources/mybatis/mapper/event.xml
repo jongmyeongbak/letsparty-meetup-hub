@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letsparty.mapper.EventMapper">
+	
+	<insert id="insertEvent" parameterType="com.letsparty.vo.Event" useGeneratedKeys="true" keyProperty="no">
+		
+		insert into event
+			(event_title, event_description, is_all_day, event_start_date, 
+			 event_start_time, event_end_date, event_end_time, event_status, user_id,
+			 place_no, post_id, party_no)
+		values
+			(#{title}, #{description}, #{allDay}, 
+			#{startDate}, #{startTime}, #{endDate}, #{endTime},
+			#{status}, #{user.id}, null, null, 1)
+	</insert>
+	
+	<select id="getAllEvents" resultType="com.letsparty.vo.Event">
+		select
+			event_no 			as no,
+			event_title			as title,
+			event_description 	as description,
+			is_all_day			as allDay,
+			event_start_date	as startDate,
+			event_start_tiem	as startTime,
+			event_end_date		as endDate,
+			event_end_time		as endTime,
+			event_status		as status
+		from 
+			event
+		order by 
+			event_no asc
+	
+	</select>
+	
+	<select id="getEventByNo" parameterType="int" resultType="com.letsparty.vo.Event">
+		select
+			event_no 			as no,
+			event_title			as title,
+			event_description 	as description,
+			is_all_day			as allDay,
+			event_start_date	as startDate,
+			event_start_tiem	as startTime,
+			event_end_date		as endDate,
+			event_end_time		as endTime,
+			event_status		as status
+		from 
+			event
+		where 
+			event_no = #{value}
+	</select>
+	
+	<delete id="deleteEvent" parameterType="int">
+		delete form 
+			event
+		where 
+			event_no = #{value}
+	</delete>
+</mapper>
