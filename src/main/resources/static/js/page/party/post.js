@@ -1,14 +1,11 @@
 $(function(){
-	// 지도 아이콘을 누르면 모달을 띄운다.
-	$("#open-map").on("click", function() {
-	    $("#modal").modal("show");
-	})
-	
 	// 모달이 완전히 띄워졌을 때 지도 객체를 다시 초기화하여 전체적인 지도 이미지를 렌더링
-	$("#modal").on('shown.bs.modal', function() {
+	$("#place-modal").on('shown.bs.modal', function() {
 		map.relayout();
 		// 초기에 설정해둔 키워드로 검색 함수를 실행시켜 중심좌표를 중앙으로 맞춘다.
 		searchPlaces();
+		console.log("임시저장소:" + tempSelectedPlace.name);
+  		console.log("실제저장소:" + selectedPlace.name);
 	})
 })		
 
@@ -136,13 +133,10 @@ function displayPlaces(places) {
 
     // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
     map.setBounds(bounds);
-    console.log(places)
-    
 }
 
 // 검색결과 항목을 Element로 반환하는 함수입니다
 function getListItem(index, places) {
-	console.log(places.id)
     var el = document.createElement('li'),
     // 지호 추가 사항 목록을 클릭했을 때 해당 searchPlaces메소드에 주소명과 장소명을 둘 다 넣어,
     // 정확도를 높힌 뒤 목록이 가르키는 장소로 중심 좌표를 이동시킨다.
@@ -165,7 +159,7 @@ function getListItem(index, places) {
 	
 	// 생성된 리스트 엘리먼트를 클릭했을 때 만들어둔 객체에 값을 담는 함수 실행
 	el.onclick = function() {
-        
+        console.log(places);
         selectPlace(places);
     };
     
@@ -248,31 +242,69 @@ function removeAllChildNods(el) {
     }
 }   
 
+// 임시로 선택된 장소 데이터를 담을 객체
 // 장소 데이터를 담는 객체
+let tempSelectedPlace = {};
 let selectedPlace = {};
 
-// selectedPlace객체에 데이터를 담는 함수
+// tempSelectedPlace객체에 데이터를 담는 함수
 function selectPlace(place) {
-    selectedPlace = {
+    tempSelectedPlace = {
         id: place.id,
         name: place.place_name,
-        address: place.address_name,
-        road_address: place.road_address_name,
-        phone: place.phone
+        addressName: place.address_name,
+        roadAddressName: place.road_address_name
     };
-    console.log(selectedPlace);
 }
 
-// 첨부 버튼 클릭 이벤트
+// 리스트를 선택하여 데이터를 임시 저장소에 저장하고,
+// 첨부 버튼을 눌러야 실제 전송될 객체에 장소 데이터를 담는다.
 $("#attachButton").on("click", function() {
     // 선택된 장소 데이터를 HTML에 적용
-    if (selectedPlace.name && selectedPlace.address) {
+    if (tempSelectedPlace.name && tempSelectedPlace.addressName) {
+		selectedPlace = tempSelectedPlace; // 첨부버튼을 누를 때 실제 저장소에 옮긴다.
         $('#placeName').html('<strong>' + selectedPlace.name + '</strong>');
-        $('#loadLocation').text(selectedPlace.address);
-        $("#modal").modal("hide");
+        $('#loadLocation').text(selectedPlace.addressName);
+        $("#place-modal").modal("hide");
+        $("#place-short-form").removeClass("d-none")
     } else {
         alert('장소를 선택해주세요!');
     }
+    
+// 첨부 삭제 클릭 이벤트
+$("#place-delete-btn").on("click", function(e){
+	e.preventDefault();
+	console.log(selectedPlace)
+	
+	//객체 초기화
+	selectedPlace = {};
+	tempSelectedPlace = {};
+	console.log(selectedPlace)
+	$("#place-short-form").addClass("d-none")
+})
+
+/*$("#kakaoMapLink").on("click", function(e){
+	e.preventDefault();
+	// 새 윈도우 창으로 카카오에서 제공하는 지도 url과 장소id를 결합하여 이동
+	window.open("https://map.kakao.com/link/map/" + selectedPlace.id);
+})*/
+
+//객체 정보 전송하기 
+$("#add-post-btn").on("click", function(e){
+	e.preventDefault();
+	if(selectedPlace !== "") {
+		$("#place-id").val(selectedPlace.id);
+		$("#place-name").val(selectedPlace.name);
+		$("#place-address-name").val(selectedPlace.addressName);
+		$("#place-road-address-name").val(selectedPlace.roadAddressName);
+	}   
+	$("#party-post-form").submit();
+})
+	
+
+
+
+
 });
 
 
