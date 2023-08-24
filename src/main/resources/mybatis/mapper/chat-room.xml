@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letsparty.mapper.ChatRoomMapper">
+	
+	<insert id="createChatRoom" parameterType="ChatRoom" useGeneratedKeys="true" keyProperty="no">
+		INSERT IGNORE INTO chat_room
+		VALUES
+			(0, #{id}, #{chattersCnt}, #{partyNo}, #{creatorNo}, #{isPublic}, #{title}, #{description})
+	</insert>
+	
+	<select id="findById" parameterType="string" resultType="ChatRoom">
+		SELECT
+			room_no as no,
+			room_id as id,
+			chatters_cnt,
+			party_no,
+			creator_no,
+			is_public,
+			room_title as title,
+			room_description as description
+		FROM
+			chat_room
+		WHERE
+			room_id = #{value}
+	</select>
+	
+</mapper>

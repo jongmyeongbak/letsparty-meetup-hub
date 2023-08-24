@@ -28,7 +28,6 @@ public class OauthSuccessHandler implements AuthenticationSuccessHandler {
 		
 		CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
 		User user = userMapperService.getUserByEmail(customOAuth2User.getEmail());
-		System.out.println("successhandler 동작 확인");
 		
 		if (user.getBirthday() != null && user.getGender() != null) {
 			response.sendRedirect("/");

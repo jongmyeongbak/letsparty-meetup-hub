@@ -3,7 +3,6 @@ package com.letsparty.web.controller;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,8 +15,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.letsparty.exception.DuplicateEmailException;
 import com.letsparty.exception.DuplicateUserIdException;
 import com.letsparty.security.user.CustomOAuth2User;
+import com.letsparty.service.AuthenticationService;
 import com.letsparty.service.MyService;
 import com.letsparty.service.UserService;
+import com.letsparty.service.ValidationService;
 import com.letsparty.vo.UserProfile;
 import com.letsparty.web.form.SignupForm;
 import com.letsparty.web.form.UserProfileForm;
@@ -34,6 +35,8 @@ public class SignupController {
 	
 	private final UserService userService;
 	private final MyService myService;
+	private final AuthenticationService authenticationService;
+	private final ValidationService validationService;
 		
 	//	첫번째 회원가입 화면 진입
 	@GetMapping
@@ -41,8 +44,6 @@ public class SignupController {
 		SignupForm signupForm = new SignupForm();
 		model.addAttribute("signupForm", signupForm);
 	
-		log.info("첫번째 단계 비밀번호 -> {}", signupForm.getPassword());
-		
 		return "page/signup/step1";
 	}
 	
@@ -51,49 +52,14 @@ public class SignupController {
 	public String signup1(@ModelAttribute("signupForm") SignupForm signupForm, BindingResult errors) {
 		
 		boolean checkDuplicate = false;
-		// id 유효값 검사
-		if (!StringUtils.hasText(signupForm.getId())) {
-			errors.rejectValue("id", null, "아이디는 필수입력값입니다.");
-			checkDuplicate = true;
-		} else {
-			try {
-				userService.checkDuplicateUserId(signupForm.getId());
-			} catch (DuplicateUserIdException ex) {
-				errors.rejectValue("id", null, "사용할 수 없는 아이디입니다.");
-				checkDuplicate = true;
-			}
-		}
 		
-		// 비밀번호 유효값 검사
-		if (!StringUtils.hasText(signupForm.getPassword())) {
-			errors.rejectValue("password", null, "비밀번호는 필수입력값입니다.");
-			checkDuplicate = true;
-		}
+		log.info("signupForm 정보 -> {}", signupForm.toString());
 		
-		// 이름 유효값 검사
-		if (!StringUtils.hasText(signupForm.getName())) {
-			errors.rejectValue("name", null, "이름은 필수입력값입니다.");
-			checkDuplicate = true;
-		}
-		
-		// 이메일 유효값 검사
-		if (!StringUtils.hasText(signupForm.getEmail())) {
-			errors.rejectValue("email", null, "이메일은 필수입력값입니다.");
-			checkDuplicate = true;
-		} else {
-			try {
-				userService.checkDuplicateEmail(signupForm.getEmail());
-			} catch (DuplicateEmailException ex) {
-				errors.rejectValue("email", null, "사용할 수 없는 이메일입니다.");
-				checkDuplicate = true;
-			}
-		}
+		checkDuplicate = validationService.checkstep1(signupForm, errors);
 		
 		if (checkDuplicate) {
 			return "page/signup/step1";
 		}
-		
-		log.info("두번째 단계 비밀번호 -> {}", signupForm.getPassword());
 		
 		return "page/signup/step2";
 	}
@@ -102,29 +68,13 @@ public class SignupController {
 	@PostMapping("/step2")
 	public String signup2(@ModelAttribute("signupForm") SignupForm signupForm, BindingResult errors, SessionStatus sessionStatus, RedirectAttributes redirectAttributes) {
 		
-		log.info("세번째 단계 비밀번호 -> {}", signupForm.getPassword());
-	
 		boolean checkDuplicate = false;
+		
+		log.info("signupForm 정보 -> {}", signupForm.toString());
+		
+		checkDuplicate = validationService.checkstep2(signupForm, errors);
 	
-		// 전화번호 유효값 검사
-		if (!StringUtils.hasText(signupForm.getTel())) {
-			errors.rejectValue("tel", null, "전화번호는 필수입력값입니다.");
-			checkDuplicate = true;
-		}
-		
-		// 생년월일 유효값 검사
-		if (signupForm.getBirthday() == null) {
-			errors.rejectValue("birthday", null, "생년월일은 필수입력값입니다.");
-			checkDuplicate = true;
-		}
-		
-		// 성별 유효값 검사
-		if (!StringUtils.hasText(signupForm.getGender())) {
-			errors.rejectValue("gender", null, "성별은 필수입력값입니다.");
-			checkDuplicate = true;
-		}
-		
-		if (checkDuplicate ) {
+		if (checkDuplicate) {
 			return "page/signup/step2";
 		}
 	
@@ -147,8 +97,6 @@ public class SignupController {
 		
 		int profileNo = myService.addProfile(userProfileForm);
 		
-		log.info("유저 프로필번호 -> {}", profileNo);
-		
 		redirectAttributes.addFlashAttribute("user", userProfileForm);
 		redirectAttributes.addFlashAttribute("profileNo", profileNo);
 		
@@ -158,27 +106,40 @@ public class SignupController {
 	}
 	
 	@GetMapping("/oauth-signup")
-	public String ouathSignup() {
+	public String ouathSignup(Model model) {
+		SignupForm signupForm = new SignupForm();
+		model.addAttribute("signupForm", signupForm);
+	
 		return "page/signup/oauth-signup";
 	}
 	
 	@PostMapping("/oauth-signup")
-	public String oauthSignup(@AuthenticationPrincipal CustomOAuth2User user, SignupForm signupForm, RedirectAttributes redirectAttributes) {
+	public String oauthSignup(@AuthenticationPrincipal CustomOAuth2User user, SignupForm signupForm, BindingResult errors, RedirectAttributes redirectAttributes) {
 //		oauth 관련 추가 회원가입 정보 기입
 		signupForm.setId(user.getId());
 		signupForm.setEmail(user.getEmail());
 		signupForm.setName(user.getRealname());
+		System.out.println("되돌앋오기");
 
-		userService.updateUser(signupForm);
+		boolean checkDuplicate = false;
 		
-		log.info("유저의 아이디 -> {}", user.getId());
+		checkDuplicate = validationService.checkstep2(signupForm, errors);
+		System.out.println(errors);
+		
+		if (checkDuplicate) {
+			return "page/signup/oauth-signup";
+		}
+		
+		userService.updateUser(signupForm);
 		
 		UserProfile userProfile = myService.getDefaultProfile(user.getId());
 		
-		log.info("유저프로필 정보 -> {}", userProfile.toString());
-		
 		redirectAttributes.addFlashAttribute("user", userProfile);
 		redirectAttributes.addFlashAttribute("profileNo", userProfile.getNo());
+		
+		userService.updateRoleById(user.getId(), 4);
+		
+		authenticationService.changeAuthentication(user.getId());
 		
 		return "redirect:/signup/complete";
 	}

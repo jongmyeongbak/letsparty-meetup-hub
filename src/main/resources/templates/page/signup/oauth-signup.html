@@ -12,20 +12,24 @@
 	</div>
 	<div class="row mb-3">
 		<div class="col-12">
-			<form class="border bg-light p-3" method="post" th:action="@{/signup/oauth-signup}">
+			<form class="border bg-light p-3" method="post" th:action="@{/signup/oauth-signup}" th:object="${signupForm}">
 				<div class="form-group mb-3">
-					<label>전화번호</label> <input type="text" class="form-control" name="tel" placeholder="010-0000-0000" />
+					<label>전화번호</label> 
+					<input type="text" class="form-control" placeholder="010-0000-0000" th:field="*{tel}" th:classappend="${#fields.hasErrors('tel')?'is-invalid':''}" />
+					<div th:if="${#fields.hasErrors('tel')}" th:errors="*{tel}" class="invalid-feedback"></div>
 				</div>
 				<div class="form-group mb-3">
-					<label>생년월일</label> <input type="date" class="form-control" name="birthday"/>
+					<label>생년월일</label> <input type="date" class="form-control" th:field="*{birthday}" th:classappend="${#fields.hasErrors('birthday')?'is-invalid':''}" />
+					<div th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}" class="invalid-feedback"></div>
 				</div>
 
 				<div class="form-group mb-3">
-					<label>성별</label> <select class="form-control" name="gender" >
+					<label>성별</label> <select class="form-control" name="gender" th:classappend="${#fields.hasErrors('gender')?'is-invalid':''}">
 						<option value="" selected disabled>성별을 선택하세요</option>
 						<option value="M">남</option>
 						<option value="F">여</option>
 					</select>
+					<div th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}" class="invalid-feedback"></div>
 				</div>
 				<div class="text-end">
 					<button class="btn btn-primary">회원가입</button>

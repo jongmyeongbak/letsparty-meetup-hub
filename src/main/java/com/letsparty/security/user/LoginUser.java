@@ -17,6 +17,7 @@ public class LoginUser {
 	private String gender;
 	private String tel;
 	private String imageName;
+	private String roleName;
 	
 	
 	public LoginUser(User user) {
@@ -36,6 +37,10 @@ public class LoginUser {
 	
 	public String getImageName() {
 		return imageName;
+	}
+	
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
 	
 }

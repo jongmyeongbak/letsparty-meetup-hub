@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.letsparty.mapper.UserPartyApplicationMapper">
+
+	<insert id="insert"	parameterType="UserPartyApplication" useGeneratedKeys="true" keyProperty="no">
+		INSERT INTO user_party_application
+		(party_no, user_id, role_no, profile_no, user_remark)
+		VALUES
+		(#{partyNo}, #{userId}, #{roleNo}, #{profile.no}, #{userRemark})
+	</insert>
+
+	<select id="findByNo" parameterType="long">
+		SELECT
+			upa.application_no as no,
+			upa.party_no,
+			upa.user_id,
+			upa.role_no,
+			upa.application_status as status,
+			upa.created_at,
+			upa.user_remark,
+			up.profile_no as "userProfile.no",
+<!-- 			up.user_id as "userProfile.id", -->
+			up.profile_nickname as "userProfile.nickname",
+			up.image_filename as "userProfile.filename",
+			up.is_default as "userProfile.isDefault"
+		FROM user_party_application upa
+		INNER JOIN user_profile up ON upa.profile_no = up.profile_no
+		WHERE upa.application_no = #{value}
+	</select>
+
+	<select id="findAllByPartyNo" parameterType="int">
+		SELECT
+			upa.application_no as no,
+			upa.party_no,
+			upa.user_id,
+			upa.role_no,
+			upa.application_status as status,
+			upa.created_at,
+			upa.user_remark,
+			up.profile_no as "userProfile.no",
+<!-- 			up.user_id as "userProfile.id", -->
+			up.profile_nickname as "userProfile.nickname",
+			up.image_filename as "userProfile.filename",
+			up.is_default as "userProfile.isDefault"
+		FROM user_party_application upa
+		INNER JOIN user_profile up ON upa.profile_no = up.profile_no
+		WHERE upa.party_no = #{value}
+		ORDER BY
+			role_no, "userProfile.nickname"
+	</select>
+
+	<update id="update" parameterType="UserPartyApplication">
+		UPDATE user_party_application
+		SET
+			role_no = #{roleNo},
+			profile_no = #{userProfile.no},
+			application_status = #{status},
+			user_remark	= #{userRemark}
+		WHERE
+			application_no = #{no}
+	</update>
+
+</mapper>

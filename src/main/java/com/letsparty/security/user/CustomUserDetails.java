@@ -1,8 +1,10 @@
 package com.letsparty.security.user;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.letsparty.vo.User;
@@ -14,14 +16,13 @@ public class CustomUserDetails extends LoginUser implements UserDetails{
 	public CustomUserDetails(User user) {
 		super(user);
 		this.password = user.getPassword();
-		// TODO Auto-generated constructor stub
 	}
 
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return null;
+		return List.of(new SimpleGrantedAuthority(getRoleName()));
 	}
 
 	@Override
@@ -31,7 +32,6 @@ public class CustomUserDetails extends LoginUser implements UserDetails{
 
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
 		return getId();
 	}
 
@@ -54,6 +54,4 @@ public class CustomUserDetails extends LoginUser implements UserDetails{
 	public boolean isEnabled() {
 		return true;
 	}
-
-	
 }
