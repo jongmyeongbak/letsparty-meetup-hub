@@ -3,6 +3,7 @@
    layout:decorate="~{layout/party-base}">
 <head>
 	<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
+	 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 	<script th:src="@{/js/page/party/ko.global.min.js}"></script>
 	<link rel="stylesheet" th:href="@{/css/page/party/event.css}" >
 </head>
@@ -25,32 +26,39 @@
 		                <div class="modal-body">
 		                    <div class="form-group">
 		                        <label for="taskId" class="col-form-label">일정 제목</label>
-		                        <input type="text" class="form-control" id="event_content" name="event_title">
+		                        <input type="text" class="form-control" id="title" name="title">
 		                        <label for="taskId" class="col-form-label">일정 내용</label>
-		                        <input type="text" class="form-control" id="event_content" name="event_content">
+		                        <input type="text" class="form-control" id="description" name="description">
 		                        <label for="taskId" class="col-form-label">시작 날짜</label>
-		                        <input type="date" class="form-control" id="event_start_date" name="event_start_date">
+		                        <input type="date" class="form-control" id="startDate" name="startDate">
 		                        <label for="taskId" class="col-form-label">종료 날짜</label>
-		                        <input type="date" class="form-control" id="event_end_date" name="event_end_date">
+		                        <input type="date" class="form-control" id="endDate" name="endDate">
 		                        <label for="taskId" class="col-form-label">시작 시간</label>
-		                        <input type="time" class="form-control" id="event_start_time" name="event_start_time">
+		                        <input type="time" class="form-control" id="startTime" name="startTime">
 		                        <label for="taskId" class="col-form-label">종료 시간</label>
-		                        <input type="time" class="form-control" id="event_end_time" name="event_end_time">
+		                        <input type="time" class="form-control" id="endTime" name="endTime">
 		                        <label for="taskId" class="col-form-label">하루 종일</label>
-		                        <input type="checkbox" name="option" value="event_all_day" >
+		                        <input class="form-check-input" type="checkbox" name="allDay" role="switch" value="Y" ><br/>
+		                        <!--  
 		                        <label for="taskId" class="col-form-label">음력</label>
 		                        <input type="checkbox" name="option" value="lunar_calendar" ><br/>
+		                        -->
 		                        <label for="taskId" class="col-form-label">장소</label>
-		                        <input type="text" class="form-control" id="evnet_palce" name="evnet_palce">
+		                        <input type="text" class="form-control" id="place" name="place">
+		                        
 		                        <label for="taskId" class="col-form-label">미리 알림</label>
-		                        <input type="text" class="form-control" id="evnet_noti" name="evnet_noti">
+		                        <input type="text" class="form-control" id="noti" name="noti">
+		                        
 		                        <label for="taskId" class="col-form-label">게시글로 공유</label>
+		                         <input class="form-check-input" type="checkbox" name="sharePost" role="switch" value="Y" ><br/>
+		                        <!-- 
 		                        <input type="checkbox" name="option" value="submit_post" >
+		                         -->
 		                    </div>
 		                </div>
 		                <div class="modal-footer">
 		                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-		                    <button type="button" class="btn btn-primary" id="addEvent">등록</button>
+		                    <button type="button" class="btn btn-primary" id="save-event" onclick="addSave">등록</button>
 		                </div>
 		            </div>
 		        </div>

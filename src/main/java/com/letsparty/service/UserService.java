@@ -1,5 +1,8 @@
 package com.letsparty.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -7,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.letsparty.exception.DuplicateEmailException;
 import com.letsparty.exception.DuplicateUserIdException;
 import com.letsparty.mapper.UserMapper;
+import com.letsparty.mapper.UserRoleMapper;
 import com.letsparty.vo.User;
 import com.letsparty.web.form.SignupForm;
 
@@ -17,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 
 	private final UserMapper userMapper;
+	private final UserRoleMapper userRoleMapper;
 	private final PasswordEncoder passwordEncoder;
 	
 	/*
@@ -33,6 +38,12 @@ public class UserService {
 		user.setPassword(encryptedPassword);
 		
 		userMapper.createUser(user);
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("id", user.getId());
+		param.put("no", 4);
+		
+		userRoleMapper.addRole(param);
 	}
 	
 	public void checkDuplicateUserId(String id) {
@@ -67,6 +78,12 @@ public class UserService {
 		BeanUtils.copyProperties(signupForm, savedUser);
 		
 		userMapper.updateUser(savedUser);
+	}
+	public void updateRoleById(String id, int no) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("id", id);
+		param.put("no", no);
+		userRoleMapper.updateRole(param);
 	}
 
 }

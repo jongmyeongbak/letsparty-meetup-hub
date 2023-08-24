@@ -23,7 +23,7 @@
     <title>즐거운 만남 | 채팅</title>
     <style>
       * {
-        background-color: azure;
+        background-color: #e5ddd5;
         margin: 0;
         padding: 0;
         box-sizing: border-box;
@@ -106,9 +106,63 @@
       /* .submit-wrap button {
         
       } */
+
+      .log-friend {
+        max-width: 60%; /* 채팅 메시지가 화면의 60% 너비를 넘지 않게 */
+        margin-bottom: 10px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+
+      .pf-image {
+        width: 40px;
+        height: 40px;
+        background-color: #ddd; /* 프로필 이미지의 기본 배경. 실제 이미지로 대체하려면 background-image 사용 */
+        border-radius: 50%; /* 원형으로 보이게 */
+        margin-right: 10px; /* 이미지와 텍스트 사이의 간격 */
+      }
+
+      .log-content {
+        padding: 8px 12px; /* 채팅 버블 내부 패딩 */
+        background-color: #ffffff; /* 버블 배경색 */
+        border-radius: 10px; /* 모서리 둥글게 */
+        position: relative;
+      }
+
+      .nickname {
+        font-size: 12px;
+        color: #888;
+        margin-bottom: 5px;
+      }
+
+      .log-bubble {
+        font-size: 14px;
+      }
+
+      .log-aside {
+        font-size: 12px;
+        color: #aaa;
+        margin-left: 10px; /* 시간과 메시지 사이의 간격 */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .read {
+        background-color: #ff8f00; /* 읽음 표시의 배경색 */
+        color: #fff; /* 읽음 표시의 글자색 */
+        padding: 2px 5px;
+        border-radius: 3px;
+        margin-bottom: 5px;
+      }
+
+      .time {
+        margin-top: 5px;
+      }
     </style>
   </head>
-  <body>
+  <body data-room-id="${session.roomId}">
     <div class="chat-container">
       <header class="chat-head justify-content-between">
         <div class="align-self-center">
@@ -159,7 +213,7 @@
             <textarea class="mentions" rows="3"></textarea>
           </div>
           <div class="submit-wrap">
-            <button class="btn">
+            <button class="send btn">
               <span class="material-symbols-rounded"> send </span>
             </button>
           </div>
@@ -176,5 +230,9 @@
       integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
       crossorigin="anonymous"
     ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/webstomp-client@1.2.6/dist/webstomp.min.js"></script>
+    <script th:src="@{/js/page/chat/home.js}" defer></script>
   </body>
 </html>

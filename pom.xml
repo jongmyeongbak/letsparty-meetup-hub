@@ -85,6 +85,13 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
+		<!-- AbstractSecurityWebSocketMessageBrokerConfigurer 상속을 가능하게 함 -->
+		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-messaging -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-messaging</artifactId>
+			<version>5.7.10</version>
+		</dependency>
 		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

@@ -1,5 +1,8 @@
 package com.letsparty.security.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -9,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.letsparty.mapper.MyMapper;
 import com.letsparty.mapper.UserMapper;
+import com.letsparty.mapper.UserRoleMapper;
 import com.letsparty.security.oauth.exception.OAuthProviderMissMatchException;
 import com.letsparty.security.oauth.info.OAuth2UserInfo;
 import com.letsparty.security.oauth.info.OAuth2UserInfoFactory;
@@ -25,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 	
 	private final UserMapper userMapper;
+	private final UserRoleMapper userRoleMapper;
 	private final MyMapper myMapper;
 
 	@Override
@@ -32,10 +37,12 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 		OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
 		OAuth2User oAuth2User = delegate.loadUser(userRequest);
 		
-		// 로그인방식 가져오기(Naver, Kakao)
+		// 로그인방식 가져오기(Google, Naver, Kakao)
 		String providerType = userRequest.getClientRegistration().getRegistrationId();
 		OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getAuth2UserInfo(providerType, oAuth2User.getAttributes());
 		User savedUser = userMapper.getUserById(userInfo.getId());
+		
+		log.info(userInfo.toString());
 		
 		if (savedUser != null) {
 			if (!providerType.equals(savedUser.getProviderType())) {
@@ -50,12 +57,14 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 					.filename(userInfo.getImage())
 					.isDefault(true)
 					.build();
-			log.info("이미지URL -> {}", userInfo.getImage());
-			
 			myMapper.addProfile(userProfile);
 		}
 		
-		return new CustomOAuth2User(savedUser, userInfo.getAttributes());
+		String roleName = userRoleMapper.getRoleNameById(userInfo.getId());
+		CustomOAuth2User user = new CustomOAuth2User(savedUser, userInfo.getAttributes());
+		user.setRoleName(roleName);
+		
+		return user;
 	}
 	
 	private User createUser(OAuth2UserInfo userInfo, String providerType) {
@@ -66,6 +75,12 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 		user.setProviderType(providerType);
 		
 		userMapper.createUser(user);
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("id", user.getId());
+		param.put("no", 5);
+		
+		userRoleMapper.addRole(param);
 		
 		return user;
 	}

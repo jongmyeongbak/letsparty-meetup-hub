@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letsparty.mapper.ChatUserMapper">
+	
+	<insert id="createChatUser" parameterType="ChatUser">
+		INSERT INTO chat_user
+			(room_id, user_no)
+		VALUES
+			({#{roomId}, #{userNo})
+	</insert>
+
+	<select id="findLastReadMessageNoByRoomNoAndUserNo" parameterType="ChatUser" resultType="long">
+		SELECT
+			last_read_message_no
+		FROM
+			chat_user
+		WHERE
+			room_id = #{roomId}
+			AND user_no = #{userNo}
+	</select>
+	
+	<select id="findUsersByRoomId" parameterType="string" resultType="com.letsparty.dto.ChatUserResponse">
+		SELECT
+			u.user_no,
+			up.profile_nickname
+		FROM
+			chat_user cu
+		JOIN
+			user u ON cu.user_no = u.user_no
+		JOIN
+			chat_room cr ON cu.room_id = cr.room_id
+		JOIN
+			user_party_application upa ON cr.party_no = upa.party_no AND u.user_id = upa.user_id
+		JOIN
+			user_profile up ON upa.profile_no = up.profile_no
+		WHERE
+			cu.room_id = #{value}
+		ORDER BY
+			up.profile_nickname;
+	</select>
+	
+</mapper>
