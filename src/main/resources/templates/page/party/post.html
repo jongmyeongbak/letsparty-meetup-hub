@@ -13,18 +13,25 @@
 					<h5 class="pt-1 post-header-text">파티에 게시물을 작성해보세요!</h5>
 				</div>
 				<div class="card-body">
-					<form id="party-post-form">
+					<form method="post" th:action="@{/party/{partyNo}/add-place(partyNo=${partyNo})}" id="party-post-form">
 						<div class="form-group mb-3 col-12">
 							<label class="form-label">게시글 제목</label>
-							<input class="form-control form-control-lg" type="text">
+							<input class="form-control form-control-lg" type="text" name="title"> 
 						</div>
 						<div class="mb-3 col-12">
 							<label class="form-label">게시글 내용</label>
 							<div class="row d-flex justify-content-center" id="text">
-								<textarea class="" style="width: 97%; border-color: rgb(211, 211, 211);" name=""
+								<textarea class="" style="width: 97%; border-color: rgb(211, 211, 211);" name="content"
 									cols="30" rows="10"></textarea>
 							</div>
-							<div class="background-color-gray my-3" id="place">
+							<!-- 첨부시 첨부값을 폼으로 보낼 때 쓰이는 input -->
+							<div>
+							    <input type="hidden" id="place-id" name="id" value="" />
+							    <input type="hidden" id="place-name" name="name" value="" />
+							    <input type="hidden" id="place-address-name" name="addressName" value="" />
+							    <input type="hidden" id="place-road-address-name" name="roadAddressName" value="" />
+							</div>
+							<div class="background-color-gray my-3 d-none" id="place-short-form">
 								<div class="border d-flex align-items-center">
 									<div class="col-1 me-2 d-flex justify-content-center align-items-center">
 										<div class="">
@@ -35,6 +42,11 @@
 										<div class="my-1">
 											<h5 id="placeName" class=""><strong>중앙에이치티에이</strong></h5>
 											<h6 id="loadLocation" class="mb-0">서울특별시 종로구 봉익동 율곡로10길 디아망 쥬얼리</h6>
+											<div id="place-delete-btn" class="d-flex justify-content-end">
+	                                            <button class="btn d-flex pb-3 pe-3">
+	                                                <i class="fa-regular fa-circle-xmark fa-xl"></i>
+	                                            </button>
+                                           </div>
 										</div>
 									</div>
 								</div>
@@ -56,26 +68,41 @@
 								</div>
 							</div>
 						</div>
-						<div class="bottom-btns">
-							<ul class="btn-list">
-								<li class="btn-file">
-									<button class="map" type="button" >
-										<i id="open-map"class="fa-solid fa-map-location-dot fa-xl post-item-color"></i>
-									</button>
-								</li>
-							</ul>
-						</div>
+					</div>
+					<div class="bottom-btns pe-4">
+						<ul class="d-flex justify-content-end gap-4 mb-0">
+							<li class="list-item">
+                              <button class="file" id="openfile" type="button"  data-bs-toggle="modal" data-bs-target="#filemodal">
+                                 <i class="fa-regular fa-file fa-xl post-item-color"></i>
+                              </button>
+                           </li>
+                           <li class="list-item">
+                              <button class="calender" id="opencalender" type="button"  data-bs-toggle="modal" data-bs-target="#calendermodal">
+                                 <i class="fa-regular fa-calendar-days fa-xl post-item-color"></i>
+                              </button>
+                           </li>
+                           <li class="list-item">
+                              <button class="poll" id="openpoll" type="button"  data-bs-toggle="modal" data-bs-target="#pollmodal">
+                                 <i class="fa-solid fa-square-poll-horizontal fa-xl post-item-color"></i>
+                              </button>
+                           </li>
+							<li class="list-item">
+								<button class="place" type="button" data-bs-toggle="modal" data-bs-target="#place-modal" aria-labelledby="#place-modal">
+									<i id="open-place"class="fa-solid fa-map-location-dot fa-xl post-item-color"></i>
+								</button>
+							</li>
+						</ul>
 					</div>
 					<div class="card-footer background-color-gray">
 						<div class="d-flex justify-content-end">
-							<button id="btn" class="btn btn-primary" type="submit">게시</button>
+							<button id="add-post-btn" class="btn btn-primary" type="submit">게시</button>
 						</div>
 					</div>
 				</form>
 			</div>
 		</div>
 	</div>
-	<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+	<div class="modal fade" id="place-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -99,7 +126,7 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+					<button id="" type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
 					<button id="attachButton" type="submit" class="btn btn-primary">첨부</button>
 				</div>
 			</div>

@@ -13,11 +13,13 @@ import com.letsparty.mapper.CategoryMapper;
 import com.letsparty.mapper.PartyMapper;
 import com.letsparty.mapper.PartyReqMapper;
 import com.letsparty.mapper.PartyTagMapper;
+import com.letsparty.mapper.PlaceMapper;
 import com.letsparty.mapper.UserMapper;
 import com.letsparty.vo.Category;
 import com.letsparty.vo.Party;
 import com.letsparty.vo.PartyReq;
 import com.letsparty.vo.PartyTag;
+import com.letsparty.vo.Place;
 import com.letsparty.vo.User;
 import com.letsparty.web.form.PartyForm;
 
@@ -34,6 +36,7 @@ public class PartyService {
 	private final CategoryMapper categoryMapper;
 	private final PartyReqMapper partyReqMapper;
 	private final PartyTagMapper partyTagMapper;
+	private final PlaceMapper placeMapper;
 	@Value("${s3.path.covers}")
 	private String coversPath;
 	
@@ -160,5 +163,10 @@ public class PartyService {
 	// 파티 번호로 파티 조건 검색
 	public List<PartyReq> getPartyReqsByNo(int partyNo){
 		return partyReqMapper.getPartyReqsByNo(partyNo);
+	}
+	
+	// 지도 정보 추가
+	public void insertPlace(Place place) {
+		placeMapper.insertPlace(place);
 	}
 }

@@ -36,42 +36,26 @@ color: rgb(194, 225, 255);
   color: red;
   cursor: pointer;
 }
-.modal-content .header{
-	text-align: center;
-}
+
 .bottom-btns{
 	background-color:rgb(237, 246, 255) ;
 	padding: 10px;
 	margin-top: -5px;
 }
-.btn-list{
-	display: flex;
-	justify-content: flex-end;
-}
-.btn-file{
-    flex: 0 0 auto;
-    position: relative;
-    display: -webkit-box;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50px;
-    height: 30px;
-    margin: 0 10px;
-    margin-top: 10px;
-}
-.btn-file button{
+
+.list-item button{
 	border:none;
 	background-color:rgb(237, 246, 255) ;
 }
+
 .postWriteForm {
     position: relative;
     overflow: hidden;
     overflow-y: auto;
 }
 .card-text[contenteditable="true"]:focus {
-        outline: none; /* 클릭 시 나타나는 테두리를 없애는 스타일 */
-    }
+    outline: none; /* 클릭 시 나타나는 테두리를 없애는 스타일 */
+}
     
 .map_wrap, .map_wrap * {margin:0;padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
 .map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}

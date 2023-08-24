@@ -20,6 +20,7 @@ import com.letsparty.service.PartyService;
 import com.letsparty.util.PartyDataUtils;
 import com.letsparty.vo.Party;
 import com.letsparty.vo.PartyReq;
+import com.letsparty.vo.Place;
 import com.letsparty.web.form.PartyForm;
 
 import lombok.RequiredArgsConstructor;
@@ -129,14 +130,17 @@ public class PartyController {
 		return "redirect:/party/" + partyNo + "/setting" ;
 	}
 	
-	@GetMapping("/add-post")
-	public String addPost() {
+	@GetMapping("/{partyNo}/add-post")
+	public String addPost(@PathVariable int partyNo) {
 		return "/page/party/post";
 	}
 	
-	@GetMapping("/place-id")
-	public String placeId() {
-		return "/page/party/placeId";
+	// 장소 저장 서비스 
+	@PostMapping("/{partyNo}/add-place")
+	public String addPost(@PathVariable int partyNo, Place place) {
+		place.setNo(partyNo);
+		partyService.insertPlace(place);
+		return "";
 	}
 	
 	@GetMapping("/{partyNo}")
