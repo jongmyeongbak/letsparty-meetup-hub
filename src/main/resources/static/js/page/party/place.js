@@ -9,7 +9,7 @@ $(function(){
 	})
 })		
 
-// 카카오 API
+/* 카카오 API 시작 */
 // 마커를 담을 배열입니다
 var markers = [];
 
@@ -248,6 +248,7 @@ function removeAllChildNods(el) {
 		el.removeChild (el.lastChild);
     }
 }   
+/* 카카오 API 끝 */
 
 // tempSelectedPlace객체에 데이터를 담는 함수
 function selectPlace(place) {
@@ -285,35 +286,19 @@ $("#place-delete-btn").on("click", function(e){
 	$("#place-short-form").addClass("d-none")
 })
 
-
-// 빈 객체인지 체크하는 함수
-function isEmpty (value){
-  if(value == "" ||
-  	 value == null || 
-  	 value == undefined || 
-  	 (value != null && typeof value == "object" && !Object.getOwnPropertyNames(value).length) 
-  	 ){
-    return true
-  }else{
-    return false
-  }
-};
-// 
+// 장소 데이터 전송
 $("#add-post-btn").on("click", function(e){
 	e.preventDefault();
-	// 객체 안에 데이터가 있는지 체크하고 있으면 데이터 값 전송,
-	// 없으면 input태그 삭제 후 전송
+	// 객체 안에 데이터가 있는지 체크하고 있으면 hidden input에 값 대입 후 데이터 전송 
 	if(Object.keys(selectedPlace).length){
 		$("#place-id").val(selectedPlace.placeId);
 		$("#place-name").val(selectedPlace.placeName);
 		$("#place-address-name").val(selectedPlace.addressName);
 		$("#place-road-address-name").val(selectedPlace.roadAddressName);
-	} else {
-		$("#place-input-div").empty();
 	}
+	
 	$("#party-post-form").submit();
 })
-	
 
 });
 
