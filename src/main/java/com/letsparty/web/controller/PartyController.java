@@ -20,7 +20,6 @@ import com.letsparty.service.PartyService;
 import com.letsparty.util.PartyDataUtils;
 import com.letsparty.vo.Party;
 import com.letsparty.vo.PartyReq;
-import com.letsparty.vo.Place;
 import com.letsparty.web.form.PartyForm;
 import com.letsparty.web.form.PostForm;
 
@@ -139,7 +138,6 @@ public class PartyController {
 	// 게시물 제출
 	@PostMapping("/{partyNo}/post")
 	public String addPost(@PathVariable int partyNo, PostForm postForm) {
-		log.info("게시물 작성 폼 정보 =====> {}", postForm);
 		
 		partyService.insertPost(postForm);
 		return "redirect:/party/{partyNo}";
@@ -151,7 +149,6 @@ public class PartyController {
 		return "page/party/home";
 	}
 	
-//	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/{partyNo}/setting")
 	public String setting() {
 		return "page/party/psetting";
