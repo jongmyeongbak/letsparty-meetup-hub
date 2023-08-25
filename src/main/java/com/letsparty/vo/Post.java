@@ -14,7 +14,7 @@ public class Post {
     private long id;  
     private int no;  
     private Party partyNo; 
-    private String userId;
+    private User userId;
     private String title; 
     private String content; 
     private int readCnt; 
