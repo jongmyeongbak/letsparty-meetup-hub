@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.letsparty.mapper.PlaceMapper;
 import com.letsparty.security.user.LoginUser;
 import com.letsparty.service.CategoryService;
 import com.letsparty.service.PartyService;
@@ -22,6 +24,7 @@ import com.letsparty.vo.Party;
 import com.letsparty.vo.PartyReq;
 import com.letsparty.vo.Place;
 import com.letsparty.web.form.PartyForm;
+import com.letsparty.web.form.PostForm;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,13 +47,14 @@ public class PartyController {
 		return "page/party/member";
 	}
 	
+//	@PreAuthorize("hasRole('ROLE_LEADER')")
 	@GetMapping("/{partyNo}/setting/modify")
 	public String modify(@PathVariable int partyNo, Model model, @AuthenticationPrincipal LoginUser user) {
 		// 저장된 파티 기본 정보 조회
 		Party savedParty = partyService.getPartyByNo(partyNo);
 		
 		// 수정을 시도한 유저가 파티의 리더가 아니라면 설정화면으로 리다이렉트
-		if(!user.getId().equals(savedParty.getLeader().getId())) {
+		if(!savedParty.getLeader().getId().equals(user.getId())) {
 			return "redirect:/party/{partyNo}/setting";
 		}
 		
@@ -127,20 +131,21 @@ public class PartyController {
 		
 		partyService.modifyParty(partyForm, partyNo);
 		
-		return "redirect:/party/" + partyNo + "/setting" ;
+		return "redirect:/party/{partyNo}/setting" ;
 	}
 	
-	@GetMapping("/{partyNo}/add-post")
+	@GetMapping("/{partyNo}/post")
 	public String addPost(@PathVariable int partyNo) {
 		return "/page/party/post";
 	}
 	
-	// 장소 저장 서비스 
-	@PostMapping("/{partyNo}/add-place")
-	public String addPost(@PathVariable int partyNo, Place place) {
-		place.setNo(partyNo);
-		partyService.insertPlace(place);
-		return "";
+	// 게시물 제출
+	@PostMapping("/{partyNo}/post")
+	public String addPost(@PathVariable int partyNo, PostForm postForm) {
+		log.info("게시물 작성 폼 정보 =====> {}", postForm);
+		
+		partyService.insertPost(postForm);
+		return "redirect:/party/{partyNo}";
 	}
 	
 	@GetMapping("/{partyNo}")
@@ -149,6 +154,7 @@ public class PartyController {
 		return "page/party/home";
 	}
 	
+//	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/{partyNo}/setting")
 	public String setting() {
 		return "page/party/psetting";

@@ -22,6 +22,7 @@ import com.letsparty.vo.PartyTag;
 import com.letsparty.vo.Place;
 import com.letsparty.vo.User;
 import com.letsparty.web.form.PartyForm;
+import com.letsparty.web.form.PostForm;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -133,8 +134,36 @@ public class PartyService {
  		}
 	}
 	
+	
+	// 파티 번호로 파티 조회
+	public Party getPartyByNo(int partyNo) {
+		return partyMapper.getPartyByNo(partyNo);
+	}
+	
+	// 파티 번호로 파티 조건 검색
+	public List<PartyReq> getPartyReqsByNo(int partyNo){
+		return partyReqMapper.getPartyReqsByNo(partyNo);
+	}
+	
+	// 게시물 추가
+	public void insertPost(PostForm postForm) {
+		
+		// 지도 정보 db 추가
+		insertPlace(postForm);
+	}
+	
+	// 지도 정보 추가 메서드
+	private void insertPlace(PostForm postForm) {
+		if (postForm.getPlaceId() != null && !postForm.getPlaceId().isBlank()) {
+			Place place = new Place();
+			BeanUtils.copyProperties(postForm, place);
+			log.info("복사된 장소 객체의 값====>{}", place);
+			placeMapper.insertPlace(place);
+		}
+	}
+	
 	// Tag를 추가해주는 메서드
-	public void insertTags(List<String> tagsFromForm, Party party) {
+	private void insertTags(List<String> tagsFromForm, Party party) {
 		List<PartyTag> newTags = new ArrayList<>();
 		for (String tag : tagsFromForm) {
 			PartyTag newTag = new PartyTag();
@@ -147,26 +176,12 @@ public class PartyService {
 	}
 	
 	// PartyReq 객체를 생성해주는 메서드
-	public PartyReq createPartyReq(Party party, String name, String value) {
-	    PartyReq partyReq = new PartyReq();
-	    partyReq.setParty(party);
-	    partyReq.setName(name);
-	    partyReq.setValue(value);
-	    return partyReq;
+	private PartyReq createPartyReq(Party party, String name, String value) {
+		PartyReq partyReq = new PartyReq();
+		partyReq.setParty(party);
+		partyReq.setName(name);
+		partyReq.setValue(value);
+		return partyReq;
 	}
 	
-	// 파티 번호로 파티 조회
-	public Party getPartyByNo(int partyNo) {
-		return partyMapper.getPartyByNo(partyNo);
-	}
-	
-	// 파티 번호로 파티 조건 검색
-	public List<PartyReq> getPartyReqsByNo(int partyNo){
-		return partyReqMapper.getPartyReqsByNo(partyNo);
-	}
-	
-	// 지도 정보 추가
-	public void insertPlace(Place place) {
-		placeMapper.insertPlace(place);
-	}
 }

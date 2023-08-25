@@ -28,6 +28,12 @@ var ps = new kakao.maps.services.Places();
 // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
 var infowindow = new kakao.maps.InfoWindow({zIndex:1});
 
+// 지호 추가
+// 임시로 선택된 장소 데이터를 담을 객체
+let tempSelectedPlace = {};
+// 실제 전송될  장소 데이터를 담는 객체
+let selectedPlace = {};
+
 // 키워드로 장소를 검색합니다
 searchPlaces();
 
@@ -35,23 +41,24 @@ searchPlaces();
 function searchPlaces(address_name, place_name) {
 	// 지호 수정 사항
 	// 	- address_name + place_name
-	//	  목록을 클릭했을 해당 장소로 이동할 수 있도록, 두개의 주소 정보를 조합해서 검색시킨다.
-	//	- document.getElementById('keyword').value;
-	// 	  최초 실행시 초기 설정값인 "중앙HTA"의 검색결과를 보여주기 위해 초기 키워드 값을 대입.
-    var keyword = address_name + place_name || document.getElementById('keyword').value;
+	//	  목록을 클릭했을 해당 장소로 이동할 수 있도록, 두개의 주소 정보를 조합해서 keyword변수에 대입
+	//	- $("#keyword").val();
+	// 	  최초 실행시 초기 검색창 설정값인 "중앙HTA"의 검색결과를 보여주거나,
+	//	  리스트를 클릭해서 검색하는 게 아닌 키워드를 입력해 검색시에 검색창 키워드 값을 keyword변수에 대입.
+    let keyword = address_name + place_name || $("#keyword").val()
 
     if (!keyword.replace(/^\s+|\s+$/g, '')) {
         alert('키워드를 입력해주세요!');
         return false;
     }
+ 	// 지호 추가 사항
+ 	// - 실제로는 두 주소의 정보를 조합하여 정확한 위치를 찾아냈지만, 사용자가 자신이 찾고자 했던 위치를 쉽게
+ 	//	 인식할 수 있도록 장소검색 후 키워드 창에는 장소이름만 대입한다.
+    $("#keyword").val(place_name || $("#keyword").val());
 
     // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
     ps.keywordSearch(keyword, placesSearchCB); 
 
- 	// 지호 추가 사항
- 	// - 실제로는 두 주소의 정보를 조합하여 정확한 위치를 찾아냈지만, 사용자가 자신이 찾고자 했던 위치를 쉽게
- 	//	 인식할 수 있도록 정소검색 후 키워드 창에는 장소이름이 대입된다.
-    document.getElementById('keyword').value = place_name || document.getElementById('keyword').value;
 }
 
 // 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
@@ -138,8 +145,8 @@ function displayPlaces(places) {
 // 검색결과 항목을 Element로 반환하는 함수입니다
 function getListItem(index, places) {
     var el = document.createElement('li'),
-    // 지호 추가 사항 목록을 클릭했을 때 해당 searchPlaces메소드에 주소명과 장소명을 둘 다 넣어,
-    // 정확도를 높힌 뒤 목록이 가르키는 장소로 중심 좌표를 이동시킨다.
+    // 지호 수정 사항 - 목록을 클릭했을 때 searchPlaces메소드를 실행시키는 onclick 이벤트를 등록한다.
+    // searchPlaces메소드를 주소명과 장소명을 매개변수로 받을 수 있도록 수정하여 정확도를 높힌다.
     itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
                 '<div class="info" onclick="searchPlaces(\'' + places.address_name + '\', \'' + places.place_name + '\' );">' +
                 '   <h5>' + places.place_name + '</h5>';
@@ -157,7 +164,7 @@ function getListItem(index, places) {
     el.innerHTML = itemStr;
     el.className = 'item';
 	
-	// 생성된 리스트 엘리먼트를 클릭했을 때 만들어둔 객체에 값을 담는 함수 실행
+	// 지호 수정 사항 - 생성된 리스트 엘리먼트를 클릭했을 때 만들어둔 임시 저장 객체에 값을 담는 함수 실행
 	el.onclick = function() {
         console.log(places);
         selectPlace(places);
@@ -242,16 +249,11 @@ function removeAllChildNods(el) {
     }
 }   
 
-// 임시로 선택된 장소 데이터를 담을 객체
-// 장소 데이터를 담는 객체
-let tempSelectedPlace = {};
-let selectedPlace = {};
-
 // tempSelectedPlace객체에 데이터를 담는 함수
 function selectPlace(place) {
     tempSelectedPlace = {
-        id: place.id,
-        name: place.place_name,
+        placeId: place.id,
+        placeName: place.place_name,
         addressName: place.address_name,
         roadAddressName: place.road_address_name
     };
@@ -261,9 +263,9 @@ function selectPlace(place) {
 // 첨부 버튼을 눌러야 실제 전송될 객체에 장소 데이터를 담는다.
 $("#attachButton").on("click", function() {
     // 선택된 장소 데이터를 HTML에 적용
-    if (tempSelectedPlace.name && tempSelectedPlace.addressName) {
+    if (tempSelectedPlace.placeName && tempSelectedPlace.addressName) {
 		selectedPlace = tempSelectedPlace; // 첨부버튼을 누를 때 실제 저장소에 옮긴다.
-        $('#placeName').html('<strong>' + selectedPlace.name + '</strong>');
+        $('#placeName').html('<strong>' + selectedPlace.placeName + '</strong>');
         $('#loadLocation').text(selectedPlace.addressName);
         $("#place-modal").modal("hide");
         $("#place-short-form").removeClass("d-none")
@@ -283,27 +285,35 @@ $("#place-delete-btn").on("click", function(e){
 	$("#place-short-form").addClass("d-none")
 })
 
-/*$("#kakaoMapLink").on("click", function(e){
-	e.preventDefault();
-	// 새 윈도우 창으로 카카오에서 제공하는 지도 url과 장소id를 결합하여 이동
-	window.open("https://map.kakao.com/link/map/" + selectedPlace.id);
-})*/
 
-//객체 정보 전송하기 
+// 빈 객체인지 체크하는 함수
+function isEmpty (value){
+  if(value == "" ||
+  	 value == null || 
+  	 value == undefined || 
+  	 (value != null && typeof value == "object" && !Object.getOwnPropertyNames(value).length) 
+  	 ){
+    return true
+  }else{
+    return false
+  }
+};
+// 
 $("#add-post-btn").on("click", function(e){
 	e.preventDefault();
-	if(selectedPlace !== "") {
-		$("#place-id").val(selectedPlace.id);
-		$("#place-name").val(selectedPlace.name);
+	// 객체 안에 데이터가 있는지 체크하고 있으면 데이터 값 전송,
+	// 없으면 input태그 삭제 후 전송
+	if(Object.keys(selectedPlace).length){
+		$("#place-id").val(selectedPlace.placeId);
+		$("#place-name").val(selectedPlace.placeName);
 		$("#place-address-name").val(selectedPlace.addressName);
 		$("#place-road-address-name").val(selectedPlace.roadAddressName);
-	}   
+	} else {
+		$("#place-input-div").empty();
+	}
 	$("#party-post-form").submit();
 })
 	
-
-
-
 
 });
 
