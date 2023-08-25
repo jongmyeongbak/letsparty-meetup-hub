@@ -103,38 +103,38 @@
 			</div>
 		</div>
 	</div>
-	<div class="modal fade" id="place-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="modalLabel">지도 첨부</h5>
-				</div>
-				<div class="modal-body">
-					<div class="map_wrap">
-						<div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
-						<div id="menu_wrap" class="bg_white">
-							<div class="option">
-								<div>
-									<form onsubmit="return false;">
-										키워드 : <input type="text" value="중앙에이치티에이" id="keyword" size="10">
-										<button class="btn btn-primary" type="submit" onclick="searchPlaces();">검색하기</button>
-									</form>
+	<div layout:fragment="content-bottom" class="container my-3">
+		<div class="modal fade" id="place-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="modalLabel">지도 첨부</h5>
+					</div>
+					<div class="modal-body">
+						<div class="map_wrap">
+							<div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+							<div id="menu_wrap" class="bg_white">
+								<div class="option">
+									<div>
+										<form onsubmit="return false;">
+											키워드 : <input type="text" value="중앙에이치티에이" id="keyword" size="10">
+											<button class="btn btn-primary" type="submit" onclick="searchPlaces();">검색하기</button>
+										</form>
+									</div>
 								</div>
+								<ul id="placesList"></ul>
+								<div id="pagination"></div>
 							</div>
-							<ul id="placesList"></ul>
-							<div id="pagination"></div>
 						</div>
 					</div>
-				</div>
-				<div class="modal-footer">
-					<button id="" type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-					<button id="attachButton" type="submit" class="btn btn-primary">첨부</button>
+					<div class="modal-footer">
+						<button id="" type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+						<button id="attachButton" type="submit" class="btn btn-primary">첨부</button>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-<script layout:fragment="place-script" th:src="@{/js/page/party/place.js}">
-
-</script>
+<script layout:fragment="place-script" th:src="@{/js/page/party/place.js}"></script>
 </html>

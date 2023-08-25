@@ -4,7 +4,6 @@
 
 	<insert id="insertPlace" parameterType="com.letsparty.vo.Place">
 		insert into place (place_name, place_id, address_name, road_address_name, post_id)
-															  			 <!-- #{post.id} -->
 		values (#{placeName}, #{placeId}, #{addressName}, #{roadAddressName}, #{post.id})
 	</insert>
 </mapper>
