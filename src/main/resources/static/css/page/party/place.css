@@ -93,9 +93,3 @@ color: rgb(194, 225, 255);
 #pagination {margin:10px auto;text-align: center;}
 #pagination a {display:inline-block;margin-right:10px;}
 #pagination .on {font-weight: bold; cursor: default;color:#777;}
-
-.selected-item {
-    background-color: #007BFF;  /* Bootstrap의 파란색 코드입니다. 원하는 색상으로 변경 가능합니다. */
-}
-
-
