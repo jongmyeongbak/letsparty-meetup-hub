@@ -16,21 +16,21 @@
 					<div class="card-body">
 						<div class="form-group mb-3 col-12">
 							<label class="form-label">게시글 제목</label>
-							<input class="form-control form-control-lg" type="text" name="title"> 
+							<input class="form-control form-control-lg" type="text" name="post.title"> 
 						</div>
 						<div class="mb-3 col-12">
 							<label class="form-label">게시글 내용</label>
 							<div class="row d-flex justify-content-center" id="text">
 						
-								<textarea class="" style="width: 97%; border-color: rgb(211, 211, 211);" name="content"
+								<textarea class="" style="width: 97%; border-color: rgb(211, 211, 211);" name="post.content"
 									cols="30" rows="10"></textarea>
 							</div>
 							<!-- 지도를 첨부했을 때 폼으로 보낼 때 쓰이는 input -->
 							<div id = "place-input-div">
-							    <input type="hidden" id="place-id" name="placeId" value="" />
-							    <input type="hidden" id="place-name" name="placeName" value="" />
-							    <input type="hidden" id="place-address-name" name="addressName" value="" />
-							    <input type="hidden" id="place-road-address-name" name="roadAddressName" value="" />
+							    <input type="hidden" id="place-id" name="place.id" value="" />
+							    <input type="hidden" id="place-name" name="place.placeName" value="" />
+							    <input type="hidden" id="place-address-name" name="place.addressName" value="" />
+							    <input type="hidden" id="place-road-address-name" name="place.roadAddressName" value="" />
 							</div>
 							<div class="background-color-gray my-3 d-none" id="place-short-form">
 								<div class="border d-flex align-items-center">

@@ -10,8 +10,8 @@ import lombok.ToString;
 public class Place {
 
 	private long no;
+	private String id;
 	private String placeName;
-	private String placeId;
 	private String addressName;
 	private String roadAddressName;
 	private Post post;

@@ -1,21 +1,20 @@
 package com.letsparty.web.form;
 
+import com.letsparty.vo.Place;
+import com.letsparty.vo.Post;
+
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
+import lombok.ToString;
 
 @Getter
 @Setter
-@lombok.ToString
-@Slf4j
+@ToString
 public class PostForm {
 	
-	private String title;
-	private String content;
+	private Post post;
 	
-//	지도 vo 필드
-	private String placeName;
-	private String placeId;
-	private String addressName;
-	private String roadAddressName;
+//	지도 vo 
+	private Place place;
+
 }

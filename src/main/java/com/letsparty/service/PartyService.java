@@ -20,6 +20,7 @@ import com.letsparty.vo.Party;
 import com.letsparty.vo.PartyReq;
 import com.letsparty.vo.PartyTag;
 import com.letsparty.vo.Place;
+import com.letsparty.vo.Post;
 import com.letsparty.vo.User;
 import com.letsparty.web.form.PartyForm;
 import com.letsparty.web.form.PostForm;
@@ -147,19 +148,29 @@ public class PartyService {
 	
 	// 게시물 추가
 	public void insertPost(PostForm postForm) {
+		Post post = new Post();
+		BeanUtils.copyProperties(postForm.getPost(), post);
 		
-		// 지도 정보 db 추가
-		insertPlace(postForm);
+//		게시물 저장 후 반환된 postId가 등록되어야 함
+		long postId = post.getId();
+		
+		// 폼에 지도 정보가 있다면 반환받은 게시물 id와 지도 정보 db 저장
+		if (postForm.getPlace().getId() != null && !postForm.getPlace().getId().isBlank()) {
+			insertPlace(postForm, 1);	// 실제 코드 insertPlace(postForm, postId);
+		}
 	}
 	
-	// 지도 정보 추가 메서드
-	private void insertPlace(PostForm postForm) {
-		if (postForm.getPlaceId() != null && !postForm.getPlaceId().isBlank()) {
-			Place place = new Place();
-			BeanUtils.copyProperties(postForm, place);
-			log.info("복사된 장소 객체의 값====>{}", place);
-			placeMapper.insertPlace(place);
-		}
+	// 게시물용 지도 정보 추가 메서드
+	private void insertPlace(PostForm postForm, long postId) {
+		Place place = new Place();
+		BeanUtils.copyProperties(postForm.getPlace(), place);
+		
+		// place객체의 게시물 id 등록
+		Post post = new Post();
+		post.setId(postId);
+		place.setPost(post);
+		
+		placeMapper.insertPlace(place);
 	}
 	
 	// Tag를 추가해주는 메서드
