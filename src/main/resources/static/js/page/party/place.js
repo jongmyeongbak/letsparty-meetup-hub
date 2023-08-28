@@ -253,8 +253,8 @@ function removeAllChildNods(el) {
 // tempSelectedPlace객체에 데이터를 담는 함수
 function selectPlace(place) {
     tempSelectedPlace = {
-        placeId: place.id,
-        placeName: place.place_name,
+        id: place.id,
+        name: place.place_name,
         addressName: place.address_name,
         roadAddressName: place.road_address_name
     };
@@ -264,9 +264,9 @@ function selectPlace(place) {
 // 첨부 버튼을 눌러야 실제 전송될 객체에 장소 데이터를 담는다.
 $("#attachButton").on("click", function() {
     // 선택된 장소 데이터를 HTML에 적용
-    if (tempSelectedPlace.placeName && tempSelectedPlace.addressName) {
+    if (tempSelectedPlace.name && tempSelectedPlace.addressName) {
 		selectedPlace = tempSelectedPlace; // 첨부버튼을 누를 때 실제 저장소에 옮긴다.
-        $('#placeName').html('<strong>' + selectedPlace.placeName + '</strong>');
+        $('#placeName').html('<strong>' + selectedPlace.name + '</strong>');
         $('#loadLocation').text(selectedPlace.addressName);
         $("#place-modal").modal("hide");
         $("#place-short-form").removeClass("d-none")
@@ -291,8 +291,8 @@ $("#add-post-btn").on("click", function(e){
 	e.preventDefault();
 	// 객체 안에 데이터가 있는지 체크하고 있으면 hidden input에 값 대입 후 데이터 전송 
 	if(Object.keys(selectedPlace).length){
-		$("#place-id").val(selectedPlace.placeId);
-		$("#place-name").val(selectedPlace.placeName);
+		$("#place-id").val(selectedPlace.id);
+		$("#place-name").val(selectedPlace.name);
 		$("#place-address-name").val(selectedPlace.addressName);
 		$("#place-road-address-name").val(selectedPlace.roadAddressName);
 	}
