@@ -15,7 +15,7 @@ public class LetsPartyController {
 	}
 	
 	// 렛츠파티 게시글 작성 화면으로 이동
-	@GetMapping("/post/catNo={catNo}")
+	@GetMapping("/post")
 	public String post() {
 		return "page/letsparty/post";
 	}

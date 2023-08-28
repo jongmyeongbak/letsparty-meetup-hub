@@ -19,9 +19,13 @@
 }
 
 .select-party {
-        overflow: auto;
-        height: 39px;
-    }
+    overflow-y: auto;
+}
+
+.party-select-container {
+	display: block;
+	width: 100%;
+}
 
 .card-header {
 	background-color: rgb(237, 246, 255);

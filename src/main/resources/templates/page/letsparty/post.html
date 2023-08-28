@@ -9,63 +9,40 @@
         <div class="col-12">
             <div class="card card-line">
                 <div class="card-header">
-                    <ul id="letparty-category" class="nav nav-tabs card-header-tabs" >
-                        <li class="nav-item active">
-                            <a class="nav-link active" aria-current="true">취미/동호회</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link">가족</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link">스터디</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link">학교/동아리</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" >운동</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link">지역</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link">재테크</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" >자유주제</a>
-                        </li>
-                    </ul>
-                </div>			
-                <div class="card-body">
-                    <div class="d-flex jutstify-content-start mb-3">
+                    <div class="d-flex jutstify-content-start">
                         <h5 class="pt-1 h5-text-black">렛츠 파티에 게시물을 작성해보세요!</h5>
                     </div>
-                        <div class="row d-flex align-items-center">
-                            <div class="form-group mb-3 col">
-                                <label class="form-label">게시글 제목</label>
-                                <input type="text" class="form-control form-control">
-                            </div>
-                            <div class="d-flex jutstify-content-end col-3 pt-3">
-                                <select class="form-select form-select select-party">
-                                    <option class="" disabled selected>파티를 고르세요</option>
-                                    <option>강서구 보드게임 탐방</option>
-                                    <option>모각코</option>
-                                    <option>취업 스터디 방</option>
-                                    <option>부자 엄마 아빠 되기</option>
-                                    <option>강아지 잘 키우기</option>
-                                    <option>복숭아 산악회</option>
-                                    <option>등촌 맛집 모임</option>
-                                </select>
-                            </div>
+                </div>			
+                <div class="card-body">
+                    <div class="row d-flex align-items-center">
+                        <div class="form-group mb-3 col-9">
+                            <label class="form-label">게시글 제목</label>
+                            <input type="text" class="form-control form-control" placeholder="게시글 제목을 입력해주세요.">
                         </div>
+                        <div class="d-flex jutstify-content-end col-3 pb-3">
+							<div class="party-select-container">
+								<label class="form-label">소속 파티</label>
+	                            <select class="form-select form-select select-party">
+	                                <option class="" disabled selected>파티를 고르세요</option>
+	                                <option>강서구 보드게임 탐방</option>
+	                                <option>모각코</option>
+	                                <option>취업 스터디 방</option>
+	                                <option>부자 엄마 아빠 되기</option>
+	                                <option>강아지 잘 키우기</option>
+	                                <option>복숭아 산악회</option>
+	                                <option>등촌 맛집 모임</option>
+	                            </select>
+							</div>
+                        </div>
+                    </div>
                     <div class="mb-3">
                         <label class="form-label">게시글 내용</label>
-                        <textarea class="form-control" id="" cols="30" rows="10"></textarea>
+                        <textarea class="form-control" id="" cols="30" rows="10" placeholder="다른 파티에서 관심을 보일 수 있는 내용을 작성해주세요."></textarea>
                     </div>
                 </div>     
                 <div class="card-footer background-color-gray">
                     <div class="text-end">
-                        <a class="btn btn-secondary">취소</a>
+                        <a id="cancel-btn" class="btn btn-secondary">취소</a>
                         <a id="btn"class="btn btn-primary">게시</a>
                     </div>
                 </div>
@@ -78,5 +55,5 @@
 		<h1>modal영역</h1>
 	</div>
 </div>
-<script layout:fragment="script" th:src="@{/js/page/main/home.js}"></script>
+<script layout:fragment="script" th:src="@{/js/page/letsparty/post.js}"></script>
 </html>
