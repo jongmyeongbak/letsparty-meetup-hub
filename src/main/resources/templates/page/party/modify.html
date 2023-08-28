@@ -72,7 +72,6 @@
                             </div>
                             <p class="text-muted">파티명과 사진은 개설후에도 변경할 수 있어요</p>
                         </div>
-                    
                         <div class="row">
                             <!-- 카테고리 선택 -->
                             <div class="mb-3 col-6">
@@ -84,8 +83,6 @@
                                     </th:block>
                                 </select>
                             </div>
-                            
-                            
                             <!-- 최대 정원 -->
                             <div class="mb-3 col-6">
                                 <label class="form-label">최대정원</label>
@@ -94,7 +91,6 @@
                             <div th:errors="*{quota}" th:classappend="${#fields.hasErrors('quota') ? 'invalid-feedback' : ''}"></div>
                             </div>
                         </div>
-                        
                         <div class="row">
                             <!-- 가입조건 -->
                             <div class="mb-3 col-6">
@@ -158,8 +154,8 @@
                             <button id="btn" class="btn btn-primary">파티수정</button>
                         </div>
                     </div>
-                </div>
-            </form>
+	            </form>
+            </div>
         </div>
     </div>
    </div>

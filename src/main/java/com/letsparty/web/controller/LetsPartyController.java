@@ -13,4 +13,10 @@ public class LetsPartyController {
 	public String home(Model model) {
 		return "page/letsparty/home";
 	}
+	
+	// 렛츠파티 게시글 작성 화면으로 이동
+	@GetMapping("/post/catNo={catNo}")
+	public String post() {
+		return "page/letsparty/post";
+	}
 }
