@@ -21,12 +21,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ChatController {
 
-	private final ChatService chatRoomService;
+	private final ChatService chatService;
 	
 	// 목록에 보이는 채팅방 열기
 	@GetMapping("/{roomId}")
 	public String home(@PathVariable String roomId, @AuthenticationPrincipal LoginUser loginUser, HttpSession session) {
-		if (!chatRoomService.joinRoomIfPossible(loginUser.getId(), loginUser.getNo(), roomId)) {
+		if (!chatService.joinRoomIfPossible(loginUser.getId(), loginUser.getNo(), roomId)) {
 			return "redirect:/";
 		}
 		session.setAttribute("roomId", roomId);
@@ -36,7 +36,7 @@ public class ChatController {
 	// 1:1 채팅방 접속. 없으면 개설 후 접속.
 	@GetMapping("/room/{partyNo}")
 	public String createRoom(@AuthenticationPrincipal LoginUser loginUser, @PathVariable int partyNo, @RequestParam("invitee_nos") List<Integer> inviteeNos) {
-		String roomId = chatRoomService.createPrivateRoom(loginUser, partyNo, inviteeNos);
+		String roomId = chatService.createPrivateRoom(loginUser, partyNo, inviteeNos);
 		return String.format("redirect:/chat/%s", roomId);
 	}
 	
