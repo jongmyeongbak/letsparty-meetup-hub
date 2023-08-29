@@ -94,7 +94,7 @@ public class ChatChannelInterceptor implements ChannelInterceptor {
 		return message;
 	}
 	
-	public boolean isUserInRoom(String roomId, int userNo) {
+	private boolean isUserInRoom(String roomId, int userNo) {
 		ChatUser chatUser = ChatUser.builder().roomId(roomId).userNo(userNo).build();
 		Long lastReadMessageNo = chatUserMapper.findLastReadMessageNoByRoomNoAndUserNo(chatUser);
 		return lastReadMessageNo != null;
