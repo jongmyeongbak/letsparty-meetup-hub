@@ -237,7 +237,7 @@
 	</nav>
 	<div class="blank mb-3">
 	</div>
-	<nav class="navbar fixed-top navbar-expand-sm">
+	<nav th:if="${hasPartyKeyword}" class="navbar fixed-top navbar-expand-sm">
 	    <div class="container justify-content-center">
 	        <ul class="navbar-nav nav2">
 	            <li class="nav-item">
@@ -255,6 +255,6 @@
 	        </ul>
 	    </div>
 	</nav>
-	<div class="blank-1 mb-3">
+	<div  th:if="${hasPartyKeyword}" class="blank-1 mb-3">
 	</div>
 </th:block>
