@@ -12,7 +12,7 @@ import lombok.ToString;
 public class UserPartyApplication {
 
 	private long no;
-	private int partyNo;
+	private Party party;
 	private User user;
 	private int roleNo;
 	private UserProfile userProfile;

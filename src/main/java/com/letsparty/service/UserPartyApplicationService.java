@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.letsparty.mapper.UserPartyApplicationMapper;
 import com.letsparty.mapper.UserProfileMapper;
+import com.letsparty.vo.Party;
 import com.letsparty.vo.User;
 import com.letsparty.vo.UserPartyApplication;
 import com.letsparty.vo.UserProfile;
@@ -25,7 +26,9 @@ public class UserPartyApplicationService {
 		User user = new User();
 		user.setId(userId);
 		UserPartyApplication userPartyApplication = new UserPartyApplication();
-		userPartyApplication.setPartyNo(partyNo);
+		Party party = new Party();
+		party.setNo(partyNo);
+		userPartyApplication.setParty(party);
 		userPartyApplication.setUser(user);
 		userPartyApplication.setRoleNo(roleNo);
 		userPartyApplication.setUserProfile(userProfile);

@@ -7,13 +7,13 @@
 		INSERT INTO user_party_application
 		(party_no, user_id, role_no, profile_no, application_status, user_remark)
 		VALUES
-		(#{partyNo}, #{user.id}, #{roleNo}, #{userProfile.no}, #{status}, #{userRemark})
+		(#{party.no}, #{user.id}, #{roleNo}, #{userProfile.no}, #{status}, #{userRemark})
 	</insert>
 
 	<select id="findByNo" parameterType="long" resultType="UserPartyApplication">
 		SELECT
 			upa.application_no as no,
-			upa.party_no,
+			upa.party_no as "party.no",
 			upa.user_id as "user.id",
 			upa.role_no,
 			upa.application_status as status,
@@ -33,7 +33,7 @@
 	<select id="findByPartyNoAndUserId" resultType="UserPartyApplication">
 		SELECT
 			upa.application_no as no,
-			upa.party_no,
+			upa.party_no as "party.no",
 			upa.user_id as "user.id",
 			upa.role_no,
 			upa.application_status as status,
@@ -54,7 +54,7 @@
 	<select id="findAllByPartyNo" parameterType="int" resultType="UserPartyApplication">
 		SELECT
 			upa.application_no as no,
-			upa.party_no,
+			upa.party_no as "party.no",
 			upa.user_id as "user.id",
 			upa.role_no,
 			upa.application_status as status,
@@ -76,7 +76,7 @@
 	<select id="findAllWithUserNoByPartyNoAndStatus" resultType="UserPartyApplication">
 		SELECT
 			upa.application_no as no,
-			upa.party_no,
+			upa.party_no as "party.no",
 			upa.role_no,
 			upa.application_status as status,
 			upa.created_at,
