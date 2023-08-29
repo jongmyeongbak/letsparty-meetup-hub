@@ -19,4 +19,14 @@
 			category_name		as name
 		from party_category
 	</select>
+	
+	<!-- 파티 번호로 카테고리 조회 -->
+	<select id="getCategoryByPartyNo" parameterType="int" resultType="com.letsparty.vo.Category">
+		select 
+			pc.category_no		as no,
+			pc.category_name	as name
+		from party_category pc
+		inner join party p on pc.category_no = p.category_no
+		where p.party_no = #{value}
+	</select>
 </mapper>

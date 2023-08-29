@@ -1,5 +1,7 @@
 package com.letsparty.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.letsparty.mapper.UserPartyApplicationMapper;
@@ -35,4 +37,9 @@ public class UserPartyApplicationService {
 		userPartyApplication.setStatus("승인");
 		userPartyApplicationMapper.insert(userPartyApplication);
 	}
+	
+	public List<UserPartyApplication> findAllByUserId(String userId) {
+		return userPartyApplicationMapper.findAllByUserId(userId);
+	}
+
 }

@@ -106,7 +106,13 @@
 	<!-- 사용자가 리더인 파티들 조회 -->
 	<select id="findAllByUserId" parameterType="string">
 		select 
-			upa.application_no, upa.party_no, upa.user_id, upa.role_no, upa.profile_no, p.party_name, party_filename
+			upa.application_no	as no,
+			upa.party_no		as "party.no",
+			upa.user_id		 	as "user.id",
+			upa.role_no			as roleNo, 
+			p.party_name		as "party.name",
+			p.party_filename	as "party.filename", 
+			p.category_no		as "party.category.no"
 		from 
 			user_party_application upa
 		inner join party p on upa.party_no = p.party_no

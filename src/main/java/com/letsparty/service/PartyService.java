@@ -59,7 +59,8 @@ public class PartyService {
 	public int createParty(PartyForm partyCreateForm, String leaderId) {	
 		Party party = new Party();
 		BeanUtils.copyProperties(partyCreateForm, party);
-		party.setName(party.getName().trim()); 
+		party.setName(party.getName().trim());
+//	    party.setDescription(party.getDescription().trim());
 		
 		// 파티 리더
 		User leader = userMapper.getUserById(leaderId);
@@ -114,6 +115,7 @@ public class PartyService {
 	    // 파티 기존 파티 정보 복사
 	    BeanUtils.copyProperties(partyModifyForm, party);
 	    party.setName(party.getName().trim());
+	    party.setDescription(party.getDescription().trim());
 	    
 	    String fullPath = (partyModifyForm.getSavedName() != null) ? partyModifyForm.getSavedName() : partyModifyForm.getDefaultImagePath();
 	    

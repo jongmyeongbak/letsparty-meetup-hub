@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.letsparty.mapper.LetsPartyMapper">
+	<insert id="insertPost" parameterType="com.letsparty.vo.LetsPartyPost">
+		insert into letsparty_post (category_no, party_no, user_id, post_title, post_content)
+		values (#{category.no}, #{party.no}, #{user.id}, #{title}, #{content})
+	</insert>
+</mapper>
