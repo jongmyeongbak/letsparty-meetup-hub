@@ -1,0 +1,191 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/common-base}">
+<!-- 고유 CSS -->
+<head>
+    <link rel="stylesheet" th:href="@{/css/page/letsparty/detail.css}" >
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+<!-- 고유 content -->
+<div layout:fragment="content-top" class="container">
+	 <div class="row mb-3">
+        <div class="col-12">
+            <div class="card card-line">
+                
+                <!-- 프로필, 게시물 제목, 닉네임 -->
+                <div class="card-body">
+                    
+                   <div class="d-flex justify-content-between align-items-center" style="margin-top: -10px;">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <!-- 파티의 헤더 -->
+                            <div class="post-profile-container me-3">
+                                <div class="post-profile-container-inner">
+                                    <img src="/images/party/cover-default1.png" alt="" class="post-image" style="width: 70px;">
+                                </div>
+                            </div>
+                            
+                            <div class="pt-3">
+                                <h4 class="card-title ellipsis-title">렛츠파티 게시물 제목입니다. 저희 파티 구경오세요~</h4>
+                                <!-- 날짜  -->
+                                <div class="mt-2">
+                                    <p class="cart-text"><small class="text-muted">2023년 8월 3일 오전 11 : 45</small></p>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="d-flex justify-content-center align-items-center pb-2">
+	                        <div class="card-text pb-3">
+	                            <h5 class="ellipsis-party-name" ><a href="">파티이름</a></h5>
+	                        </div>
+                            <p class="card-text pb-2"><small>(리더아이디)</small></p>
+                            <!-- 드롭다운 구간 -->
+                            <div class="dropdown-center pb-4" style="position: relative;">
+                                <a href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-three-dots-vertical text-muted"></i>
+                                </a>
+                                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <li>
+                                        <a class="dropdown-item" href="">글 수정</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="">공유</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="">삭제</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="">채팅하기-타인</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="">신고-타인</a>
+                                    </li>
+                                  </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 포스트 내용 -->
+                    <div id="post-body">
+                        <!-- 게시물 글 -->
+                        <div id="text">
+                            <p class="card-text">저희 파티에 놀러오세요 저희 파티는 반려동물을 사랑하는 사람들의 모임입니다~</p>
+                        </div>
+                    </div>
+
+                    <!-- 게시물 하단 공감수, 댓글 수, 조회수  -->
+                    <div class="card-text">
+                        <div class="d-flex justify-content-between align-items-center" style="margin-bottom: -20px;">
+                           <div class="d-flex align-items-center">
+                                <div class="mb-3 me-2">
+                                    <small class=""><i class="fa-regular fa-face-smile text-muted"></i> <span class="text-muted">99</span></small>
+                                </div>
+                                <p class="">
+                                    <small class="text-muted">댓글 <span class="text-muted">5</span></small>
+                                    <i class="bi bi-chevron-down more-button" style="cursor: pointer;"></i>
+                                </p>
+                            </div>
+
+                            <!-- 우 -->
+                            <div class="d-flex ">
+                                <p class="">
+                                    <i class="bi bi-eye" style="cursor: pointer;"></i>
+                                    <small class="text-muted"><span class="text-muted">999</span></small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 댓글창  -->
+                <div class="card-footer" style="background-color: #fafafa;">
+                    <div class="row border-bottom pb-2 mb-2" style="margin: 0 -16px;">
+                        <!-- 공감하기, 댓글쓰기 -->
+                        <div class="post-add d-flex">
+                            <div class="col-6 d-flex justify-content-center">
+                                <a href="" class="text-decoration-none"><i class="fa-regular fa-face-smile fa-lg"></i> <span>공감하기</span></a>
+                            </div>
+                            <div class="col-6 d-flex justify-content-center">
+                                <a href="" class="text-decoration-none"><i class="fa-regular fa-comment-dots fa-lg"></i> <span>댓글쓰기</span></a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 댓글 -->
+                    <div class="row pb-2">
+                        <div class="col-12" id="comment">
+                            <div class="row pe-3 border-bottom">
+                                <div class="col-12">
+                                    <div class="row d-flex" style="margin-right: -75px;">
+                                        <!-- 프로필 -->
+                                        <div class="col-1 post-comment-profile-container ">
+                                            <div class="post-comment-profile-container-inner">
+                                                <img src="/images/party/cover-default4.png" alt="" class="comment-image">
+                                            </div>
+                                        </div>
+                                        <div class="col-11" style="margin: 0 -12px;">
+                                            <div class="col-12 d-flex justify-content-between">
+                                                <!-- 닉네임 -->
+                                                <span>댓글닉네임</span>
+                                              
+                                                <!-- 드롭다운 구간 -->
+                                                <div class="dropstart" style="position: relative;">
+                                                    <a href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical my-0 py-0 text-muted"></i>
+                                                    </a>
+                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                        <li>
+                                                            <a class="dropdown-item" href="">댓글 수정</a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" href="">댓글 삭제</a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" href="">신고-타인</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                    
+                                            
+                                            <!-- 내용 -->
+                                            <div class="d-flex justify-content-between">
+                                                <p style="margin-bottom: -5px;">댓글입니다. 1</p>
+                                            </div>
+
+                                            <div class="d-flex align-items-center">
+                                                <!-- 날짜 -->
+                                                <div class="mt-1 mb-1" >
+                                                    <small class="text-muted">2023년 8월 3일 오후 5 : 10</small><span class="text-muted"></span>
+                                                </div>
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 댓글 하나 끝 -->
+                </div>
+
+                <!-- 댓글 작성 폼 -->
+                <div class="row mb-2 ms-2 d-flex justify-content-center align-items-center" >
+                    <div class="col-11">
+                        <input type="text" class="form-control" placeholder="댓글을 남겨주세요.">
+                    </div>
+                    <div class="col ps-4" >
+                        <button id="btn" class="btn btn-primary btn-sm">등록</button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 모달 등 추가 div가 필요할 경우만 사용 -->
+<div layout:fragment="content-bottom">
+	<div class="modal">
+		<h1>modal영역</h1>
+	</div>
+</div>
+<!-- 고유 script -->
+<script layout:fragment="script" th:src="@{/js/page/main/home.js}"></script>
+</html>
