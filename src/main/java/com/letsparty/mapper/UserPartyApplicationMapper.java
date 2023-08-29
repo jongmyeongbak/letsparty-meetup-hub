@@ -20,4 +20,5 @@ public interface UserPartyApplicationMapper {
 			@Param("myNo") Integer myNo // Nullable parameter
 	);
 	void update(UserPartyApplication userPartyApplication);
+	List<UserPartyApplication> findAllByUserId(String userId);
 }

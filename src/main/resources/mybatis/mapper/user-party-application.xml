@@ -102,6 +102,18 @@
 			</choose>
 			role_no, "userProfile.nickname"
 	</select>
+	
+	<!-- 사용자가 리더인 파티들 조회 -->
+	<select id="findAllByUserId" parameterType="string">
+		select 
+			upa.application_no, upa.party_no, upa.user_id, upa.role_no, upa.profile_no, p.party_name, party_filename
+		from 
+			user_party_application upa
+		inner join party p on upa.party_no = p.party_no
+		where user_id = #{value}
+		and role_no in(6, 7)
+		and application_status = '승인';
+	</select>
 
 	<update id="update" parameterType="UserPartyApplication">
 		UPDATE user_party_application
