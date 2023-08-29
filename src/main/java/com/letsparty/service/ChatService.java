@@ -96,7 +96,7 @@ public class ChatService {
 		return roomId;
 	}
 	
-	public boolean isUserInRoom(int userNo, String roomId) {
+	private boolean isUserInRoom(int userNo, String roomId) {
 		ChatUser chatUser = ChatUser.builder().roomId(roomId).userNo(userNo).build();
 		Long lastReadMessageNo = chatUserMapper.findLastReadMessageNoByRoomNoAndUserNo(chatUser);
 		return lastReadMessageNo != null;
