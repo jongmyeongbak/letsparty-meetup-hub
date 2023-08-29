@@ -1,6 +1,7 @@
 package com.letsparty.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.letsparty.vo.Party;
 
@@ -15,6 +16,7 @@ public interface PartyMapper {
 	
 	// 파티 조회
 	Party getPartyByNo(int partyNo);
+	Party getPartyByNameAndCategoryNo(@Param("partyName") String name, @Param("categoryNo") int categoryNo);
 	
 	// 파티 수정
 	void updateParty(Party party);

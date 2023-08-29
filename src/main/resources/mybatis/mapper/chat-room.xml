@@ -2,26 +2,126 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.letsparty.mapper.ChatRoomMapper">
 	
-	<insert id="createChatRoom" parameterType="ChatRoom" useGeneratedKeys="true" keyProperty="no">
+	<insert id="insertChatRoom" parameterType="ChatRoom" useGeneratedKeys="true" keyProperty="no">
 		INSERT IGNORE INTO chat_room
 		VALUES
-			(0, #{id}, #{chattersCnt}, #{partyNo}, #{creatorNo}, #{isPublic}, #{title}, #{description})
+			(0, #{id}, #{chattersCnt}, #{party.no}, #{creatorNo}, #{isPublic}, #{isEssential}, #{title}, #{description})
 	</insert>
 	
 	<select id="findById" parameterType="string" resultType="ChatRoom">
 		SELECT
+			cr.room_no as no,
+			cr.room_id as id,
+			cr.chatters_cnt,
+			cr.party_no as "party.no",
+			p.party_name as "party.name",
+			cr.creator_no,
+			cr.is_public,
+			cr.is_essential,
+			cr.room_title as title,
+			cr.room_description as description
+		FROM
+			chat_room cr
+		JOIN
+			party p ON cr.party_no = p.party_no
+		WHERE
+			room_id = #{value}
+	</select>
+	
+	<select id="findAllByPartyNoAndCreatorNo" resultType="ChatRoom">
+		SELECT
 			room_no as no,
 			room_id as id,
 			chatters_cnt,
-			party_no,
+			party_no as "party.no",
 			creator_no,
 			is_public,
+			is_essential,
 			room_title as title,
 			room_description as description
 		FROM
 			chat_room
+		WHERE party_no = #{partyNo}
+		AND creator_no = #{creatorNo}
+	</select>
+	
+	<select id="findAllByPartyNoAndCreatorNoAndIsPublicAndChattersCnt" resultType="ChatRoom">
+		SELECT
+			room_no as no,
+			room_id as id,
+			chatters_cnt,
+			party_no as "party.no",
+			creator_no,
+			is_public,
+			is_essential,
+			room_title as title,
+			room_description as description
+		FROM
+			chat_room
+		WHERE party_no = #{partyNo}
+		AND creator_no = #{creatorNo}
+		AND is_public = #{isPublic}
+		AND chatters_cnt = #{chattersCnt}
+	</select>
+	
+	<select id="findOneToOneRoomIdByPartyNo" resultType="string">
+		SELECT cr.room_id
+		FROM chat_room AS cr
+		WHERE
+			cr.is_public = 0 AND
+			cr.chatters_cnt = 2 AND
+			cr.party_no = #{partyNo} AND
+			(
+				(
+					cr.creator_no = #{userNo1}
+					AND EXISTS (
+						SELECT 1
+						FROM chat_user AS cu
+						WHERE cu.room_id = cr.room_id AND cu.user_no = #{userNo2}
+					)
+				)
+				OR
+				(
+					cr.creator_no = #{userNo2}
+					AND EXISTS (
+						SELECT 1
+						FROM chat_user AS cu
+						WHERE cu.room_id = cr.room_id AND cu.user_no = #{userNo1}
+					)
+				)
+			)
+		LIMIT 1;
+	</select>
+	
+	<update id="updateChatRoom" parameterType="ChatRoom">
+		UPDATE chat_room
+		SET
+			room_title = #{title}
+			room_description = #{description}
+		WHERE
+			room_id = #{id}
+	</update>
+	
+	<update id="increaseChattersCntById" parameterType="string">
+		UPDATE chat_room
+		SET
+			chatters_cnt = chatters_cnt + 1
 		WHERE
 			room_id = #{value}
-	</select>
+	</update>
+	
+	<update id="decreaseChattersCntById" parameterType="string">
+		UPDATE chat_room
+		SET
+			chatters_cnt = chatters_cnt - 1
+		WHERE
+			room_id = #{value}
+	</update>
+	
+	<delete id="deleteChatRoomById" parameterType="string">
+		DELETE FROM chat_room
+		WHERE
+			room_id = #{value}
+	</delete>
 	
 </mapper>

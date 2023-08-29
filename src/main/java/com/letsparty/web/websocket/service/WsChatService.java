@@ -2,9 +2,13 @@ package com.letsparty.web.websocket.service;
 
 import java.util.Map;
 
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
+import com.letsparty.mapper.ChatMessageMapper;
+import com.letsparty.mapper.ChatRoomMapper;
+import com.letsparty.mapper.ChatUserMapper;
 import com.letsparty.web.websocket.dto.ChatMessageDto;
 import com.letsparty.web.websocket.service.SessionInfoMapper.SessionDetails;
 
@@ -14,7 +18,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class WsChatService {
 
+	private final SimpMessagingTemplate messagingTemplate;
 	private final SessionInfoMapper sessionInfoMapper;
+	private final ChatRoomMapper chatRoomMapper;
+	private final ChatUserMapper chatUserMapper;
+	private final ChatMessageMapper chatMessageMapper;
 
 	public ChatMessageDto handleSendMessage(ChatMessageDto message, String roomId, Map<String, Object> headers) {
 		String simpSessionId = (String) headers.get("simpSessionId");

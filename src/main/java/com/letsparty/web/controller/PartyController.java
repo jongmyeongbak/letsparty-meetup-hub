@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +23,7 @@ import com.letsparty.vo.Party;
 import com.letsparty.vo.PartyReq;
 import com.letsparty.vo.Post;
 import com.letsparty.vo.User;
+import com.letsparty.vo.UserPartyApplication;
 import com.letsparty.web.form.PartyForm;
 import com.letsparty.web.form.PostForm;
 
@@ -38,11 +40,19 @@ public class PartyController {
 	private final CategoryService categoryService;
 	@Value("${s3.path.covers}")
 	private String coversPath;
-
+	@Value("${s3.path.profiles}")
+	private String profilesPath;
 	
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/{partyNo}/member")
-	public String member(@PathVariable int partyNo) {
-		// partyNo를 사용하여 파티 멤버를 조회하고 작업을 수행합니다.
+	public String member(@PathVariable int partyNo, @AuthenticationPrincipal LoginUser loginUser, Model model) {
+		if (!partyService.isPartyMember(loginUser.getId(), partyNo)) {
+			return "redirect:/party/{partyNo}";
+		}
+		List<UserPartyApplication> userPartyApplications = partyService.getUserPartyApplications(partyNo, loginUser.getNo());
+		model.addAttribute("users", userPartyApplications);
+		model.addAttribute("partyNo", partyNo);
+		model.addAttribute("profilesPath", profilesPath);
 		return "page/party/member";
 	}
 	

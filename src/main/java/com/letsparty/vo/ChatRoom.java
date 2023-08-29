@@ -13,24 +13,24 @@ public class ChatRoom {
 	private int no;
 	private String id;
 	private int chattersCnt;
-	private Integer partyNo;
+	private Party party;
 	private Integer creatorNo;
 	private boolean isPublic;
+	private boolean isEssential;
 	private String title;
 	private String description;
 	
 	@Builder
-	public ChatRoom(String id, int chattersCnt, Integer partyNo, Integer creatorNo, boolean isPublic, String title,
+	public ChatRoom(String id, int chattersCnt, Party party, Integer creatorNo, boolean isPublic, boolean isEssential, String title,
 			String description) {
 		super();
 		this.id = id;
 		this.chattersCnt = chattersCnt;
-		this.partyNo = partyNo;
+		this.party = party;
 		this.creatorNo = creatorNo;
 		this.isPublic = isPublic;
+		this.isEssential = isEssential;
 		this.title = title;
 		this.description = description;
 	}
-	
-	
 }

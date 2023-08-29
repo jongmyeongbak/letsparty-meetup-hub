@@ -10,7 +10,7 @@ import com.letsparty.vo.ChatUser;
 @Mapper
 public interface ChatUserMapper {
 
-	void createChatUser(ChatUser chatUser);
+	boolean insertChatUser(ChatUser chatUser);
 	Long findLastReadMessageNoByRoomNoAndUserNo(ChatUser chatUser);
 	List<ChatUserResponse> findByRoomId(int roomId);
 }

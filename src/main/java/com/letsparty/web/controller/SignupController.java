@@ -16,7 +16,7 @@ import com.letsparty.exception.DuplicateEmailException;
 import com.letsparty.exception.DuplicateUserIdException;
 import com.letsparty.security.user.CustomOAuth2User;
 import com.letsparty.service.AuthenticationService;
-import com.letsparty.service.MyService;
+import com.letsparty.service.UserProfileService;
 import com.letsparty.service.UserService;
 import com.letsparty.service.ValidationService;
 import com.letsparty.vo.UserProfile;
@@ -34,7 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 public class SignupController {
 	
 	private final UserService userService;
-	private final MyService myService;
+	private final UserProfileService myService;
 	private final AuthenticationService authenticationService;
 	private final ValidationService validationService;
 		

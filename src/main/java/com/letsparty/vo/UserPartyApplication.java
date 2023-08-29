@@ -13,7 +13,7 @@ public class UserPartyApplication {
 
 	private long no;
 	private int partyNo;
-	private String userId;
+	private User user;
 	private int roleNo;
 	private UserProfile userProfile;
 	private String status;

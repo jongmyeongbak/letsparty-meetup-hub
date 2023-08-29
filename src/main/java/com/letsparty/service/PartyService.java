@@ -16,6 +16,7 @@ import com.letsparty.mapper.PartyReqMapper;
 import com.letsparty.mapper.PartyTagMapper;
 import com.letsparty.mapper.PlaceMapper;
 import com.letsparty.mapper.UserMapper;
+import com.letsparty.mapper.UserPartyApplicationMapper;
 import com.letsparty.vo.Category;
 import com.letsparty.vo.Media;
 import com.letsparty.vo.Party;
@@ -24,6 +25,7 @@ import com.letsparty.vo.PartyTag;
 import com.letsparty.vo.Place;
 import com.letsparty.vo.Post;
 import com.letsparty.vo.User;
+import com.letsparty.vo.UserPartyApplication;
 import com.letsparty.web.form.PartyForm;
 import com.letsparty.web.form.PostForm;
 
@@ -42,8 +44,17 @@ public class PartyService {
 	private final PartyTagMapper partyTagMapper;
 	private final PlaceMapper placeMapper;
 	private final MediaMapper mediaMapper;
+	private final UserPartyApplicationMapper userPartyApplicationMapper;
 	@Value("${s3.path.covers}")
 	private String coversPath;
+	
+	public boolean isPartyMember(String userId, int partyNo) {
+		UserPartyApplication userPartyApplication = userPartyApplicationMapper.findByPartyNoAndUserId(partyNo, userId);
+		if (userPartyApplication != null && userPartyApplication.getStatus().equals("승인")) {
+			return true;
+		}
+		return false;
+	}
 	
 	public int createParty(PartyForm partyCreateForm, String leaderId) {	
 		Party party = new Party();
@@ -92,7 +103,7 @@ public class PartyService {
 			List<String> tagsFromForm = partyCreateForm.getTags();
 			insertTags(tagsFromForm, party);
 		}
-				
+		
 		return partyNo;
 	}
 	
@@ -232,4 +243,14 @@ public class PartyService {
 		mediaMapper.insertMedia(videos);
 	}
 	
+	public List<UserPartyApplication> getUserPartyApplications(int partyNo, int myNo) {
+		return userPartyApplicationMapper.findAllWithUserNoByPartyNoAndStatus(partyNo, "승인", myNo);
+	}
+	
+	public boolean isDuplicateParty(String partyName, int categoryNo) {
+		if (partyMapper.getPartyByNameAndCategoryNo(partyName, categoryNo) != null) {
+			return true;
+		}
+		return false;
+	}
 }

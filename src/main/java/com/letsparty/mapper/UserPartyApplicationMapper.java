@@ -3,6 +3,7 @@ package com.letsparty.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.letsparty.vo.UserPartyApplication;
 
@@ -11,6 +12,12 @@ public interface UserPartyApplicationMapper {
 
 	void insert(UserPartyApplication userPartyApplication);
 	UserPartyApplication findByNo(long no);
-	List<UserPartyApplication> findAllByPartyNo(int no);
+	UserPartyApplication findByPartyNoAndUserId(@Param("partyNo") int partyNo, @Param("userId") String userId);
+	List<UserPartyApplication> findAllByPartyNo(int PartyNo);
+	List<UserPartyApplication> findAllWithUserNoByPartyNoAndStatus(
+			@Param("partyNo") int partyNo,
+			@Param("status") String status,
+			@Param("myNo") Integer myNo // Nullable parameter
+	);
 	void update(UserPartyApplication userPartyApplication);
 }

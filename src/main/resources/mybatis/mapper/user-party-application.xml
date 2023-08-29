@@ -5,16 +5,16 @@
 
 	<insert id="insert"	parameterType="UserPartyApplication" useGeneratedKeys="true" keyProperty="no">
 		INSERT INTO user_party_application
-		(party_no, user_id, role_no, profile_no, user_remark)
+		(party_no, user_id, role_no, profile_no, application_status, user_remark)
 		VALUES
-		(#{partyNo}, #{userId}, #{roleNo}, #{profile.no}, #{userRemark})
+		(#{partyNo}, #{user.id}, #{roleNo}, #{userProfile.no}, #{status}, #{userRemark})
 	</insert>
 
-	<select id="findByNo" parameterType="long">
+	<select id="findByNo" parameterType="long" resultType="UserPartyApplication">
 		SELECT
 			upa.application_no as no,
 			upa.party_no,
-			upa.user_id,
+			upa.user_id as "user.id",
 			upa.role_no,
 			upa.application_status as status,
 			upa.created_at,
@@ -23,17 +23,18 @@
 <!-- 			up.user_id as "userProfile.id", -->
 			up.profile_nickname as "userProfile.nickname",
 			up.image_filename as "userProfile.filename",
-			up.is_default as "userProfile.isDefault"
+			up.is_default as "userProfile.isDefault",
+			up.is_default as "userProfile.isUrl"
 		FROM user_party_application upa
 		INNER JOIN user_profile up ON upa.profile_no = up.profile_no
 		WHERE upa.application_no = #{value}
 	</select>
-
-	<select id="findAllByPartyNo" parameterType="int">
+	
+	<select id="findByPartyNoAndUserId" resultType="UserPartyApplication">
 		SELECT
 			upa.application_no as no,
 			upa.party_no,
-			upa.user_id,
+			upa.user_id as "user.id",
 			upa.role_no,
 			upa.application_status as status,
 			upa.created_at,
@@ -42,11 +43,63 @@
 <!-- 			up.user_id as "userProfile.id", -->
 			up.profile_nickname as "userProfile.nickname",
 			up.image_filename as "userProfile.filename",
-			up.is_default as "userProfile.isDefault"
+			up.is_default as "userProfile.isDefault",
+			up.is_default as "userProfile.isUrl"
+		FROM user_party_application upa
+		INNER JOIN user_profile up ON upa.profile_no = up.profile_no
+		WHERE upa.party_no = #{partyNo}
+		AND upa.user_id = #{userId}
+	</select>
+
+	<select id="findAllByPartyNo" parameterType="int" resultType="UserPartyApplication">
+		SELECT
+			upa.application_no as no,
+			upa.party_no,
+			upa.user_id as "user.id",
+			upa.role_no,
+			upa.application_status as status,
+			upa.created_at,
+			upa.user_remark,
+			up.profile_no as "userProfile.no",
+<!-- 			up.user_id as "userProfile.id", -->
+			up.profile_nickname as "userProfile.nickname",
+			up.image_filename as "userProfile.filename",
+			up.is_default as "userProfile.isDefault",
+			up.is_default as "userProfile.isUrl"
 		FROM user_party_application upa
 		INNER JOIN user_profile up ON upa.profile_no = up.profile_no
 		WHERE upa.party_no = #{value}
 		ORDER BY
+			role_no, "userProfile.nickname"
+	</select>
+
+	<select id="findAllWithUserNoByPartyNoAndStatus" resultType="UserPartyApplication">
+		SELECT
+			upa.application_no as no,
+			upa.party_no,
+			upa.role_no,
+			upa.application_status as status,
+			upa.created_at,
+			upa.user_remark,
+			upa.profile_no as "userProfile.no",
+<!-- 			up.user_id as "userProfile.id", -->
+			up.profile_nickname as "userProfile.nickname",
+			up.image_filename as "userProfile.filename",
+			up.is_default as "userProfile.isDefault",
+			up.is_default as "userProfile.isUrl",
+			upa.user_id as "user.id",
+			u.user_no as "user.no"
+		FROM user_party_application upa
+		INNER JOIN user_profile up ON upa.profile_no = up.profile_no
+		INNER JOIN user u ON upa.user_id = u.user_id
+		WHERE upa.party_no = #{partyNo}
+		AND upa.application_status = #{status}
+		ORDER BY
+			<choose>
+				<when test="myNo != null">
+					CASE WHEN u.user_no = #{myNo} THEN 0 ELSE 1 END,
+				</when>
+			</choose>
 			role_no, "userProfile.nickname"
 	</select>
 

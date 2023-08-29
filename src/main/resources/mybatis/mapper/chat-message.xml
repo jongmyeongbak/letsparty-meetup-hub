@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letsparty.mapper.ChatMessageMapper">
+	
+	<insert id="insertChatMessage" parameterType="ChatMessage" useGeneratedKeys="true" keyProperty="no">
+		INSERT INTO chat_message
+			(room_no, message_type, user_no, unread_cnt, message_text)
+		VALUES
+			(#{roomNo}, #{type}, #{userNo}, #{unreadCnt}, #{text})
+		<selectKey>
+			SELECT unread_cnt, created_at
+			FROM chat_message
+			WHERE 
+		</selectKey>
+	</insert>
+	
+</mapper>

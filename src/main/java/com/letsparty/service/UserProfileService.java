@@ -3,7 +3,7 @@ package com.letsparty.service;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import com.letsparty.mapper.MyMapper;
+import com.letsparty.mapper.UserProfileMapper;
 import com.letsparty.vo.UserProfile;
 import com.letsparty.web.form.UserProfileForm;
 
@@ -11,9 +11,9 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class MyService {
+public class UserProfileService {
 	
-	private final MyMapper myMapper;
+	private final UserProfileMapper myMapper;
 	
 	public int addProfile(UserProfileForm userProfileForm) {
 		UserProfile userProfile = new UserProfile();

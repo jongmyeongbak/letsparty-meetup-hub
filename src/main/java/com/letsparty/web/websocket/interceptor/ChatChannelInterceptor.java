@@ -13,8 +13,9 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import com.letsparty.mapper.ChatUserMapper;
 import com.letsparty.security.user.LoginUser;
-import com.letsparty.service.ChatRoomService;
+import com.letsparty.vo.ChatUser;
 import com.letsparty.web.websocket.service.SessionInfoMapper;
 import com.letsparty.web.websocket.service.SessionInfoMapper.SessionDetails;
 import com.letsparty.web.websocket.util.WebSocketUtils;
@@ -29,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ChatChannelInterceptor implements ChannelInterceptor {
 
 	private final SessionInfoMapper sessionInfoMapper;
-	private final ChatRoomService chatRoomService;
+	private final ChatUserMapper chatUserMapper;
 
 	@Override
 	public Message<?> preSend(Message<?> message, MessageChannel channel) {
@@ -72,8 +73,8 @@ public class ChatChannelInterceptor implements ChannelInterceptor {
             
             int userNo = ((LoginUser) ((Authentication) accessor.getUser()).getPrincipal()).getNo();
             // 참가한 room이 아니면 구독 거부
-            if (!chatRoomService.isUserInRoom(roomId, userNo)) {
-                // 개발 중 Bypass 주석처리
+            if (!isUserInRoom(roomId, userNo)) {
+            	// TODO: 개발 중 Bypass 주석 해제
                 // throw new AccessDeniedException("topic을 구독할 권한이 없음");
             }
             sessionInfoMapper.addSession(sessionId, roomId, userNo);
@@ -91,5 +92,11 @@ public class ChatChannelInterceptor implements ChannelInterceptor {
 		}
 		
 		return message;
+	}
+	
+	public boolean isUserInRoom(String roomId, int userNo) {
+		ChatUser chatUser = ChatUser.builder().roomId(roomId).userNo(userNo).build();
+		Long lastReadMessageNo = chatUserMapper.findLastReadMessageNoByRoomNoAndUserNo(chatUser);
+		return lastReadMessageNo != null;
 	}
 }

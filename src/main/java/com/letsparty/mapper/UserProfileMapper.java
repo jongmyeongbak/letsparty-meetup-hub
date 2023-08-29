@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.letsparty.vo.UserProfile;
 
 @Mapper
-public interface MyMapper {
+public interface UserProfileMapper {
 
 	void addProfile(UserProfile userProfile);
 
