@@ -163,7 +163,7 @@ public class PartyService {
 			insertPlace(postForm, 1);	// 실제 코드 insertPlace(postForm, postId);
 		}
 		// 폼에 사진 및 동영상이 있다면 반환받은 게시물 id와 미디어 정보 db 저장
-		if (postForm.getImageName().size() != 0 || postForm.getVideoName().size() != 0) {
+		if (postForm.getImageName() != null || postForm.getVideoName() != null) {
 			insertMedia(postForm.getImageName(), postForm.getVideoName(), post);
 		}
 	}
