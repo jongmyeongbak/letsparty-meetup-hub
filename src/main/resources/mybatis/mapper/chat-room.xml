@@ -72,6 +72,7 @@
 			cr.chatters_cnt = 2 AND
 			cr.party_no = #{partyNo} AND
 			(
+				<!-- 내가 개설자(userNo1)고 나와 상대가 참여자인 경우 -->
 				(
 					cr.creator_no = #{userNo1}
 					AND EXISTS (
@@ -79,14 +80,25 @@
 						FROM chat_user AS cu
 						WHERE cu.room_id = cr.room_id AND cu.user_no = #{userNo2}
 					)
+					AND EXISTS (
+						SELECT 1
+						FROM chat_user AS cu
+						WHERE cu.room_id = cr.room_id AND cu.user_no = #{userNo1}
+					)
 				)
 				OR
+				<!-- 상대가 개설자(userNo1)고 나와 상대가 참여자인 경우 -->
 				(
 					cr.creator_no = #{userNo2}
 					AND EXISTS (
 						SELECT 1
 						FROM chat_user AS cu
 						WHERE cu.room_id = cr.room_id AND cu.user_no = #{userNo1}
+					)
+					AND EXISTS (
+						SELECT 1
+						FROM chat_user AS cu
+						WHERE cu.room_id = cr.room_id AND cu.user_no = #{userNo2}
 					)
 				)
 			)
