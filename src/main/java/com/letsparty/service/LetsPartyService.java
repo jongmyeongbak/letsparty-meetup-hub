@@ -43,7 +43,7 @@ public class LetsPartyService {
 		letsPartyPost.setCategory(category);
 		letsPartyPost.setUser(user);
 		
-		log.info("포스트 폼 값 ====> {}", letsPartyPostForm);
 		letsPartyMapper.insertPost(letsPartyPost);
 	}
+	
 }

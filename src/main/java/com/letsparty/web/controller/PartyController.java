@@ -56,6 +56,7 @@ public class PartyController {
 		return "page/party/member";
 	}
 	
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/{partyNo}/setting/modify")
 	public String modify(@PathVariable int partyNo, Model model, @AuthenticationPrincipal LoginUser user) {
 		// 저장된 파티 기본 정보 조회

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,6 +35,7 @@ public class PartyCreateController {
 	private final UserPartyApplicationService userPartyApplicationService;
 
 	// 파티생성폼으로 이동
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/party-create")
 	public String partyCreate(@RequestParam(value = "catNo", required = false) Integer catNo, Model model) {
 		// catNo파라미터가 없거나 0보다 작을 경우 루트 페이지로 리다이렉트

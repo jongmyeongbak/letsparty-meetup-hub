@@ -60,7 +60,7 @@ public class PartyService {
 		Party party = new Party();
 		BeanUtils.copyProperties(partyCreateForm, party);
 		party.setName(party.getName().trim());
-//	    party.setDescription(party.getDescription().trim());
+	    party.setDescription(party.getDescription().trim());
 		
 		// 파티 리더
 		User leader = userMapper.getUserById(leaderId);

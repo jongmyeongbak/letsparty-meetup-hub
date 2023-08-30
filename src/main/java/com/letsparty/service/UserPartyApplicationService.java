@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.letsparty.mapper.UserPartyApplicationMapper;
 import com.letsparty.mapper.UserProfileMapper;
+import com.letsparty.security.user.LoginUser;
 import com.letsparty.vo.Party;
 import com.letsparty.vo.User;
 import com.letsparty.vo.UserPartyApplication;
@@ -40,6 +41,13 @@ public class UserPartyApplicationService {
 	
 	public List<UserPartyApplication> findAllByUserId(String userId) {
 		return userPartyApplicationMapper.findAllByUserId(userId);
+	}
+	
+	public boolean isLeader(LoginUser loginUser) {
+		if (loginUser != null && !userPartyApplicationMapper.findAllByUserId(loginUser.getId()).isEmpty()) {
+			return true;
+		}
+		return false;
 	}
 
 }
