@@ -19,7 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 public class LetsPartyService {
 
 	private final LetsPartyMapper letsPartyMapper;
-	private final CategoryMapper categoryMapper;
 	
 	// 렛츠파티 게시물 추가
 	public void insertPost(LetsPartyPostForm letsPartyPostForm, String userid) {

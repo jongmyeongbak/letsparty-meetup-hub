@@ -15,7 +15,4 @@ public interface CategoryMapper {
 	// 카테고리 모두 조회
 	List<Category> getAllCategories();
 	
-	// 파티 번호로카테고리 조회
-	Category getCategoryByPartyNo(int categoryNo);
-
 }
