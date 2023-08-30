@@ -24,4 +24,5 @@ public class LetsPartyPostForm {
 	
 	@Min(value = 1, message = "파티는 필수 선택 값입니다.")
 	private int partyNo;
+	private int categoryNo;
 }

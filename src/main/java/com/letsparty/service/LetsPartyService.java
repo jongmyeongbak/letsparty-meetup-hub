@@ -27,7 +27,8 @@ public class LetsPartyService {
 		party.setNo(letsPartyPostForm.getPartyNo());
 		User user = new User();
 		user.setId(userid);
-		Category category = categoryMapper.getCategoryByPartyNo(party.getNo());
+		Category category = new Category();
+		category.setNo(letsPartyPostForm.getCategoryNo());
 		
 		LetsPartyPost letsPartyPost = LetsPartyPost.builder()
 									  .party(party)

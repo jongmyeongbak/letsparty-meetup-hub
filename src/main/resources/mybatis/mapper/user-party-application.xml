@@ -104,7 +104,7 @@
 	</select>
 	
 	<!-- 사용자가 리더인 파티들 조회 -->
-	<select id="findAllByUserId" parameterType="string">
+	<select id="findAllByUserId" parameterType="string" resultType="UserPartyApplication">
 		select 
 			upa.application_no	as no,
 			upa.party_no		as "party.no",
