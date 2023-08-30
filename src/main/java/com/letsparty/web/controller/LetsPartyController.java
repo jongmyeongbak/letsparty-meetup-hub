@@ -52,7 +52,7 @@ public class LetsPartyController {
 		LetsPartyPostForm letsPartyPostForm = new LetsPartyPostForm();
 		
 		model.addAttribute("letsPartyPostForm", letsPartyPostForm);
-		model.addAttribute("UserPartyApplications", UserPartyApplications);
+		model.addAttribute("userPartyApplications", UserPartyApplications);
 		return "page/letsparty/post";
 	}
 	

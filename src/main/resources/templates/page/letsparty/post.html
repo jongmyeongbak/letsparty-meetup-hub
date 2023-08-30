@@ -28,8 +28,8 @@
 		                            <select class="form-select form-select select-party" th:field="*{partyNo}"
 		                            		th:classappend="${#fields.hasErrors('*{partyNo}') ? 'is-invalid' : ''}">
 		                                <option disabled selected th:value="${0}">파티를 고르세요</option>
-		                                <th:block th:each="UserPartyApplication : ${UserPartyApplications}">
-			                                <option th:value="${UserPartyApplication.party.no}" th:text="${UserPartyApplication.party.name}"></option>
+		                                <th:block th:each="userPartyApplication : ${userPartyApplications}">
+			                                <option th:value="${userPartyApplication.party.no}" th:text="${userPartyApplication.party.name}"></option>
 										</th:block>
 		                            </select>
 		                            <div th:errors="*{partyNo}" th:classappend="${#fields.hasErrors('partyNo') ? 'invalid-feedback' : ''}"></div> 
