@@ -22,6 +22,6 @@ public class LetsPartyPostForm {
 	@Size(max = 4000, message = "게시글의 내용은 4000자를 넘길 수 없습니다.")
 	private String content;
 	
-	@Min(value = 10, message = "파티는 필수 선택 값입니다.")
+	@Min(value = 1, message = "파티는 필수 선택 값입니다.")
 	private int partyNo;
 }

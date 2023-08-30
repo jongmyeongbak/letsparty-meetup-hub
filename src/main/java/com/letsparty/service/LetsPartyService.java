@@ -1,12 +1,9 @@
 package com.letsparty.service;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import com.letsparty.mapper.CategoryMapper;
 import com.letsparty.mapper.LetsPartyMapper;
-import com.letsparty.mapper.PartyMapper;
-import com.letsparty.mapper.UserMapper;
 import com.letsparty.vo.Category;
 import com.letsparty.vo.LetsPartyPost;
 import com.letsparty.vo.Party;
@@ -22,27 +19,23 @@ import lombok.extern.slf4j.Slf4j;
 public class LetsPartyService {
 
 	private final LetsPartyMapper letsPartyMapper;
-	private final PartyMapper partyMapper;
 	private final CategoryMapper categoryMapper;
-	private final UserMapper userMapper;
 	
 	// 렛츠파티 게시물 추가
 	public void insertPost(LetsPartyPostForm letsPartyPostForm, String userid) {
-		LetsPartyPost letsPartyPost = new LetsPartyPost();
-		BeanUtils.copyProperties(letsPartyPostForm, letsPartyPost);
-		letsPartyPost.setTitle(letsPartyPost.getTitle().trim());
-		letsPartyPost.setContent(letsPartyPost.getContent().trim());
+		Party party = new Party();
+		party.setNo(letsPartyPostForm.getPartyNo());
+		User user = new User();
+		user.setId(userid);
+		Category category = categoryMapper.getCategoryByPartyNo(party.getNo());
 		
-		int partyNo = letsPartyPostForm.getPartyNo();
-		
-		Category category = categoryMapper.getCategoryByPartyNo(partyNo);
-		Party party = partyMapper.getPartyByNo(partyNo);
-		User user = userMapper.getUserById(userid);
-		
-		letsPartyPost.setParty(party);
-		letsPartyPost.setCategory(category);
-		letsPartyPost.setUser(user);
-		
+		LetsPartyPost letsPartyPost = LetsPartyPost.builder()
+									  .party(party)
+									  .user(user)
+									  .category(category)
+									  .title(letsPartyPostForm.getTitle().trim())
+									  .content(letsPartyPostForm.getContent().trim())
+									  .build();
 		letsPartyMapper.insertPost(letsPartyPost);
 	}
 	

@@ -2,6 +2,7 @@ package com.letsparty.vo;
 
 import java.time.LocalDateTime;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -12,9 +13,9 @@ import lombok.ToString;
 public class LetsPartyPost {
 
 	private long no;
-	private Category category;	// category_no
-	private Party party;		// party_no
-	private User user;			// user_id
+	private Category category;
+	private Party party;
+	private User user;
 	private String title;
 	private String content;
 	private int readCnt;
@@ -23,4 +24,25 @@ public class LetsPartyPost {
 	private boolean isDeleted;
 	private LocalDateTime updatedAt;
 	private LocalDateTime createdAt;
+	
+	@Builder
+	public LetsPartyPost(long no, Category category, Party party, User user, String title, String content, int readCnt,
+			int commentCnt, int likeCnt, boolean isDeleted, LocalDateTime updatedAt, LocalDateTime createdAt) {
+		super();
+		this.no = no;
+		this.category = category;
+		this.party = party;
+		this.user = user;
+		this.title = title;
+		this.content = content;
+		this.readCnt = readCnt;
+		this.commentCnt = commentCnt;
+		this.likeCnt = likeCnt;
+		this.isDeleted = isDeleted;
+		this.updatedAt = updatedAt;
+		this.createdAt = createdAt;
+	}
+	
+	
+	
 }

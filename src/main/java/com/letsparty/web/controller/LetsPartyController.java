@@ -42,35 +42,36 @@ public class LetsPartyController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/post")
 	public String post(@AuthenticationPrincipal LoginUser loginUser, Model model) {
-		List<UserPartyApplication> UserPartyApplications = userPartyApplicationService.findAllByUserId(loginUser.getId());
-		
-		// 리더인 파티가 없는데 작성 화면에 접근하려고 했을 때 
-		if (UserPartyApplications.isEmpty()) {
-			return "redirect:/letsparty";
-		}
-		
-		LetsPartyPostForm letsPartyPostForm = new LetsPartyPostForm();
-		
-		model.addAttribute("letsPartyPostForm", letsPartyPostForm);
-		model.addAttribute("userPartyApplications", UserPartyApplications);
-		return "page/letsparty/post";
+		if (!userPartyApplicationService.isLeader(loginUser)) {
+	        return "redirect:/letsparty";
+	    }
+	    LetsPartyPostForm letsPartyPostForm = new LetsPartyPostForm();
+	    addUserPartyApplicationsToModel(loginUser, model);
+	    model.addAttribute("letsPartyPostForm", letsPartyPostForm);
+	    return "page/letsparty/post";
 	}
 	
 	// 렛츠파티 게시글 생성
 	@PostMapping("/post")
-	public String post (@Valid LetsPartyPostForm letsPartyPostForm, BindingResult error, @AuthenticationPrincipal LoginUser user) {
+	public String post (@Valid LetsPartyPostForm letsPartyPostForm, BindingResult error, 
+			@AuthenticationPrincipal LoginUser loginUser, Model model) {
 		if (error.hasErrors()) {
-			return "page/letsparty/post";
-		}
-		
-		letsPartyService.insertPost(letsPartyPostForm, user.getId());
-		return "redirect:/letsparty";
+	        addUserPartyApplicationsToModel(loginUser, model);
+	        return "page/letsparty/post";
+	    }
+	    letsPartyService.insertPost(letsPartyPostForm, loginUser.getId());
+	    return "redirect:/letsparty";
 	}
 	
 	// 렛츠파티 게시글 상세 화면으로 이동
 	@GetMapping("/post/{postNo}")
 	public String detail(@PathVariable int postNo, Model model) {
 		return "page/letsparty/detail";
+	}
+	
+	private void addUserPartyApplicationsToModel(LoginUser loginUser, Model model) {
+	    List<UserPartyApplication> userPartyApplications = userPartyApplicationService.findAllByUserId(loginUser.getId());
+	    model.addAttribute("userPartyApplications", userPartyApplications);
 	}
 	
 }
