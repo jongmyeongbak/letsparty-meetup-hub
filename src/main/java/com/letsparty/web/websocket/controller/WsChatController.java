@@ -7,7 +7,6 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 import com.letsparty.web.websocket.dto.ChatMessageDto;
@@ -21,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class WsChatController {
 
-	private final SimpMessagingTemplate messagingTemplate;
 	private final WsChatService wsChatService;
 
 //	@MessageMapping("/chat/{roomId}/join")
@@ -34,11 +32,12 @@ public class WsChatController {
 //	@SendTo("/topic/chat/{roomId}")
 	public ChatMessageDto sendMessage(@DestinationVariable final String roomId, @Payload ChatMessageDto message,
 			Principal principal, @Headers Map<String, Object> headers) {
+//		message.setUserNo(((LoginUser) ((Authentication) principal).getPrincipal()).getNo());
 		wsChatService.handleSendMessage(message, roomId, headers);
 		
 		log.info("SEND headers: {}", headers);
 		log.info("principal: {}", principal);
-		log.info("message.toString: {}", message);
+		log.info("message: {}", message);
 		return message;
 	}
 //	
