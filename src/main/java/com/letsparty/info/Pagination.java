@@ -42,7 +42,7 @@ public class Pagination {
 		isLast = page == totalPages;
 		prePage = page - 1;
 		nextPage = page + 1;
-		begin = (page -1)*rows + 1;
+		begin = (page -1)*rows;
 		end = page*rows;
 	}
 	

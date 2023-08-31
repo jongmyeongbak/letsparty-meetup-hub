@@ -38,8 +38,18 @@ public class LetsPartyController {
 	private final LetsPartyService letsPartyService;
 	
 	@GetMapping
-	public String home(@AuthenticationPrincipal LoginUser loginUser, Model model) {
+	public String home(@AuthenticationPrincipal LoginUser loginUser, Model model, @RequestParam(name = "categoryNo", required = false, defaultValue = "10") int categoryNo) {
+		// 렛츠파티 home에 접근시 리스트를 표시할 최초 조건 
+		Map<String, Object> param = new HashMap<>();
+		param.put("categoryNo", categoryNo);
+		param.put("sort", "latest");
+		param.put("rows", 10);
+		param.put("page", 1);
+		LetsPartyPostList result = letsPartyService.getPosts(param);
+		
+		model.addAttribute("result", result);
 		model.addAttribute("isLeader", userPartyApplicationService.isLeader(loginUser));
+		
 		return "page/letsparty/home";
 	}
 	
@@ -70,18 +80,18 @@ public class LetsPartyController {
 	
 	// 렛츠파티 리스트 표시
 	@GetMapping("search")
-	public String list(@RequestParam(name = "category", required = false, defaultValue = "10") int categoryNo,
-					   @RequestParam(name = "sort", required = false, defaultValue = "latest") String sort,
-					   @RequestParam(name = "rows", required = false, defaultValue = "10") int rows,
-					   @RequestParam(name = "page", required = false, defaultValue = "1") int page,
-					   @RequestParam(name = "opt", required = false) String opt,
-					   @RequestParam(name = "keyword", required = false, defaultValue = "") String keyword,
-					   Model model) {
+	public String search(@RequestParam(name = "categoryNo", required = false, defaultValue = "10") Integer categoryNo,
+						 @RequestParam(name = "sort", required = false, defaultValue = "latest") String sort,
+						 @RequestParam(name = "rows", required = false, defaultValue = "10") int rows,
+						 @RequestParam(name = "page", required = false, defaultValue = "1") int page,
+						 @RequestParam(name = "opt", required = false) String opt,
+						 @RequestParam(name = "keyword", required = false, defaultValue = "") String keyword,
+						 @AuthenticationPrincipal LoginUser loginUser, Model model) {
 		
 		log.info("categoryNo={}, sort='{}', rows='{}', page='{}', opt='{}', keyword='{}'", categoryNo, sort, rows, page, opt, keyword);
 		
 		Map<String, Object> param = new HashMap<>();
-		param.put("category", categoryNo);
+		param.put("categoryNo", categoryNo);
 		param.put("sort", sort);
 		param.put("rows", rows);
 		param.put("page", page);
@@ -92,8 +102,9 @@ public class LetsPartyController {
 		
 		LetsPartyPostList result = letsPartyService.getPosts(param);
 		
-		model.addAttribute(result);
-		
+		model.addAttribute("sort", param);
+		model.addAttribute("result", result);
+		model.addAttribute("isLeader", userPartyApplicationService.isLeader(loginUser));
 		return "page/letsparty/home";
 	}
 	

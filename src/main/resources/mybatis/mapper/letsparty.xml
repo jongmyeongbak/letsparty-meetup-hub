@@ -14,20 +14,20 @@
 		where p.category_no = #{categoryNo}
 		<choose>
 			<when test="opt == 'title'">
-				lt.post_title like concat('%',#{keyword},'%')
+				and lt.post_title like concat('%',#{keyword},'%')
 			</when>
 			<when test="opt == 'content'">
-				lt.post_content like concat('%',#{keyword},'%')
+				and lt.post_content like concat('%',#{keyword},'%')
 			</when>
 			<when test="opt == 'party'">
-				p.party_name like concat('%',#{keyword},'%')
+				and p.party_name like concat('%',#{keyword},'%')
 			</when>
 		</choose>
 	</select>
 	
 	<select id="getPosts" parameterType="map" resultType="com.letsparty.vo.LetsPartyPost">
 		select 
-	        p.party_name        as "party.name",
+	        party_name        as "party.name",
 	        p.category_no		as "category.no",
 			lt.post_no          as no,
 	        lt.post_title       as title,

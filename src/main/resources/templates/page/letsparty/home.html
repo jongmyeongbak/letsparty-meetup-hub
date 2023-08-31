@@ -38,16 +38,16 @@
                 </div>			
                 <div class="card-body">
                     <div class="d-flex jutstify-content-start mb-3">
-                        <select class="form-select me-3" style="width: 150px;" name="sort" onchange="changeSort()">
-                            <option value="latest" > 최신순</option>
-                            <option value="oldest" > 오래된순</option>
-                            <option value="popular"> 공감순</option>
-                        </select>
-                        <select class="form-select me-3" style="width: 150px;" name="rows" onchange="changeRows()">
-                            <option value="10"> 10개씩</option>
-                            <option value="20"> 20개씩</option>
-                            <option value="50"> 50개씩</option>
-                        </select>
+                        <select class="form-select me-3" style="width: 150px;" name="sort">
+						    <option value="latest" th:selected="${#request.getParameter('sort') == 'latest'}">최신순</option>
+  							<option value="oldest" th:selected="${#request.getParameter('sort') == 'oldest'}">오래된 순</option>
+  							<option value="popular" th:selected="${#request.getParameter('sort') == 'popular'}">인기순</option>
+						</select>
+						<select class="form-select me-3" style="width: 150px;" name="rows">
+						    <option value="10" th:selected="${#request.getParameter('rows') == '10'}">10개씩</option>
+						    <option value="20" th:selected="${#request.getParameter('rows') == '20'}">20개씩</option>
+						    <option value="50" th:selected="${#request.getParameter('rows') == '50'}">50개씩</option>
+						</select>
                     </div>
                     <table class="table">
                         <thead>
@@ -60,17 +60,21 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1001</td>
-                                <td>홍길동의 파티에 놀러오세요!</td>
-                                <td>홍길동의 스터디 파티</td>
-                                <td>2023년8월01일</td>
-                                <td>10/5</td>
-                            </tr>
-                            <tr>
-                                <td colspan="5" class="text-center">검색결과가 존재하지 않습니다.</td>
-                            </tr>
-                        </tbody>
+                            <tbody>
+						    <!-- 검색 결과가 있을 경우 -->
+						    <tr th:each="post : ${result.posts}" th:if="${not #lists.isEmpty(result.posts)}">
+						        <td th:text="${post.no}"></td>
+						        <td th:text="${post.title}"></td>
+						        <td th:text="${post.party.name}"></td>
+						        <!-- 날짜 형식화 -->
+						        <td th:text="${#temporals.format(post.createdAt, 'yyyy년 M월 d일')}"></td>
+						        <td th:text="${post.readCnt + '/' + post.commentCnt}"></td>
+						    </tr>
+						    <!-- 검색 결과가 없을 경우 -->
+						    <tr th:unless="${not #lists.isEmpty(result.posts)}">
+						        <td colspan="5" class="text-center">검색결과가 존재하지 않습니다.</td>
+						    </tr>
+						</tbody>
                     </table>
                     
                    <div class="card-footer" style="background-color: white;">
@@ -94,10 +98,10 @@
                         <!-- 검색 구간 -->
                         <div class="d-flex justify-content-center">
                             <form id="form-letsparty-search" class="row row-cols-md-auto g-3 align-items-center" method="get" action="/letsparty/search">
-                            <input type="hidden" name="category" value=""/>
-                            <input type="hidden" name="sort" value="${param.sort }"/>
-                            <input type="hidden" name="rows" value="${param.rows }"/>
-                            <input type="hidden" name="page" value="${param.page }"/>
+                            <input type="hidden" name="categoryNo" th:value="${param.categoryNo}"/>
+							<input type="hidden" name="sort" th:value="${param.sort}"/>
+							<input type="hidden" name="rows" th:value="${param.rows}"/>
+							<input type="hidden" name="page" th:value="${param.page}"/>
                                 <div class="col-12">
                                     <select class="form-select" name="opt">
                                         <option value="title">제목</option>
