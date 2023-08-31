@@ -1,6 +1,8 @@
 package com.letsparty.web.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -8,17 +10,20 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.letsparty.security.user.LoginUser;
 import com.letsparty.service.LetsPartyService;
 import com.letsparty.service.UserPartyApplicationService;
 import com.letsparty.vo.UserPartyApplication;
 import com.letsparty.web.form.LetsPartyPostForm;
+import com.letsparty.web.model.LetsPartyPostList;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -61,6 +66,33 @@ public class LetsPartyController {
 	    }
 	    letsPartyService.insertPost(letsPartyPostForm, loginUser.getId());
 	    return "redirect:/letsparty";
+	}
+	
+	// 렛츠파티 리스트 표시
+	@GetMapping("search")
+	public String list(@RequestParam(name = "category", required = false, defaultValue = "10") int categoryNo,
+					   @RequestParam(name = "sort", required = false, defaultValue = "latest") String sort,
+					   @RequestParam(name = "rows", required = false, defaultValue = "10") int rows,
+					   @RequestParam(name = "page", required = false, defaultValue = "1") int page,
+					   @RequestParam(name = "opt", required = false) String opt,
+					   @RequestParam(name = "keyword", required = false, defaultValue = "") String keyword,
+					   Model model) {
+		
+		log.info("categoryNo={}, sort='{}', rows='{}', page='{}', opt='{}', keyword='{}'", categoryNo, sort, rows, page, opt, keyword);
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("category", categoryNo);
+		param.put("sort", sort);
+		param.put("rows", rows);
+		param.put("page", page);
+		if (StringUtils.hasText(opt) && StringUtils.hasText(keyword)) {
+			param.put("opt", opt);
+			param.put("keyword", keyword);
+		}
+		
+		LetsPartyPostList result;
+		
+		return "page/letsparty/home";
 	}
 	
 	// 렛츠파티 게시글 상세 화면으로 이동

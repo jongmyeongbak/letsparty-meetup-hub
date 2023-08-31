@@ -20,7 +20,7 @@
 	                            <label class="form-label">게시글 제목</label>
 	                            <input th:field="*{title}" type="text" class="form-control form-control" 
 	                            		th:classappend="${#fields.hasErrors('*{title}') ? 'is-invalid' : ''}" placeholder="게시글 제목을 입력해주세요.">
-	                            <div th:errors="*{title}" th:classappend="${#fields.hasErrors('title') ? 'invalid-feedback' : ''}"></div>
+	                            <div th:errors="*{title}" class="invalid-feedback"></div>
 	                        </div>
 	                        <div class="d-flex jutstify-content-end col-3 pb-3">
 								<div class="party-select-container">
@@ -35,7 +35,7 @@
                										 th:text="${userPartyApplication.party.name}">
 										</th:block>
 		                            </select>
-		                            <div th:errors="*{partyNo}" th:classappend="${#fields.hasErrors('partyNo') ? 'invalid-feedback' : ''}"></div> 
+		                            <div th:errors="*{partyNo}" class="invalid-feedback"></div> 
 								</div>
 	                        </div>
 	                    </div>
@@ -43,7 +43,7 @@
 	                        <label class="form-label">게시글 내용</label>
 	                        <textarea class="form-control" id="" cols="30" rows="10" placeholder="다른 파티에서 관심을 보일 수 있는 내용을 작성해주세요."
 	                        			th:field="*{content}" th:classappend="${#fields.hasErrors('*{content}') ? 'is-invalid' : ''}"></textarea>
-                   			<div th:errors="*{content}" th:classappend="${#fields.hasErrors('content') ? 'invalid-feedback' : ''}"></div>
+                   			<div th:errors="*{content}" class="invalid-feedback"></div>
 	                    </div>
 	                </div>     
 	                <div class="card-footer background-color-gray">
