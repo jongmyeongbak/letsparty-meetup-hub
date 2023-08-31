@@ -10,7 +10,7 @@ public class WebSocketUtils {
         if (lastIndex != -1) {
             return destination.substring(lastIndex + 1);
         } else {
-            return null; // 올바른 형식이 아닌 경우에는 null을 반환합니다.
+            return ""; // 올바른 형식이 아닌 경우에는 ""을 반환합니다.
         }
 	}
 

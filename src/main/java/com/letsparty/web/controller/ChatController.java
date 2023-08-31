@@ -33,7 +33,8 @@ public class ChatController {
 		return "page/chat/home";
 	}
 	
-	// 1:1 채팅방 접속. 없으면 개설 후 접속.
+	// 비공개 채팅방 개설 및 접속
+	//	단, 1:1 채팅인 경우 이미 방이 있으면 기존 방에 접속
 	@GetMapping("/room/{partyNo}")
 	public String createRoom(@AuthenticationPrincipal LoginUser loginUser, @PathVariable int partyNo, @RequestParam("invitee_nos") List<Integer> inviteeNos) {
 		String roomId = chatService.createPrivateRoom(loginUser, partyNo, inviteeNos);
@@ -42,7 +43,7 @@ public class ChatController {
 	
 	@GetMapping("/open-room/{partyNo}")
 	public String createOpenRoom(@AuthenticationPrincipal LoginUser loginUser, @PathVariable int partyNo, @RequestParam String name, @RequestParam String description) {
-		// TODO
-		return "redirect:/chat/{roomId}";
+		String roomId = chatService.createOpenRoom(loginUser, partyNo, name, description);
+		return String.format("redirect:/chat/%s", roomId);
 	}
 }

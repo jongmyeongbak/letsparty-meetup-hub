@@ -2,10 +2,8 @@ package com.letsparty.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.BeanUtils;
@@ -26,6 +24,7 @@ import com.letsparty.vo.ChatUser;
 import com.letsparty.vo.Party;
 import com.letsparty.vo.UserPartyApplication;
 import com.letsparty.web.websocket.service.SessionInfoMapper;
+import com.letsparty.web.websocket.service.SessionStore;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,12 +36,17 @@ public class ChatService {
 
 	private final SimpMessagingTemplate messagingTemplate;
 	private final SessionInfoMapper sessionInfoMapper;
+	private final SessionStore sessionStore;
 	private final ChatRoomMapper chatRoomMapper;
 	private final ChatUserMapper chatUserMapper;
 	private final ChatMessageMapper chatMessageMapper;
 	private final UserPartyApplicationMapper userPartyApplicationMapper;
 	
-	public String createRoom(ChatRoom chatRoom) {
+	public String createRoom(int partyNo, ChatRoom chatRoom) {
+		Party party = new Party();
+		party.setNo(partyNo);
+		chatRoom.setParty(party);
+		
 		String roomId;
 		do {
 			roomId = NanoIdUtils.randomNanoId(NanoIdUtils.DEFAULT_NUMBER_GENERATOR, NanoIdUtils.DEFAULT_ALPHABET, 6);
@@ -52,17 +56,17 @@ public class ChatService {
 	}
 	
 	public String createInitRoomOfParty(int partyNo) {
-		String description = "파티 전체 멤버와 함께하는 채팅방";
-		Party party = new Party();
-		party.setNo(partyNo);
-		ChatRoom chatRoom = ChatRoom.builder().party(party).isPublic(true).isEssential(true).description(description).build();
-		return createRoom(chatRoom);
+		ChatRoom chatRoom = ChatRoom.builder().isPublic(true).isEssential(true).description("파티 전체 멤버와 함께하는 채팅방").build();
+		return createRoom(partyNo, chatRoom);
 	}
 	
 	public String createOpenRoom(LoginUser loginUser, int partyNo, String title, String description) {
-//		ChatRoom chatRoom = ChatRoom.builder().partyNo(partyNo).creatorNo(9999).isPublic(true).title(title).description(description).build();
-//		return createRoom(chatRoom);
-		return null;
+		ChatRoom chatRoom = ChatRoom.builder().creatorNo(loginUser.getNo()).isPublic(true).title(title).description(description).build();
+		String roomId = createRoom(partyNo, chatRoom);
+
+		joinRoom(loginUser.getNo(), roomId, chatRoom);
+		
+		return roomId;
 	}
 	
 	public String createPrivateRoom(LoginUser loginUser, int partyNo, List<Integer> inviteeNos) {
@@ -88,10 +92,8 @@ public class ChatService {
 		}
 		
 		// 방 생성
-		Party party = new Party();
-		party.setNo(partyNo);
-		ChatRoom chatRoom = ChatRoom.builder().party(party).creatorNo(loginUser.getNo()).build();
-		String roomId = createRoom(chatRoom);
+		ChatRoom chatRoom = ChatRoom.builder().creatorNo(loginUser.getNo()).build();
+		String roomId = createRoom(partyNo, chatRoom);
 		
 		// 방 참가
 		joinRoom(loginUser.getNo(), roomId, chatRoom);
@@ -131,13 +133,50 @@ public class ChatService {
 	}
 
 	private void joinRoom(int userNo, String roomId, ChatRoom chatRoom) {
-		LocalDateTime now = LocalDateTime.now();
-		ChatMessage chatMessage = ChatMessage.builder().roomNo(chatRoom.getNo()).type(1).userNo(userNo).createAt(now).build();
+		ChatMessage chatMessage = ChatMessage.builder().roomNo(chatRoom.getNo()).type(1).userNo(userNo).createdAt(LocalDateTime.now()).build();
 		chatMessageMapper.insertChatMessage(chatMessage);
+		log.info("joinRoom: {}", chatMessage);
 		chatUserMapper.insertChatUser(ChatUser.builder().roomId(roomId).userNo(userNo)
 				.joinMessageNo(chatMessage.getNo()).lastReadMessageNo(chatMessage.getNo()).build());
 		chatRoomMapper.increaseChattersCntById(roomId);
 		messagingTemplate.convertAndSend("/topic/chat/" + roomId, chatMessage);
+	}
+	
+	public void exitRoom(String userId, int userNo, String roomId) {
+		ChatUser chatUser = chatUserMapper.findById(roomId, userNo);
+		// 참가자가 아니라면 종료
+		if (chatUser == null) {
+			return;
+		}
+		
+		// 	채팅방에 접속해있다면 웹소켓 닫기
+		Set<String> sessionIds = sessionInfoMapper.getSessionIdsOfUserInRoom(userNo, roomId);
+		for (String sessionId : sessionIds) {
+			sessionStore.closeSession(sessionId);
+		}
+		
+		ChatRoom chatRoom = ChatRoom.builder().id(roomId).build();
+		// 채팅유저 삭제
+		chatUserMapper.deleteChatUser(roomId, userNo);
+		// 참가자수 감소
+		chatRoomMapper.decreaseChattersCntById(chatRoom);
+		ChatMessage chatMessage = ChatMessage.builder().roomNo(chatRoom.getNo()).type(2).userNo(userNo).createdAt(LocalDateTime.now()).build();
+		
+		// 퇴장메시지 저장
+		chatMessageMapper.insertChatMessage(chatMessage);
+		// 채팅방에 접속하고 있지 않다면 읽지 않은 메시지의 안읽은수 감소시키기
+		if (sessionIds.isEmpty()) {
+			chatMessageMapper.decreaseUnreadCntByRoomNoAndLastReadMessageNo(chatRoom.getNo(), chatUser.getLastReadMessageNo());
+			// 접속 중인 유저 화면에서도 안읽은수를 감소시키기 위해 메시지번호 반영
+			chatMessage.setUnreadCnt(chatUser.getLastReadMessageNo());
+		}
+		// 퇴장메시지 송신
+		messagingTemplate.convertAndSend("/topic/chat/" + roomId, chatMessage);
+		
+		// 방 인원이 0일 때 필수방이 아니라면 방 삭제
+		if (chatRoom.getChattersCnt() == 0 && !chatRoom.isEssential()) {
+			chatRoomMapper.deleteChatRoomByNo(chatRoom.getNo());
+		}
 	}
 	
 	public List<ChatRoomWithUsers> getChatRoomByPartyNoAndUserId(int partyNo, int userNo) {
@@ -155,13 +194,4 @@ public class ChatService {
 		
 		return dtos;
 	}
-	
-	public void exitRoom(LoginUser loginuser, String roomId) {
-		
-	}
-	
-	private void deleteRoom(LoginUser loginUser, String roomId) {
-		
-	}
-	
 }
