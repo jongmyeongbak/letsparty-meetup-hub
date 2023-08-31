@@ -1,14 +1,18 @@
 package com.letsparty.service;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
 
-import com.letsparty.mapper.CategoryMapper;
+import com.letsparty.info.Pagination;
 import com.letsparty.mapper.LetsPartyMapper;
 import com.letsparty.vo.Category;
 import com.letsparty.vo.LetsPartyPost;
 import com.letsparty.vo.Party;
 import com.letsparty.vo.User;
 import com.letsparty.web.form.LetsPartyPostForm;
+import com.letsparty.web.model.LetsPartyPostList;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +43,26 @@ public class LetsPartyService {
 		letsPartyMapper.insertPost(letsPartyPost);
 	}
 	
-	// 
-	
+	// 렛츠파티 게시물 가져오기
+	public LetsPartyPostList getPosts(Map<String, Object> param) {
+		int totalRows = letsPartyMapper.getTotalRows(param);
+		
+		int page = (int) param.get("page");
+		int rows = (int) param.get("rows");
+		Pagination pagination = new Pagination(rows, page, totalRows);
+		
+		int begin = pagination.getBegin();
+		int end = pagination.getEnd();
+		
+		param.put("begin", begin);
+		param.put("end", end);
+		
+		LetsPartyPostList result = new LetsPartyPostList();
+		List<LetsPartyPost> posts = letsPartyMapper.getPosts(param);
+		
+		result.setPagination(pagination);
+		result.setPosts(posts);
+		
+		return result;
+	}
 }

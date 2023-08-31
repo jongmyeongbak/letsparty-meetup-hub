@@ -11,25 +11,55 @@
 			count(*)
 		from letsparty_post lt
 		inner join party p on lt.party_no = p.party_no
-		<where>
-			<choose>
-				<when test="opt == 'title'">
-					post_title like concat('%',#{keyword},'%')
-				</when>
-				<when test="opt == 'content'">
-					post_content like concat('%',#{keyword},'%')
-				</when>
-				<when test="opt == 'party'">
-					p.party_name like concat('%',#{keyword},'%')
-				</when>
-			</choose>
-		</where>
+		where p.category_no = #{categoryNo}
+		<choose>
+			<when test="opt == 'title'">
+				lt.post_title like concat('%',#{keyword},'%')
+			</when>
+			<when test="opt == 'content'">
+				lt.post_content like concat('%',#{keyword},'%')
+			</when>
+			<when test="opt == 'party'">
+				p.party_name like concat('%',#{keyword},'%')
+			</when>
+		</choose>
 	</select>
 	
 	<select id="getPosts" parameterType="map" resultType="com.letsparty.vo.LetsPartyPost">
-		select lt.post_no, lt.post_title, party_name, lt.created_at, post_read_cnt, post_comment_cnt
+		select 
+	        p.party_name        as "party.name",
+	        p.category_no		as "category.no",
+			lt.post_no          as no,
+	        lt.post_title       as title,
+	        lt.created_at       as createdAt,
+	        lt.post_read_cnt    as readCnt,
+	        lt.post_comment_cnt as commentCnt,
+	        lt.post_like_cnt	as likeCnt
 		from letsparty_post lt
-		
 		inner join party p on lt.party_no = p.party_no
+		where p.category_no = #{categoryNo}
+		<choose>
+			<when test="opt == 'title'">
+				and lt.post_title like concat('%',#{keyword},'%')
+			</when>
+			<when test="opt == 'content'">
+				and lt.post_content like concat('%',#{keyword},'%')
+			</when>
+			<when test="opt == 'party'">
+				and p.party_name like concat('%',#{keyword},'%')
+			</when>
+		</choose>
+		<choose>
+			<when test="sort == 'latest'">
+				order by lt.post_no desc
+			</when>
+			<when test="sort == 'oldest'">
+				order by lt.post_no asc
+			</when>
+			<when test="sort == 'popular'">
+				order by lt.post_like_cnt desc
+			</when>
+		</choose>
+		limit #{begin}, #{end}
 	</select>
 </mapper>

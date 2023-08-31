@@ -26,6 +26,23 @@ function changeCategory(categoryNo){
 	$("#form-letsparty-search").submit();
 }
 
+function changeSort() {
+	let sort = $("select[name=sort]").val();
+	
+	$("input[name=sort]").val(sort);
+	$("input[name=page]").val(1);
+	
+	$("#form-letsparty-search").submit();
+}
+
+function changeRows() {
+	let rows = $("select[name=rows]").val();
+	$("input[name=rows]").val(rows);
+	$("input[name=page]").val(1);
+	
+	$("#form-letsparty-search").submit();
+}
+
 function searchLetsParty() {
 	let keyword = $("input[name=keyword]").val();
 	if (keyword.trim() === "") {

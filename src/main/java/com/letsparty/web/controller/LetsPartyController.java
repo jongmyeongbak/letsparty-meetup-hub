@@ -90,7 +90,9 @@ public class LetsPartyController {
 			param.put("keyword", keyword);
 		}
 		
-		LetsPartyPostList result;
+		LetsPartyPostList result = letsPartyService.getPosts(param);
+		
+		model.addAttribute(result);
 		
 		return "page/letsparty/home";
 	}
