@@ -57,5 +57,4 @@ public class UserPartyApplicationService {
 		}
 		return false;
 	}
-
 }
