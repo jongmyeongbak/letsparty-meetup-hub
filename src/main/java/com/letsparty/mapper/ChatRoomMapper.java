@@ -20,7 +20,8 @@ public interface ChatRoomMapper {
 	
 	void updateChatRoom(ChatRoom chatRoom);
 	void increaseChattersCntById(String id);
-	void decreaseChattersCntById(String id);
+	void decreaseChattersCntById(ChatRoom chatRoom);
 	
-	void deleteChatRoomById(String roomId);
+	void deleteChatRoomByNo(int no);
+	void deleteChatRoomById(String id);
 }

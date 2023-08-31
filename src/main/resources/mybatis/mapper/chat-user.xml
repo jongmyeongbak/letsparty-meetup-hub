@@ -8,6 +8,17 @@
 			(#{roomId}, #{userNo}, #{joinMessageNo}, #{lastReadMessageNo})
 	</insert>
 
+	<select id="findById" resultType="ChatUser">
+		SELECT
+			join_message_no
+			last_read_message_no
+		FROM
+			chat_user
+		WHERE
+			room_id = #{roomId}
+			AND user_no = #{userNo}
+	</select>
+
 	<select id="findLastReadMessageNoByRoomNoAndUserNo" parameterType="ChatUser" resultType="long">
 		SELECT
 			last_read_message_no
@@ -61,5 +72,23 @@
 		ORDER BY
 			up.profile_nickname;
 	</select>
+	
+	<update id="updateLastReadMessageNoById">
+		UPDATE chat_user cu
+		SET last_read_message_no = (
+			SELECT MAX(message_no)
+			FROM chat_message cm
+			JOIN chat_room cr ON cm.room_no = cr.room_no
+			WHERE cr.room_id = cu.room_id
+		)
+		WHERE cu.room_id = #{roomId} AND cu.user_no = #{userNo}
+	</update>
+	
+	<delete id="deleteChatUser">
+		DELETE FROM chat_user
+		WHERE
+			room_id = {roomId} AND
+			user_no = {userNo}
+	</delete>
 	
 </mapper>

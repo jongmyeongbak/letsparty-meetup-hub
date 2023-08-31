@@ -4,14 +4,18 @@
 	
 	<insert id="insertChatMessage" parameterType="ChatMessage" useGeneratedKeys="true" keyProperty="no">
 		INSERT INTO chat_message
-			(room_no, message_type, user_no, unread_cnt, message_text)
+			(room_no, message_type, user_no, created_at, unread_cnt, message_text)
 		VALUES
-			(#{roomNo}, #{type}, #{userNo}, #{unreadCnt}, #{text})
-		<selectKey>
-			SELECT unread_cnt, created_at
-			FROM chat_message
-			WHERE 
-		</selectKey>
+			(#{roomNo}, #{type}, #{userNo}, #{createdAt}, #{unreadCnt}, #{text})
 	</insert>
+	
+	<update id="decreaseUnreadCntByRoomNoAndLastReadMessageNo">
+		UPDATE chat_message
+		SET
+			unread_cnt = unread_cnt - 1
+		WHERE
+			room_no = #{roomNo} AND
+			message_no > #{lastReadMessageNo}
+	</update>
 	
 </mapper>

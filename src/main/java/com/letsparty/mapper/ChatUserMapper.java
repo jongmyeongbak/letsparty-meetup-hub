@@ -12,7 +12,13 @@ import com.letsparty.vo.ChatUser;
 public interface ChatUserMapper {
 
 	boolean insertChatUser(ChatUser chatUser);
+	
+	ChatUser findById(@Param("roomId") String roomId, @Param("userNo") int userNo);
 	Long findLastReadMessageNoByRoomNoAndUserNo(ChatUser chatUser);
 	List<ChatUserResponse> findByRoomId(String roomId);
 	List<ChatUserResponse> findByRoomIdWithoutMe(@Param("roomId") String roomId, @Param("myNo") int myNo);
+	
+	void updateLastReadMessageNoById(@Param("roomId") String roomId, @Param("userNo") int userNo);
+	
+	void deleteChatUser(@Param("roomId") String roomId, @Param("userNo") int userNo);
 }
