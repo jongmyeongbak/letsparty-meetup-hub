@@ -39,7 +39,7 @@
 			up.profile_nickname;
 	</select>
 	
-	<select id="findByRoomIdWithOutMe" resultType="com.letsparty.dto.ChatUserResponse">
+	<select id="findByRoomIdWithoutMe" resultType="com.letsparty.dto.ChatUserResponse">
 		SELECT
 			u.user_no,
 			up.profile_nickname as nickname,

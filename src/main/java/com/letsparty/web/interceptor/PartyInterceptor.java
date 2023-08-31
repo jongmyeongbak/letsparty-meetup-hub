@@ -104,12 +104,12 @@ public class PartyInterceptor implements HandlerInterceptor {
 			}
 		}
 		
-		UserPartyApplication partyOfLeader = userPartyApplicationService.findByPartyNoAndUserId(partyNo, party.getLeader().getId());
+		UserPartyApplication leadrOfParty = userPartyApplicationService.findByPartyNoAndUserId(partyNo, party.getLeader().getId());
 		
 		int memberCnt = userPartyApplicationService.countPartyMemberWithStatus(partyNo, "승인");
 		
 		modelAndView.addObject("party", party);
-		modelAndView.addObject("leader", partyOfLeader);
+		modelAndView.addObject("leader", leadrOfParty);
 		modelAndView.addObject("memberCnt", memberCnt);
 		modelAndView.addObject("partyNo", partyNo);
 	}
