@@ -14,5 +14,5 @@ public interface ChatUserMapper {
 	boolean insertChatUser(ChatUser chatUser);
 	Long findLastReadMessageNoByRoomNoAndUserNo(ChatUser chatUser);
 	List<ChatUserResponse> findByRoomId(String roomId);
-	List<ChatUserResponse> findByRoomIdWithOutMe(@Param("roomId") String roomId, @Param("myNo") int myNo);
+	List<ChatUserResponse> findByRoomIdWithoutMe(@Param("roomId") String roomId, @Param("myNo") int myNo);
 }
