@@ -105,6 +105,26 @@
 		LIMIT 1;
 	</select>
 	
+	<select id="findAllByPartyNoAndUserNo" resultType="ChatRoom">
+		SELECT 
+			cr.room_no as no,
+			cr.room_id as id,
+			cr.chatters_cnt,
+			cr.party_no as "party.no",
+			cr.creator_no,
+			cr.is_public,
+			cr.is_essential,
+			cr.room_title as title,
+			cr.room_description as description
+		FROM chat_room cr
+		JOIN chat_user cu ON cr.room_id = cu.room_id
+		WHERE cr.party_no = #{partyNo}
+		AND cu.user_no = #{userNo}
+		ORDER BY
+			CASE WHEN cr.is_essential = 1 THEN 0 ELSE 1 END,
+		 	cr.room_no DESC;
+	</select>
+	
 	<update id="updateChatRoom" parameterType="ChatRoom">
 		UPDATE chat_room
 		SET

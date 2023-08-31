@@ -20,6 +20,8 @@ public class ChatRoom {
 	private String title;
 	private String description;
 	
+	public ChatRoom() {}
+	
 	@Builder
 	public ChatRoom(String id, int chattersCnt, Party party, Integer creatorNo, boolean isPublic, boolean isEssential, String title,
 			String description) {

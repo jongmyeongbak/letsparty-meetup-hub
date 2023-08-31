@@ -20,5 +20,9 @@ public interface UserPartyApplicationMapper {
 			@Param("myNo") Integer myNo // Nullable parameter
 	);
 	void update(UserPartyApplication userPartyApplication);
+	
+	int countPartyMemberByPartyNoAndStatus(@Param("partyNo")int partyNo, @Param("status")String status);
+
 	List<UserPartyApplication> findAllByUserId(String userId);
+
 }

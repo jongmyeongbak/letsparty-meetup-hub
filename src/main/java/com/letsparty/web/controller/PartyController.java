@@ -169,7 +169,7 @@ public class PartyController {
 	
 	@GetMapping("/{partyNo}/setting")
 	public String setting() {
-		return "page/party/psetting";
+		return "page/party/setting";
 	}
 	
 	@GetMapping("/{partyNo}/attachment")

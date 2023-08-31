@@ -21,7 +21,7 @@
 			event_description 	as description,
 			is_all_day			as allDay,
 			event_start_date	as startDate,
-			event_start_tiem	as startTime,
+			event_start_time	as startTime,
 			event_end_date		as endDate,
 			event_end_time		as endTime,
 			event_status		as status
@@ -39,7 +39,7 @@
 			event_description 	as description,
 			is_all_day			as allDay,
 			event_start_date	as startDate,
-			event_start_tiem	as startTime,
+			event_start_time	as startTime,
 			event_end_date		as endDate,
 			event_end_time		as endTime,
 			event_status		as status
@@ -47,6 +47,26 @@
 			event
 		where 
 			event_no = #{value}
+	</select>
+	
+	<select id="getEventByPartyNo" parameterType="int" resultType="com.letsparty.vo.Event">
+		SELECT
+			event_no 			as no,
+			event_title			as title,
+			event_description 	as description,
+			is_all_day			as allDay,
+			event_start_date	as startDate,
+			event_start_time	as startTime,
+			event_end_date		as endDate,
+			event_end_time		as endTime,
+			event_status		as status
+		FROM event
+		WHERE
+			party_no = #{value} AND 
+			(event_start_date > CURDATE() OR event_start_date = CURDATE() AND COALESCE(event_start_time, '24:00') >= CURTIME()) AND 
+			event_start_date &lt; DATE_ADD(CURDATE(), INTERVAL 15 DAY)
+		ORDER BY event_start_date, event_start_time
+		LIMIT 5;
 	</select>
 	
 	<delete id="deleteEvent" parameterType="int">

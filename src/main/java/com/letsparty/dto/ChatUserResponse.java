@@ -9,4 +9,6 @@ public class ChatUserResponse {
 
 	private String userNo;
 	private String nickname;
+	private String filename;
+	private boolean isUrl;
 }

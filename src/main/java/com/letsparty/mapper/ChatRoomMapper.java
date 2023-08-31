@@ -16,6 +16,7 @@ public interface ChatRoomMapper {
 	List<ChatRoom> findAllByPartyNoAndCreatorNo(@Param("partyNo") int partyNo, @Param("creatorNo") int creatorNo);
 	List<ChatRoom> findAllByPartyNoAndCreatorNoAndIsPublicAndChattersCnt(@Param("partyNo") int partyNo, @Param("creatorNo") int creatorNo, @Param("isPublic") boolean isPublic, @Param("chattersCnt") int chattersCnt);
 	String findOneToOneRoomIdByPartyNo(@Param("partyNo") int partyNo, @Param("userNo1") int userNo1, @Param("userNo2") int userNo2);
+	List<ChatRoom> findAllByPartyNoAndUserNo(@Param("partyNo") int partyNo, @Param("userNo") int userNo);
 	
 	void updateChatRoom(ChatRoom chatRoom);
 	void increaseChattersCntById(String id);

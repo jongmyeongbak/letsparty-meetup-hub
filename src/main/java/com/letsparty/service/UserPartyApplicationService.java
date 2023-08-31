@@ -39,6 +39,14 @@ public class UserPartyApplicationService {
 		userPartyApplicationMapper.insert(userPartyApplication);
 	}
 	
+	public UserPartyApplication findByPartyNoAndUserId(int partyNo, String userId) {
+		return userPartyApplicationMapper.findByPartyNoAndUserId(partyNo, userId);
+	}
+	
+	public int countPartyMemberWithStatus(int partyNo, String status) {
+		return userPartyApplicationMapper.countPartyMemberByPartyNoAndStatus(partyNo, status);
+	}
+
 	public List<UserPartyApplication> findAllByUserId(String userId) {
 		return userPartyApplicationMapper.findAllByUserId(userId);
 	}
@@ -49,5 +57,4 @@ public class UserPartyApplicationService {
 		}
 		return false;
 	}
-
 }

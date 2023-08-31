@@ -18,11 +18,11 @@
 			AND user_no = #{userNo}
 	</select>
 	
-	<select id="findUsersByRoomId" parameterType="string" resultType="com.letsparty.dto.ChatUserResponse">
+	<select id="findByRoomId" parameterType="string" resultType="com.letsparty.dto.ChatUserResponse">
 		SELECT
 			u.user_no,
-			up.profile_nickname
-			up.image_filename
+			up.profile_nickname as nickname,
+			up.image_filename as filename
 		FROM
 			chat_user cu
 		JOIN
@@ -35,6 +35,29 @@
 			user_profile up ON upa.profile_no = up.profile_no
 		WHERE
 			cu.room_id = #{value}
+		ORDER BY
+			up.profile_nickname;
+	</select>
+	
+	<select id="findByRoomIdWithoutMe" resultType="com.letsparty.dto.ChatUserResponse">
+		SELECT
+			u.user_no,
+			up.profile_nickname as nickname,
+			up.image_filename as filename
+		FROM
+			chat_user cu
+		JOIN
+			user u ON cu.user_no = u.user_no
+		JOIN
+			chat_room cr ON cu.room_id = cr.room_id
+		JOIN
+			user_party_application upa ON cr.party_no = upa.party_no AND u.user_id = upa.user_id
+		JOIN
+			user_profile up ON upa.profile_no = up.profile_no
+		WHERE
+			cu.room_id = #{roomId}
+		AND
+			cu.user_no != #{myNo}
 		ORDER BY
 			up.profile_nickname;
 	</select>

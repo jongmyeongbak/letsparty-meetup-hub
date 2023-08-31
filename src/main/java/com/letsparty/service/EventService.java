@@ -40,4 +40,9 @@ public class EventService {
 		return eventMapper.getEventDetailByNo(evnetNo);
 	}
 	
+	// 일정 목록 조회(파티번호로 최근 5개까지만 조회)
+	public List<Event> getEventsByPartyNo(int partyNo){
+		return eventMapper.getEventByPartyNo(partyNo);
+	}
+	
 }

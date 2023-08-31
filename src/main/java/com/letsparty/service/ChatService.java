@@ -1,14 +1,20 @@
 package com.letsparty.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
+import com.letsparty.dto.ChatRoomWithUsers;
+import com.letsparty.dto.ChatUserResponse;
 import com.letsparty.mapper.ChatMessageMapper;
 import com.letsparty.mapper.ChatRoomMapper;
 import com.letsparty.mapper.ChatUserMapper;
@@ -132,6 +138,22 @@ public class ChatService {
 				.joinMessageNo(chatMessage.getNo()).lastReadMessageNo(chatMessage.getNo()).build());
 		chatRoomMapper.increaseChattersCntById(roomId);
 		messagingTemplate.convertAndSend("/topic/chat/" + roomId, chatMessage);
+	}
+	
+	public List<ChatRoomWithUsers> getChatRoomByPartyNoAndUserId(int partyNo, int userNo) {
+		List<ChatRoomWithUsers> dtos = new ArrayList<>();
+		List<ChatRoom> chatRoomList = chatRoomMapper.findAllByPartyNoAndUserNo(partyNo, userNo);
+		for (ChatRoom cr : chatRoomList) {
+			ChatRoomWithUsers dto = new ChatRoomWithUsers();
+			BeanUtils.copyProperties(cr, dto);
+			
+			List<ChatUserResponse> users = chatUserMapper.findByRoomIdWithoutMe(cr.getId(), userNo);
+			dto.setChatUsers(users);
+			
+			dtos.add(dto);
+		}
+		
+		return dtos;
 	}
 	
 	public void exitRoom(LoginUser loginuser, String roomId) {
