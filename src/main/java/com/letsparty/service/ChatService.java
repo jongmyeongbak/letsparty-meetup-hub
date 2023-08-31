@@ -147,7 +147,7 @@ public class ChatService {
 			ChatRoomWithUsers dto = new ChatRoomWithUsers();
 			BeanUtils.copyProperties(cr, dto);
 			
-			List<ChatUserResponse> users = chatUserMapper.findByRoomIdWithOutMe(cr.getId(), userNo);
+			List<ChatUserResponse> users = chatUserMapper.findByRoomIdWithoutMe(cr.getId(), userNo);
 			dto.setChatUsers(users);
 			
 			dtos.add(dto);
