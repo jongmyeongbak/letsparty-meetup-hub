@@ -37,7 +37,7 @@ public class LetsPartyController {
 	private final UserPartyApplicationService userPartyApplicationService;
 	private final LetsPartyService letsPartyService;
 	
-	@GetMapping()
+	@GetMapping
 	public String home(@AuthenticationPrincipal LoginUser loginUser, Model model) {
 		// 렛츠파티 home에 접근시 리스트를 표시할 최초 조건 
 		Map<String, Object> param = new HashMap<>();

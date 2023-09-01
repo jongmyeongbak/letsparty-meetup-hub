@@ -60,10 +60,6 @@ public class LetsPartyService {
 		LetsPartyPostList result = new LetsPartyPostList();
 		List<LetsPartyPost> posts = letsPartyMapper.getPosts(param);
 		
-		if (posts == null) {
-		    posts = new ArrayList<>();
-		}
-		
 		result.setPagination(pagination);
 		result.setPosts(posts);
 		
