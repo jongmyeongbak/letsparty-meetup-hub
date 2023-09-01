@@ -39,6 +39,20 @@
 			profile_no = #{no}
 	</select>
 	
+	<select id="getProfileByUserId" parameterType="string" resultType="com.letsparty.vo.UserProfile">
+		select 
+			profile_no as no,
+			user_id as id,
+			profile_nickname nickname, 
+			image_filename as filename,
+			is_default,
+			is_url
+		from
+			user_profile
+		where 
+			user_id = #{value}
+	</select>
+	
 	<update id="updateProfile" parameterType="com.letsparty.vo.UserProfile">
 		update user_profile
 		set

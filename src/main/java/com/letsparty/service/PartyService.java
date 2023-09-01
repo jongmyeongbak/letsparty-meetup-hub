@@ -9,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.letsparty.dto.PartyReqDto;
 import com.letsparty.mapper.CategoryMapper;
 import com.letsparty.mapper.MediaMapper;
 import com.letsparty.mapper.PartyMapper;
@@ -158,8 +159,23 @@ public class PartyService {
 	}
 	
 	// 파티 번호로 파티 조건 검색
-	public List<PartyReq> getPartyReqsByNo(int partyNo){
-		return partyReqMapper.getPartyReqsByNo(partyNo);
+	public PartyReqDto getPartyReqsByNo(int partyNo){
+		PartyReqDto req = new PartyReqDto();
+		List<PartyReq> partyReq = partyReqMapper.getPartyReqsByNo(partyNo);
+		// 9999이전 출생년도
+		req.setBirthStart(partyReq.get(0).getValue());
+		// 0000이후 출생 년도
+		req.setBirthEnd(partyReq.get(1).getValue());
+		// 성별 저장
+		switch (partyReq.get(2).getValue()) {
+		case "M" : 
+			req.setGender("남성");
+			break;
+		case "F" : 
+			req.setGender("여성");
+			break;
+		}
+		return req;
 	}
 	
 	// 게시물 추가

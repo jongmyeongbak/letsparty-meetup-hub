@@ -15,15 +15,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.letsparty.dto.PartyReqDto;
 import com.letsparty.security.user.LoginUser;
 import com.letsparty.service.CategoryService;
 import com.letsparty.service.PartyService;
+import com.letsparty.service.UserProfileService;
 import com.letsparty.util.PartyDataUtils;
 import com.letsparty.vo.Party;
 import com.letsparty.vo.PartyReq;
 import com.letsparty.vo.Post;
 import com.letsparty.vo.User;
 import com.letsparty.vo.UserPartyApplication;
+import com.letsparty.vo.UserProfile;
 import com.letsparty.web.form.PartyForm;
 import com.letsparty.web.form.PostForm;
 
@@ -38,10 +41,22 @@ public class PartyController {
 	
 	private final PartyService partyService;
 	private final CategoryService categoryService;
+	private final UserProfileService userProfileService;
 	@Value("${s3.path.covers}")
 	private String coversPath;
 	@Value("${s3.path.profiles}")
 	private String profilesPath;
+	
+	@GetMapping("/{partyNo}/join")
+	public String joinParty(@PathVariable int partyNo, @AuthenticationPrincipal LoginUser loginUser, Model model) {
+		List<UserProfile> userProfiles = userProfileService.getAllProfileByUserId(loginUser.getId());
+		PartyReqDto partyReqs = partyService.getPartyReqsByNo(partyNo);
+		
+		model.addAttribute("userProfiles", userProfiles);
+		model.addAttribute("partyReqs", partyReqs);
+		
+		return "/page/party/join-party";
+	}
 	
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/{partyNo}/member")
@@ -81,19 +96,21 @@ public class PartyController {
 		}
 		
 		// 저장된 파티 조건 조회
-		List<PartyReq> savedPartyReqs = partyService.getPartyReqsByNo(partyNo);
-		for (PartyReq req : savedPartyReqs) {
-			switch (req.getName()) {
-			case "생년1":
-				partyForm.setBirthStart(req.getValue());
-				break;
-			case "생년2":
-				partyForm.setBirthEnd(req.getValue());
-				break;
-			case "성별":
-				partyForm.setGender(req.getValue());
-				break;
-			}
+		PartyReqDto partyReqs = partyService.getPartyReqsByNo(partyNo);
+		partyForm.setBirthStart(partyReqs.getBirthStart());
+		partyForm.setBirthEnd(partyReqs.getBirthEnd());
+		partyForm.setGender(partyReqs.getGender());
+		
+		switch (partyReqs.getGender()) {
+		case "모두":
+			partyForm.setGender("A");
+			break;
+		case "남성":
+			partyForm.setGender("M");
+			break;
+		case "여성":
+			partyForm.setGender("F");
+			break;
 		}
 		
 		// 커버 조회

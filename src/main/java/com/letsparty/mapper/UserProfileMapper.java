@@ -1,5 +1,7 @@
 package com.letsparty.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.letsparty.vo.UserProfile;
@@ -14,5 +16,7 @@ public interface UserProfileMapper {
 	UserProfile getDefaultProfileById(String id);
 	
 	UserProfile getProfileByNo(int no);
+
+	List<UserProfile> getProfileByUserId(String id);
 
 }

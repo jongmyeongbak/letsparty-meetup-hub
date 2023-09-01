@@ -1,5 +1,7 @@
 package com.letsparty.service;
 
+import java.util.List;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -13,14 +15,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserProfileService {
 	
-	private final UserProfileMapper myMapper;
+	private final UserProfileMapper userProfileMapper;
 	
 	public int addProfile(UserProfileForm userProfileForm) {
 		UserProfile userProfile = new UserProfile();
 		
 		BeanUtils.copyProperties(userProfileForm, userProfile);
 		
-		myMapper.addProfile(userProfile);
+		userProfileMapper.addProfile(userProfile);
 		
 		return userProfile.getNo();
 	}
@@ -31,19 +33,23 @@ public class UserProfileService {
 		
 		BeanUtils.copyProperties(userProfileForm, userProfile);
 		
-		UserProfile savedUserProfile = myMapper.getProfileByNo(userProfile.getNo());
+		UserProfile savedUserProfile = userProfileMapper.getProfileByNo(userProfile.getNo());
 		
 		if (userProfile.getFilename() != savedUserProfile.getFilename()) {
 			userProfile.setIsUrl(false);
 		}
 		
-		myMapper.updateProfile(userProfile);
+		userProfileMapper.updateProfile(userProfile);
 	}
 	
 	public UserProfile getDefaultProfile(String id) {
-		UserProfile userProfile = myMapper.getDefaultProfileById(id);
+		UserProfile userProfile = userProfileMapper.getDefaultProfileById(id);
 		
 		return userProfile;
+	}
+
+	public List<UserProfile> getAllProfileByUserId(String id) {
+;		return userProfileMapper.getProfileByUserId(id);
 	}
 	
 }
