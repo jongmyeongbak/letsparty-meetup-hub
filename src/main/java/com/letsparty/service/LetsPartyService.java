@@ -53,10 +53,9 @@ public class LetsPartyService {
 		Pagination pagination = new Pagination(rows, page, totalRows);
 		
 		int begin = pagination.getBegin();
-		int end = pagination.getEnd();
 		
 		param.put("begin", begin);
-		param.put("end", end);
+		param.put("rows", rows);
 		
 		LetsPartyPostList result = new LetsPartyPostList();
 		List<LetsPartyPost> posts = letsPartyMapper.getPosts(param);

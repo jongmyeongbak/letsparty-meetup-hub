@@ -27,3 +27,22 @@ color: rgb(194, 225, 255);
 .card-header {
 	background-color: rgb(237, 246, 255);
 }
+
+.ellipsis-party-name {
+  max-width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;  
+}
+
+.ellipsis-post-title {
+  max-width: 500px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;  
+}
+
+
+.postNo-td {
+	width: 100px;
+}

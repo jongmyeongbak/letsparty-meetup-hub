@@ -11,23 +11,29 @@
 			count(*)
 		from letsparty_post lt
 		inner join party p on lt.party_no = p.party_no
-		where p.category_no = #{categoryNo}
-		<choose>
-			<when test="opt == 'title'">
-				and lt.post_title like concat('%',#{keyword},'%')
-			</when>
-			<when test="opt == 'content'">
-				and lt.post_content like concat('%',#{keyword},'%')
-			</when>
-			<when test="opt == 'party'">
-				and p.party_name like concat('%',#{keyword},'%')
-			</when>
-		</choose>
+		
+		<where>
+			<if test="categoryNo != null and categoryNo != 0">
+			 	p.category_no = #{categoryNo}
+			</if>
+			<choose>
+				<when test="opt == 'title'">
+					and lt.post_title like concat('%',#{keyword},'%')
+				</when>
+				<when test="opt == 'content'">
+					and lt.post_content like concat('%',#{keyword},'%')
+				</when>
+				<when test="opt == 'party'">
+					and p.party_name like concat('%',#{keyword},'%')
+				</when>
+			</choose>
+		</where>
 	</select>
 	
 	<select id="getPosts" parameterType="map" resultType="com.letsparty.vo.LetsPartyPost">
 		select 
-	        party_name        as "party.name",
+			p.party_no			as "party.no",
+	        p.party_name        as "party.name",
 	        p.category_no		as "category.no",
 			lt.post_no          as no,
 	        lt.post_title       as title,
@@ -37,18 +43,22 @@
 	        lt.post_like_cnt	as likeCnt
 		from letsparty_post lt
 		inner join party p on lt.party_no = p.party_no
-		where p.category_no = #{categoryNo}
-		<choose>
-			<when test="opt == 'title'">
-				and lt.post_title like concat('%',#{keyword},'%')
-			</when>
-			<when test="opt == 'content'">
-				and lt.post_content like concat('%',#{keyword},'%')
-			</when>
-			<when test="opt == 'party'">
-				and p.party_name like concat('%',#{keyword},'%')
-			</when>
-		</choose>
+		<where >
+			<if test="categoryNo != null and categoryNo != 0">
+			 	p.category_no = #{categoryNo}
+			</if>
+			<choose>
+				<when test="opt == 'title'">
+					and lt.post_title like concat('%',#{keyword},'%')
+				</when>
+				<when test="opt == 'content'">
+					and lt.post_content like concat('%',#{keyword},'%')
+				</when>
+				<when test="opt == 'party'">
+					and p.party_name like concat('%',#{keyword},'%')
+				</when>
+			</choose>
+		</where>
 		<choose>
 			<when test="sort == 'latest'">
 				order by lt.post_no desc
@@ -60,6 +70,6 @@
 				order by lt.post_like_cnt desc
 			</when>
 		</choose>
-		limit #{begin}, #{end}
+		limit #{begin}, #{rows}
 	</select>
 </mapper>

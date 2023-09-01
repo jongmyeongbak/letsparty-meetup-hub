@@ -19,7 +19,7 @@
                             <label class="form-label">파티명</label>
                             <input th:field="*{name}" type="text" class="form-control form-control-lg"
                        				th:classappend="${#fields.hasErrors('*{name}') ? 'is-invalid' : ''}" placeholder="파티 이름을 입력해주세요." />
-                            <div th:errors="*{name}" th:classappend="${#fields.hasErrors('name') ? 'invalid-feedback' : ''}"></div>
+                            <div th:errors="*{name}" class="invalid-feedback"></div>
                         </div>
                         <!-- 파티 이미지 선택 구간 -->
                         <div class="row">
@@ -88,7 +88,7 @@
                                 <label class="form-label">최대정원</label>
                                 <input class="form-control" type="number" min="10" max="1000" 
                                 	step="10" placeholder="최대 1000명" th:field="*{quota}" th:classappend="${#fields.hasErrors('quota') ? 'is-invalid' : ''}" />
-                            <div th:errors="*{quota}" th:classappend="${#fields.hasErrors('quota') ? 'invalid-feedback' : ''}"></div>
+                            <div th:errors="*{quota}" class="invalid-feedback"></div>
                             </div>
                         </div>
                         <div class="row">
@@ -107,7 +107,7 @@
 													        <option th:value="${birthYear}" th:text="|${birthYear}년생 (만 ${currentYear - birthYear}세)|"></option>
 													    </th:block>
                                                     </select>
-                                                    <div th:errors="*{birthStart}" th:classappend="${#fields.hasErrors('birthStart') ? 'invalid-feedback' : ''}"></div>
+                                                    <div th:errors="*{birthStart}" class="invalid-feedback"></div>
                                                 </div>
                                                 <div class="row">
                                                     <label class="col-4 col-form-label" for="birthEnd">최대나이</label>
@@ -145,7 +145,7 @@
                                 <label for="" class="form-label">파티설명</label>
                                 <textarea name="" id="" cols="30" rows="4" class="form-control" th:field="*{description}"
                                		 th:classappend="${#fields.hasErrors('*{description}') ? 'is-invalid' : ''}"></textarea>
-                           		 <div th:errors="*{description}" th:classappend="${#fields.hasErrors('description') ? 'invalid-feedback' : ''}"></div>
+                           		 <div th:errors="*{description}" class="invalid-feedback"></div>
                             </div>
                         </div>
                     </div>
