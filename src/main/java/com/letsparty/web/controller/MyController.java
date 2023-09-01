@@ -1,10 +1,14 @@
 package com.letsparty.web.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letsparty.service.UserProfileService;
+import com.letsparty.vo.UserProfile;
 import com.letsparty.web.form.UserProfileForm;
 
 import lombok.RequiredArgsConstructor;
@@ -25,5 +29,11 @@ public class MyController {
 		myService.changeProfile(userProfileForm);
 		
 		return "redirect:/login";
+	}
+	
+	@GetMapping("/profile/{profileNo}")
+	@ResponseBody
+	public UserProfile getProfile(@PathVariable("profileNo") int profileNo) {
+		return myService.getProfileByNo(profileNo);
 	}
 }

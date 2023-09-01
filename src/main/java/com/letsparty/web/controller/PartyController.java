@@ -14,12 +14,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.letsparty.dto.PartyReqDto;
 import com.letsparty.security.user.LoginUser;
 import com.letsparty.service.CategoryService;
 import com.letsparty.service.PartyService;
+import com.letsparty.service.UserPartyApplicationService;
 import com.letsparty.service.UserProfileService;
+import com.letsparty.service.UserService;
 import com.letsparty.util.PartyDataUtils;
 import com.letsparty.vo.Party;
 import com.letsparty.vo.PartyReq;
@@ -42,6 +45,7 @@ public class PartyController {
 	private final PartyService partyService;
 	private final CategoryService categoryService;
 	private final UserProfileService userProfileService;
+	private final UserPartyApplicationService userPartyApplicationService;
 	@Value("${s3.path.covers}")
 	private String coversPath;
 	@Value("${s3.path.profiles}")
@@ -56,6 +60,18 @@ public class PartyController {
 		model.addAttribute("partyReqs", partyReqs);
 		
 		return "/page/party/join-party";
+	}
+	
+	@PostMapping("/{partyNo}/join")
+	public String joinParty(@PathVariable int partyNo, @AuthenticationPrincipal LoginUser loginUser, @RequestParam("profileNo") int profileNo) {
+		// 파티 가입 조건과 일치하면 가입을 승인한다.
+		UserProfile profile = new UserProfile();
+		profile.setNo(profileNo);
+		if (!userPartyApplicationService.addUserPartyApplicationIfReqMet(partyNo, loginUser.getId(), profile)) {
+			// TODO 가입조건과 맞지 않다는 오류메세지를 담아서 redirect 하기
+			return "redirect:/party/{partyNo}";
+		};
+		return "redirect:/party/{partyNo}";
 	}
 	
 	@PreAuthorize("isAuthenticated()")

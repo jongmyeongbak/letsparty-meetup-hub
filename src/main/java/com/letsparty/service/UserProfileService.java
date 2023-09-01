@@ -51,5 +51,9 @@ public class UserProfileService {
 	public List<UserProfile> getAllProfileByUserId(String id) {
 ;		return userProfileMapper.getProfileByUserId(id);
 	}
+
+	public UserProfile getProfileByNo(int profileNo) {
+		return userProfileMapper.getProfileByNo(profileNo);
+	}
 	
 }

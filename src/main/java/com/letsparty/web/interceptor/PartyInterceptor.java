@@ -83,7 +83,6 @@ public class PartyInterceptor implements HandlerInterceptor {
 					}
 					chatroom.setChatUsersText(sj.toString());
 				}
-				System.out.println(partyNo);
 				
 				// 내가 가입한 파티의 일정을 불러오기
 				List<Event> getEvents = eventService.getEventsByPartyNo(partyNo);
