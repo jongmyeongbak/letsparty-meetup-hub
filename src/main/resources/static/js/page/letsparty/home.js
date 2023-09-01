@@ -1,7 +1,16 @@
+// 필드 값 설정 후 폼 제출 함수
+function updateAndSubmit(name, value, resetPage = true) {
+	$(`input[name=${name}]`).val(value);
+    if (resetPage) {
+        $("input[name=page]").val(1);
+    }
+    $("#form-letsparty-search").submit();
+}
+
 $(function(){
 	// url의 요청 파라미터에 따라 카테고리 탭 active클래스 추가 제거.
     const categoryValue = new URL(window.location.href).searchParams.get("categoryNo") || "0";
-    const categoryElements = document.querySelectorAll("#letsparty-categorys .nav-link");
+    const categoryElements = $("#letsparty-categorys .nav-link").toArray();
 
     categoryElements.forEach(function(el){
         if (el.getAttribute("data-value") === categoryValue) {
@@ -15,25 +24,20 @@ $(function(){
 	$("#letsparty-categorys .nav-link").on("click", function(e){
 	    e.preventDefault();
 	    let categoryNo = $(this).data("value");
-	    $("input[name=categoryNo]").val(categoryNo);
-	    $("input[name=page]").val(1);
-	    $("#form-letsparty-search").submit();
+	    updateAndSubmit("categoryNo", categoryNo);
 	});
 	    
 	// 정렬 변경
 	$("select[name=sort]").on("change", function(){
 		let sort = $("select[name=sort]").val();
-	    $("input[name=sort]").val(sort);
-	    $("input[name=page]").val(1);
-	    $("#form-letsparty-search").submit();
+	    updateAndSubmit("sort", sort);
 	});
 	
 	// 행 개수 변경
 	$("select[name=rows]").on("change", function(){
 		let rows = $("select[name=rows]").val();
 	    $("input[name=rows]").val(rows);
-	    $("input[name=page]").val(1);
-	    $("#form-letsparty-search").submit();
+	    updateAndSubmit("rows", rows);
 	});
 	
 	// 검색
@@ -46,13 +50,13 @@ $(function(){
 	    }
 	    $("input[name=page]").val(1);
 	    $("#form-letsparty-search").submit();
+	    updateAndSubmit("keyword", keyword);
 	});
 	
 });
 
 // 페이지 변경
-function changePage(event, page) {
-   event.preventDefault();
-   $("input[name=page]").val(page);
-   $("#form-letsparty-search").submit();
+function changePage(e, page) {
+   e.preventDefault();
+   updateAndSubmit("page", page, resetPage = false);
 }
