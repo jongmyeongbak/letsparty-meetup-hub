@@ -159,3 +159,10 @@ function deleteVideo(i) {
 		$(".video" + i).remove();
 	}
 }
+
+let urlParams = new URLSearchParams(window.location.search);
+const showAlert = urlParams.get('req');
+console.log(showAlert);
+if (showAlert === 'fail') {
+    alert('파티의 가입조건과 맞지 않습니다.');
+}

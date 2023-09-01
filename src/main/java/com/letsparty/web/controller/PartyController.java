@@ -69,7 +69,7 @@ public class PartyController {
 		profile.setNo(profileNo);
 		if (!userPartyApplicationService.addUserPartyApplicationIfReqMet(partyNo, loginUser.getId(), profile)) {
 			// TODO 가입조건과 맞지 않다는 오류메세지를 담아서 redirect 하기
-			return "redirect:/party/{partyNo}";
+			return "redirect:/party/{partyNo}?req=fail";
 		};
 		return "redirect:/party/{partyNo}";
 	}
