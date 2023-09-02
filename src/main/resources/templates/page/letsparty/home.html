@@ -73,9 +73,9 @@
 						        <td th:text="${post.readCnt + '/' + post.commentCnt}"></td>
 						    </tr>
 						    <!-- 검색 결과가 없을 경우 -->
-						    <tr th:unless="${not #lists.isEmpty(result.posts)}">
-						        <td colspan="5" class="text-center">검색결과가 존재하지 않습니다.</td>
-						    </tr>
+						    <tr th:if="${#lists.isEmpty(result.posts)}">
+							    <td colspan="5" class="text-center">검색결과가 존재하지 않습니다.</td>
+							</tr>
 						</tbody>
                     </table>
                     

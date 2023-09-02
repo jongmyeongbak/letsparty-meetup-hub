@@ -78,7 +78,7 @@ public class LetsPartyController {
 	}
 	
 	// 렛츠파티 리스트 표시
-	@GetMapping("search")
+	@GetMapping("/search")
 	public String search(@RequestParam(name = "categoryNo", required = false, defaultValue = "0") Integer categoryNo,
 						 @RequestParam(name = "sort", required = false, defaultValue = "latest") String sort,
 						 @RequestParam(name = "rows", required = false, defaultValue = "10") int rows,

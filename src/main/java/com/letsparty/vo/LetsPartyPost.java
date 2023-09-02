@@ -30,7 +30,6 @@ public class LetsPartyPost {
 	public LetsPartyPost(long no, Category category, Party party, User user, String title, String content, int readCnt,
 			int commentCnt, int likeCnt, boolean isDeleted, LocalDateTime updatedAt, LocalDateTime createdAt) {
 		super();
-		this.no = no;
 		this.category = category;
 		this.party = party;
 		this.user = user;
