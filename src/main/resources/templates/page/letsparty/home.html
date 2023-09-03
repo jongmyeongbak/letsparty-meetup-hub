@@ -67,7 +67,7 @@
 						    <!-- 검색 결과가 있을 경우 -->
 						    <tr th:each="post : ${result.posts}" th:if="${not #lists.isEmpty(result.posts)}">
 						        <td class="postNo-td" th:text="${post.no}"></td>
-						        <td class="ellipsis-post-title"><a th:href="@{/letsparty/post/{postNo}(postNo=${post.no})}" th:text="${post.title}"></a></td>
+						        <td class="ellipsis-post-title"><a th:href="@{/letsparty/read/{postNo}(postNo=${post.no})}" th:text="${post.title}"></a></td>
 						        <td class="ellipsis-party-name"><a th:href="@{/party/{partyNo}(partyNo=${post.party.no})}" th:text="${post.party.name}"></a></td>
 						        <td th:text="${#temporals.format(post.createdAt, 'yyyy년 M월 d일 HH:mm:ss')}"></td>
 						        <td th:text="${post.readCnt + '/' + post.commentCnt}"></td>

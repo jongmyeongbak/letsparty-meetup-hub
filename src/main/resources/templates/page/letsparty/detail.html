@@ -20,38 +20,39 @@
                             <!-- 파티의 헤더 -->
                             <div class="post-profile-container me-3">
                                 <div class="post-profile-container-inner">
-                                    <img src="/images/party/cover-default1.png" alt="" class="post-image" style="width: 70px;">
+                                    <img th:src="${post.party.filename}" alt="" class="post-image" style="width: 70px;">
                                 </div>
                             </div>
                             
                             <div class="pt-3">
-                                <h4 class="card-title ellipsis-title">렛츠파티 게시물 제목입니다. 저희 파티 구경오세요~</h4>
+                                <h4 class="card-title ellipsis-title" th:text="${post.title}"></h4>
                                 <!-- 날짜  -->
                                 <div class="mt-2">
-                                    <p class="cart-text"><small class="text-muted">2023년 8월 3일 오전 11 : 45</small></p>
+                                    <p class="cart-text"><small class="text-muted" 
+                                    	th:text="${#temporals.format(post.createdAt, 'yyyy년 M월 d일 HH:mm:ss')}"></small></p>
                                 </div>
                             </div>
                         </div>
                     
                         <div class="d-flex justify-content-center align-items-center pb-2">
 	                        <div class="card-text pb-3">
-	                            <h5 class="ellipsis-party-name" ><a href="">파티이름</a></h5>
+	                            <h5 class="ellipsis-party-name">
+									<a th:text="${post.party.name}" th:href="@{/party/{partyNo}(partyNo=${post.party.no})}"></a>
+								</h5>
 	                        </div>
-                            <p class="card-text pb-2"><small>(리더아이디)</small></p>
+                            <p class="card-text pb-2" th:text="'(' + ${post.user.id} + ')'"></p>
                             <!-- 드롭다운 구간 -->
                             <div class="dropdown-center pb-4" style="position: relative;">
                                 <a href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bi bi-three-dots-vertical text-muted"></i>
                                 </a>
                                   <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <li>
-                                        <a class="dropdown-item" href="">글 수정</a>
-                                    </li>
+                                   <li th:if="${#authentication.name == post.user.id}">
+							            <a class="dropdown-item" href="">글 수정</a>
+							            <a class="dropdown-item" href="">삭제</a>
+							        </li>
                                     <li>
                                         <a class="dropdown-item" href="">공유</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="">삭제</a>
                                     </li>
                                     <li>
                                         <a class="dropdown-item" href="">채팅하기-타인</a>
@@ -67,7 +68,7 @@
                     <div id="post-body">
                         <!-- 게시물 글 -->
                         <div id="text">
-                            <p class="card-text">저희 파티에 놀러오세요 저희 파티는 반려동물을 사랑하는 사람들의 모임입니다~</p>
+                            <p class="card-text" th:text="${post.content}"></p>
                         </div>
                     </div>
 

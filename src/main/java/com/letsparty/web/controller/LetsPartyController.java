@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -18,9 +19,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.letsparty.exception.PostNotFoundException;
 import com.letsparty.security.user.LoginUser;
 import com.letsparty.service.LetsPartyService;
 import com.letsparty.service.UserPartyApplicationService;
+import com.letsparty.vo.LetsPartyPost;
 import com.letsparty.vo.UserPartyApplication;
 import com.letsparty.web.form.LetsPartyPostForm;
 import com.letsparty.web.model.LetsPartyPostList;
@@ -36,6 +39,8 @@ public class LetsPartyController {
 	
 	private final UserPartyApplicationService userPartyApplicationService;
 	private final LetsPartyService letsPartyService;
+	@Value("${s3.path.covers}")
+	private String coversPath;
 	
 	@GetMapping
 	public String home(@AuthenticationPrincipal LoginUser loginUser, Model model) {
@@ -108,10 +113,30 @@ public class LetsPartyController {
 	
 	// 렛츠파티 게시글 상세 화면으로 이동
 	@GetMapping("/post/{postNo}")
-	public String detail(@PathVariable int postNo, Model model) {
-		return "page/letsparty/detail";
+	public String detail(@PathVariable long postNo, Model model) {
+	    try {
+	        LetsPartyPost post = letsPartyService.getPostDetail(postNo);
+	        post.getParty().setFilename(coversPath + post.getParty().getFilename());
+	        model.addAttribute("post", post);
+	        return "page/letsparty/detail";
+	    } catch (PostNotFoundException e) {
+	    	log.error("게시물 조회 중 오류 발생: {}", e.getMessage());
+	        return "redirect:/letsparty";
+	    }
 	}
 	
+	// 게시물의 조회수를 늘림
+	@GetMapping("/read/{postNo}")
+	public String read(@PathVariable Long postNo) {
+	    try {
+	    	letsPartyService.increaseReadCount(postNo);
+	    	return "redirect:/letsparty/post/{postNo}";
+	    } catch (PostNotFoundException e) {
+	    	log.error("게시물 조회 중 오류 발생: {}", e.getMessage());
+	    	return"redirect:/letsparty";
+		}
+	}
+
 	private void addUserPartyApplicationsToModel(LoginUser loginUser, Model model) {
 	    List<UserPartyApplication> userPartyApplications = userPartyApplicationService.findAllByUserId(loginUser.getId());
 	    model.addAttribute("userPartyApplications", userPartyApplications);

@@ -11,6 +11,9 @@ import com.letsparty.vo.LetsPartyPost;
 public interface LetsPartyMapper {
 
 	void insertPost(LetsPartyPost letsPartyPost);
+	void updatePost(LetsPartyPost letsPartyPost);
+	LetsPartyPost getPostDetailByNo(long postNo);
+	
 	
 	int getTotalRows(Map<String, Object> param);
 	List<LetsPartyPost> getPosts(Map<String, Object> param);

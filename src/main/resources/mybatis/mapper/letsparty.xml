@@ -6,6 +6,25 @@
 		values (#{category.no}, #{party.no}, #{user.id}, #{title}, #{content})
 	</insert>
 	
+	<select id="getPostDetailByNo" parameterType="long" resultType="com.letsparty.vo.LetsPartyPost">
+		select 
+			p.party_no			as "party.no",
+	        p.party_name        as "party.name",
+	        p.party_filename	as "party.filename",
+			lt.post_no          as no,
+			lt.user_id			as "user.id",
+	        lt.post_title       as title,
+	        lt.post_content     as content,
+	        lt.created_at       as createdAt,
+	        lt.post_read_cnt    as readCnt,
+	        lt.post_comment_cnt as commentCnt,
+	        lt.post_like_cnt	as likeCnt
+		from letsparty_post lt
+		inner join party p on lt.party_no = p.party_no
+		where 
+		    post_no = #{no}
+	</select>
+	
 	<select id="getTotalRows" parameterType="map" resultType="int">
 		select
 			count(*)
@@ -72,4 +91,15 @@
 		</choose>
 		limit #{begin}, #{rows}
 	</select>
+	
+	<update id="updatePost" parameterType="com.letsparty.vo.LetsPartyPost">
+	    update letsparty_post
+	    set 
+	        post_title = #{title},
+	        post_content = #{content},
+	        post_read_cnt = #{readCnt},
+	        updated_at = now()
+	    where 
+	        post_no = #{no}
+	</update>
 </mapper>
