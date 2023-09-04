@@ -81,7 +81,6 @@
                                 </div>
                                 <p class="">
                                     <small class="text-muted">댓글 <span class="text-muted" th:text="${post.commentCnt}">5</span></small>
-                                    <i class="bi bi-chevron-down more-button" style="cursor: pointer;"></i>
                                 </p>
                             </div>
 
@@ -109,7 +108,7 @@
                         </div>
                     </div>
                     <!-- 댓글 -->
-                    <div class="row pb-2">
+                    <div class="row pb-2" th:each="comment : ${comments}">
                         <div class="col-12" id="comment">
                             <div class="row pe-3 border-bottom">
                                 <div class="col-12">
@@ -117,13 +116,19 @@
                                         <!-- 프로필 -->
                                         <div class="col-1 post-comment-profile-container ">
                                             <div class="post-comment-profile-container-inner">
-                                                <img src="/images/party/cover-default4.png" alt="" class="comment-image">
+                                                <img th:src="${comment.party.filename}" alt="" class="comment-image">
                                             </div>
                                         </div>
                                         <div class="col-11" style="margin: 0 -12px;">
                                             <div class="col-12 d-flex justify-content-between">
+	                                            <div class="card-text pb-3">
+							                        <!-- 파티명 -->
+						                            <p class="ellipsis-party-name">
+														<a th:text="${comment.party.name}" th:href="@{/party/{partyNo}(partyNo=${comment.party.no})}"></a>
+													</p>
+						                        </div>
                                                 <!-- 닉네임 -->
-                                                <span>댓글닉네임</span>
+                                                <span th:text="'(' + ${comment.user.id } + ')'"></span>
                                               
                                                 <!-- 드롭다운 구간 -->
                                                 <div class="dropstart" style="position: relative;">
@@ -131,14 +136,12 @@
                                                         <i class="bi bi-three-dots-vertical my-0 py-0 text-muted"></i>
                                                     </a>
                                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                        <li>
+                                                        <li th:if="${#authentication.name == comment.user.id}">
                                                             <a class="dropdown-item" href="">댓글 수정</a>
-                                                        </li>
-                                                        <li>
                                                             <a class="dropdown-item" href="">댓글 삭제</a>
                                                         </li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="">신고-타인</a>
+                                                        <li sec:authorize="isAuthenticated()" th:if="${#authentication.name != comment.user.id}">
+                                                            <a class="dropdown-item" href="">신고</a>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -147,13 +150,13 @@
                                             
                                             <!-- 내용 -->
                                             <div class="d-flex justify-content-between">
-                                                <p style="margin-bottom: -5px;">댓글입니다. 1</p>
+                                                <p style="margin-bottom: -5px;" th:text="${comment.content}"></p>
                                             </div>
 
                                             <div class="d-flex align-items-center">
                                                 <!-- 날짜 -->
                                                 <div class="mt-1 mb-1" >
-                                                    <small class="text-muted">2023년 8월 3일 오후 5 : 10</small><span class="text-muted"></span>
+                                                    <small class="text-muted" th:text="${#temporals.format(comment.createdAt, 'yyyy년 M월 d일 HH:mm:ss')}">2023년 8월 3일 오후 5 : 10</small>
                                                 </div>
                                                 
                                             </div>
@@ -167,15 +170,31 @@
                     <!-- 댓글 하나 끝 -->
                 </div>
 
+		<div th:if="${userPartyApplications} != null">
+		
                 <!-- 댓글 작성 폼 -->
-                <div class="row mb-2 ms-2 d-flex justify-content-center align-items-center" >
+                <div class="row pe-3 mb-2 ms-2 d-flex justify-content-center align-items-center" >
+                    <div class="justify-content background-color-gray">
+                        <div class="col-2">
+                            <select id="partySelect" class="form-select form-select select-party">
+                            <option disabled selected th:value="${0}">파티를 고르세요</option>
+                            <th:block th:each="userPartyApplication : ${userPartyApplications}">
+                                 <option th:value="${userPartyApplication.party.no}"
+        								 th:data-category="${userPartyApplication.party.category.no}" 
+            							 th:text="${userPartyApplication.party.name}">
+							</th:block>
+                            </select>
+                        </div>
+                    </div>
                     <div class="col-11">
                         <input type="text" class="form-control" placeholder="댓글을 남겨주세요.">
                     </div>
-                    <div class="col ps-4" >
+                    <div class="col" >
                         <button id="btn" class="btn btn-primary btn-sm">등록</button>
                     </div>
                 </div>
+                
+		</div>  
                 
             </div>
         </div>

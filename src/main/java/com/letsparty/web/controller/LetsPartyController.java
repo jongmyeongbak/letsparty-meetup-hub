@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -22,8 +23,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.letsparty.exception.PostNotFoundException;
 import com.letsparty.security.user.LoginUser;
+import com.letsparty.service.LetsPartyCommentService;
 import com.letsparty.service.LetsPartyService;
 import com.letsparty.service.UserPartyApplicationService;
+import com.letsparty.vo.LetsPartyComment;
 import com.letsparty.vo.LetsPartyPost;
 import com.letsparty.vo.UserPartyApplication;
 import com.letsparty.web.form.LetsPartyPostForm;
@@ -40,6 +43,7 @@ public class LetsPartyController {
 	
 	private final UserPartyApplicationService userPartyApplicationService;
 	private final LetsPartyService letsPartyService;
+	private final LetsPartyCommentService letsPartyCommentService;
 	@Value("${s3.path.covers}")
 	private String coversPath;
 	
@@ -105,7 +109,7 @@ public class LetsPartyController {
 			param.put("keyword", keyword);
 		}
 		
-		LetsPartyPostList result = letsPartyService.getPosts(param);
+																LetsPartyPostList result = letsPartyService.getPosts(param);
 		
 		model.addAttribute("result", result);
 		model.addAttribute("isLeader", userPartyApplicationService.isLeader(loginUser));
@@ -114,10 +118,22 @@ public class LetsPartyController {
 	
 	// 렛츠파티 게시글 상세 화면으로 이동
 	@GetMapping("/post/{postNo}")
-	public String detail(@PathVariable long postNo, Model model, RedirectAttributes attributes) {
+	public String detail(@PathVariable long postNo, Model model, RedirectAttributes attributes, @AuthenticationPrincipal LoginUser loginUser) {
 	    try {
 	        LetsPartyPost post = letsPartyService.getPostDetail(postNo);
+	        List<LetsPartyComment> comments = letsPartyCommentService.getAllCommentsByPostNo(postNo);
 	        post.getParty().setFilename(coversPath + post.getParty().getFilename());
+	        for (LetsPartyComment comment : comments) {
+	        	comment.getParty().setFilename(coversPath + comment.getParty().getFilename());
+	        }
+	        
+	        // 댓글에서의 파티 목록을 모델에 추가
+
+	        if (loginUser instanceof UserDetails) {
+	            // username을 사용하여 파티 목록 조회 로직
+	            addUserPartyApplicationsToModel(loginUser, model);
+	        }
+	        model.addAttribute("comments", comments);
 	        model.addAttribute("post", post);
 	        return "page/letsparty/detail";
 	    } catch (PostNotFoundException e) {
