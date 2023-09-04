@@ -46,6 +46,10 @@
     border-radius: 50%;
 }
 
+.party-name-id-container {
+	margin-bottom: -15px;
+}
+
 .card-line {
 border: solid 3px; 
 color: rgb(194, 225, 255);

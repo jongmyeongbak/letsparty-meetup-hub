@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.letsparty.exception.PostNotFoundException;
@@ -29,6 +31,7 @@ import com.letsparty.service.UserPartyApplicationService;
 import com.letsparty.vo.LetsPartyComment;
 import com.letsparty.vo.LetsPartyPost;
 import com.letsparty.vo.UserPartyApplication;
+import com.letsparty.web.form.LetsPartyCommentForm;
 import com.letsparty.web.form.LetsPartyPostForm;
 import com.letsparty.web.model.LetsPartyPostList;
 
@@ -128,11 +131,10 @@ public class LetsPartyController {
 	        }
 	        
 	        // 댓글에서의 파티 목록을 모델에 추가
-
-	        if (loginUser instanceof UserDetails) {
-	            // username을 사용하여 파티 목록 조회 로직
+	        if (loginUser != null) {
 	            addUserPartyApplicationsToModel(loginUser, model);
 	        }
+	        
 	        model.addAttribute("comments", comments);
 	        model.addAttribute("post", post);
 	        return "page/letsparty/detail";
@@ -152,6 +154,34 @@ public class LetsPartyController {
 	    	attributes.addFlashAttribute("errorMessage", e.getMessage());
 	    	return"redirect:/letsparty";
 		}
+	}
+	
+	// 댓글 등록
+	@PostMapping("/post/{postNo}/comment")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> insertComment(@PathVariable long postNo, @Valid LetsPartyCommentForm commentForm,
+											            BindingResult error, @AuthenticationPrincipal LoginUser loginUser) {
+	    Map<String, Object> response = new HashMap<>();
+	    commentForm.setPostNo(postNo);
+	    if (error.hasErrors()) {
+	        response.put("status", "error");
+	        if (error.getFieldError("content") != null) {
+	            response.put("message", error.getFieldError("content").getDefaultMessage());
+	        } else if (error.getFieldError("partyNo") != null) {
+	            response.put("message", error.getFieldError("partyNo").getDefaultMessage());
+	        } else {
+	            response.put("message", "유효하지 않은 입력입니다.");
+	        }
+	        return ResponseEntity.badRequest().body(response);
+	    }
+
+	    LetsPartyComment newComment = letsPartyCommentService.insertComment(commentForm, loginUser);
+	    newComment.getParty().setFilename(coversPath + newComment.getParty().getFilename());
+	    response.put("status", "success");
+	    response.put("message", "댓글이 성공적으로 등록되었습니다.");
+	    response.put("comment", newComment);  // 새로 추가된 댓글 정보를 반환합니다.
+	    response.put("isAuthor", newComment.getUser().getId().equals(loginUser.getId())); // 현재 로그인한 사용자와 댓글 작성자가 동일한지 체크
+	    return ResponseEntity.ok(response);
 	}
 
 	private void addUserPartyApplicationsToModel(LoginUser loginUser, Model model) {

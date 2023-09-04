@@ -13,6 +13,7 @@
 	        p.party_filename	as "party.filename",
 			lt.post_no          as no,
 			lt.user_id			as "user.id",
+	   <!-- up.profile_nickname as "profile.nickname", -->
 	        lt.post_title       as title,
 	        lt.post_content     as content,
 	        lt.created_at       as createdAt,
@@ -22,6 +23,8 @@
 	        lt.post_like_cnt	as likeCnt
 		from letsparty_post lt
 		inner join party p on lt.party_no = p.party_no
+		<!-- inner join user_party_application upa on lt.user_id = upa.user_id and lt.party_no = upa.party_no
+    	inner join user_profile up on upa.profile_no = up.profile_no -->
 		where 
 		    post_no = #{no}
 		and 

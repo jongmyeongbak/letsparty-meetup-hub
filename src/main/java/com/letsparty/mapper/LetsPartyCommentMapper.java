@@ -15,4 +15,6 @@ public interface LetsPartyCommentMapper {
 	// 렛츠파티 게시판에 등록된 댓글들 불러오기
 	List<LetsPartyComment> getAllCommentsByPostNo(long postNo);
 
+	LetsPartyComment getCommentByNo(long no);
+
 }

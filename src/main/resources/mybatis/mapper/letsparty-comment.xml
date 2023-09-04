@@ -2,10 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.letsparty.mapper.LetsPartyCommentMapper">
 
-	<insert id="insertComment" parameterType="com.letsparty.vo.LetsPartyComment">
+	<insert id="insertComment" parameterType="com.letsparty.vo.LetsPartyComment" useGeneratedKeys="true" keyProperty="no">
 		insert into letsparty_comment(post_no, party_no, user_id, comment_content)
 		values(#{post.no}, #{party.no}, #{user.id}, #{content});
 	</insert>
+	
+	<select id="getCommentByNo" parameterType="long" resultType="com.letsparty.vo.LetsPartyComment">
+		select 
+			lc.comment_no			as no,
+			lp.post_no				as "post.no",
+			p.party_no				as "party.no",
+			p.party_name			as "party.name",
+			p.party_filename		as "party.filename",
+			u.user_id				as "user.id",
+        	lc.comment_content		as content,
+        	lc.comment_updated_at	as updatedAt,
+        	lc.comment_created_at 	as createdAt
+		from letsparty_comment lc
+		inner join letsparty_post lp on lc.post_no = lp.post_no
+		inner join party p on lc.party_no = p.party_no
+		inner join user u on lc.user_id = u.user_id
+		where lc.comment_no = #{value}
+	</select>
 
 	<select id="getAllCommentsByPostNo" parameterType="long" resultType="com.letsparty.vo.LetsPartyComment">
 		select 
