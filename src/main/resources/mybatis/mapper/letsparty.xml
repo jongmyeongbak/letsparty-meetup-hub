@@ -92,6 +92,23 @@
 		limit #{begin}, #{rows}
 	</select>
 	
+	<select id="getPostsLimit5" resultType="com.letsparty.vo.LetsPartyPost">
+		SELECT 
+			p.party_no			as "party.no",
+	        p.party_name        as "party.name",
+	        p.category_no		as "category.no",
+			lp.post_no          as no,
+	        lp.post_title       as title,
+	        lp.created_at       as createdAt,
+	        lp.post_read_cnt    as readCnt,
+	        lp.post_comment_cnt as commentCnt,
+	        lp.post_like_cnt	as likeCnt
+		FROM letsparty_post lp
+		JOIN party p ON p.party_no = lp.party_no
+		ORDER BY lp.created_at DESC
+		LIMIT 5;
+	</select>
+	
 	<update id="updatePost" parameterType="com.letsparty.vo.LetsPartyPost">
 	    update letsparty_post
 	    set 

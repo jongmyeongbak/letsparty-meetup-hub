@@ -155,7 +155,13 @@ public class PartyService {
 	
 	// 파티 번호로 파티 조회
 	public Party getPartyByNo(int partyNo) {
-		return partyMapper.getPartyByNo(partyNo);
+		Party party = partyMapper.getPartyByNo(partyNo);
+			if (!party.getFilename().startsWith("cover-default")) {
+				party.setFilename(coversPath + party.getFilename());
+			} else {
+				party.setFilename("/images/party/" + party.getFilename());
+			}
+		return party;
 	}
 	
 	// 파티 번호로 파티 조건 검색
@@ -270,5 +276,21 @@ public class PartyService {
 			return true;
 		}
 		return false;
+	}
+
+	public List<Party> getpartyByUserId(String id) {
+		return partyMapper.getPartyByUserId(id);
+	}
+
+	public List<Party> getPartiesLimit5() {
+		List<Party> parties = partyMapper.getPartiesLimit5();
+		for (Party newParty : parties) {
+			if (!newParty.getFilename().startsWith("cover-default")) {
+				newParty.setFilename(coversPath + newParty.getFilename());
+			} else {
+				newParty.setFilename("/images/party/" + newParty.getFilename());
+			}
+		}
+		return parties;
 	}
 }

@@ -17,4 +17,5 @@ public interface LetsPartyMapper {
 	
 	int getTotalRows(Map<String, Object> param);
 	List<LetsPartyPost> getPosts(Map<String, Object> param);
+	List<LetsPartyPost> getPostsLimit5();
 }
