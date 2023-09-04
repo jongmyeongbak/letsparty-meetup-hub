@@ -105,6 +105,7 @@
 	        lp.post_like_cnt	as likeCnt
 		FROM letsparty_post lp
 		JOIN party p ON p.party_no = lp.party_no
+		WHERE lp.is_deleted = 0
 		ORDER BY lp.created_at DESC
 		LIMIT 5;
 	</select>
