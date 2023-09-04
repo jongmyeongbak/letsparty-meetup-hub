@@ -36,10 +36,12 @@
                     
                         <div class="d-flex justify-content-center align-items-center pb-2">
 	                        <div class="card-text pb-3">
+	                        <!-- 파티명 -->
 	                            <h5 class="ellipsis-party-name">
 									<a th:text="${post.party.name}" th:href="@{/party/{partyNo}(partyNo=${post.party.no})}"></a>
 								</h5>
 	                        </div>
+	                        <!-- 작성자 -->
                             <p class="card-text pb-2" th:text="'(' + ${post.user.id} + ')'"></p>
                             <!-- 드롭다운 구간 -->
                             <div class="dropdown-center pb-4" style="position: relative;">
@@ -47,19 +49,17 @@
                                     <i class="bi bi-three-dots-vertical text-muted"></i>
                                 </a>
                                   <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                   <li th:if="${#authentication.name == post.user.id}">
-							            <a class="dropdown-item" href="">글 수정</a>
-							            <a class="dropdown-item" href="">삭제</a>
-							        </li>
-                                    <li>
-                                        <a class="dropdown-item" href="">공유</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="">채팅하기-타인</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="">신고-타인</a>
-                                    </li>
+	                                  <li th:if="${#authentication.name == post.user.id}">
+								            <a class="dropdown-item" href="">글 수정</a>
+								            <a class="dropdown-item" href="">삭제</a>
+								      </li>
+	                                  <li sec:authorize="isAuthenticated()" th:if="${#authentication.name != post.user.id}">
+	                                      <a class="dropdown-item" href="">채팅하기</a>
+	                                      <a class="dropdown-item" href="">신고</a>
+	                                  </li>
+	                                  <li>
+	                                      <a class="dropdown-item" href="">공유</a>
+	                                  </li>
                                   </ul>
                             </div>
                         </div>
