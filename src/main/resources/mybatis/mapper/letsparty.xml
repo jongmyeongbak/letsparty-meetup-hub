@@ -24,6 +24,8 @@
 		inner join party p on lt.party_no = p.party_no
 		where 
 		    post_no = #{no}
+		and 
+			is_deleted = 0
 	</select>
 	
 	<select id="getTotalRows" parameterType="map" resultType="int">
@@ -31,23 +33,21 @@
 			count(*)
 		from letsparty_post lt
 		inner join party p on lt.party_no = p.party_no
-		
-		<where>
-			<if test="categoryNo != null and categoryNo != 0">
-			 	p.category_no = #{categoryNo}
-			</if>
-			<choose>
-				<when test="opt == 'title'">
-					and lt.post_title like concat('%',#{keyword},'%')
-				</when>
-				<when test="opt == 'content'">
-					and lt.post_content like concat('%',#{keyword},'%')
-				</when>
-				<when test="opt == 'party'">
-					and p.party_name like concat('%',#{keyword},'%')
-				</when>
-			</choose>
-		</where>
+		where lt.is_deleted = 0		
+		<if test="categoryNo != null and categoryNo != 0">
+		 	and p.category_no = #{categoryNo}
+		</if>
+		<choose>
+			<when test="opt == 'title'">
+				and lt.post_title like concat('%',#{keyword},'%')
+			</when>
+			<when test="opt == 'content'">
+				and lt.post_content like concat('%',#{keyword},'%')
+			</when>
+			<when test="opt == 'party'">
+				and p.party_name like concat('%',#{keyword},'%')
+			</when>
+		</choose>
 	</select>
 	
 	<select id="getPosts" parameterType="map" resultType="com.letsparty.vo.LetsPartyPost">
@@ -63,22 +63,21 @@
 	        lt.post_like_cnt	as likeCnt
 		from letsparty_post lt
 		inner join party p on lt.party_no = p.party_no
-		<where >
-			<if test="categoryNo != null and categoryNo != 0">
-			 	p.category_no = #{categoryNo}
-			</if>
-			<choose>
-				<when test="opt == 'title'">
-					and lt.post_title like concat('%',#{keyword},'%')
-				</when>
-				<when test="opt == 'content'">
-					and lt.post_content like concat('%',#{keyword},'%')
-				</when>
-				<when test="opt == 'party'">
-					and p.party_name like concat('%',#{keyword},'%')
-				</when>
-			</choose>
-		</where>
+		where lt.is_deleted = 0
+		<if test="categoryNo != null and categoryNo != 0">
+		 	and p.category_no = #{categoryNo}
+		</if>
+		<choose>
+			<when test="opt == 'title'">
+				and lt.post_title like concat('%',#{keyword},'%')
+			</when>
+			<when test="opt == 'content'">
+				and lt.post_content like concat('%',#{keyword},'%')
+			</when>
+			<when test="opt == 'party'">
+				and p.party_name like concat('%',#{keyword},'%')
+			</when>
+		</choose>
 		<choose>
 			<when test="sort == 'latest'">
 				order by lt.post_no desc
