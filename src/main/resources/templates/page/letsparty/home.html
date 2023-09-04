@@ -5,6 +5,9 @@
     <link rel="stylesheet" th:href="@{/css/page/letsparty/home.css}" >
 </head>
 <div layout:fragment="content-top" class="container">
+	<div th:if="${errorMessage}" class="alert alert-danger">
+		<span th:text="${errorMessage}"></span>
+	</div>
 	<div class="row mb-3">
         <div class="col-12">
             <div class="card card-line">

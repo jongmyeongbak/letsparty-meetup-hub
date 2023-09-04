@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.letsparty.exception.PostNotFoundException;
 import com.letsparty.security.user.LoginUser;
@@ -113,26 +114,26 @@ public class LetsPartyController {
 	
 	// 렛츠파티 게시글 상세 화면으로 이동
 	@GetMapping("/post/{postNo}")
-	public String detail(@PathVariable long postNo, Model model) {
+	public String detail(@PathVariable long postNo, Model model, RedirectAttributes attributes) {
 	    try {
 	        LetsPartyPost post = letsPartyService.getPostDetail(postNo);
 	        post.getParty().setFilename(coversPath + post.getParty().getFilename());
 	        model.addAttribute("post", post);
 	        return "page/letsparty/detail";
 	    } catch (PostNotFoundException e) {
-	    	log.error("게시물 조회 중 오류 발생: {}", e.getMessage());
+	    	attributes.addFlashAttribute("errorMessage", e.getMessage());
 	        return "redirect:/letsparty";
 	    }
 	}
 	
 	// 게시물의 조회수를 늘림
 	@GetMapping("/read/{postNo}")
-	public String read(@PathVariable Long postNo) {
+	public String read(@PathVariable Long postNo, RedirectAttributes attributes) {
 	    try {
 	    	letsPartyService.increaseReadCount(postNo);
 	    	return "redirect:/letsparty/post/{postNo}";
 	    } catch (PostNotFoundException e) {
-	    	log.error("게시물 조회 중 오류 발생: {}", e.getMessage());
+	    	attributes.addFlashAttribute("errorMessage", e.getMessage());
 	    	return"redirect:/letsparty";
 		}
 	}
