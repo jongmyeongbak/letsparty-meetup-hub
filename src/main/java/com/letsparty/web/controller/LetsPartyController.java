@@ -128,7 +128,7 @@ public class LetsPartyController {
 	
 	// 게시물의 조회수를 늘림
 	@GetMapping("/read/{postNo}")
-	public String read(@PathVariable Long postNo, RedirectAttributes attributes) {
+	public String read(@PathVariable long postNo, RedirectAttributes attributes) {
 	    try {
 	    	letsPartyService.increaseReadCount(postNo);
 	    	return "redirect:/letsparty/post/{postNo}";
