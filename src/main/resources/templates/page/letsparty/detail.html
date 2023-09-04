@@ -77,10 +77,10 @@
                         <div class="d-flex justify-content-between align-items-center" style="margin-bottom: -20px;">
                            <div class="d-flex align-items-center">
                                 <div class="mb-3 me-2">
-                                    <small class=""><i class="fa-regular fa-face-smile text-muted"></i> <span class="text-muted">99</span></small>
+                                    <small class=""><i class="fa-regular fa-face-smile text-muted"></i> <span class="text-muted" th:text="${post.likeCnt}">99</span></small>
                                 </div>
                                 <p class="">
-                                    <small class="text-muted">댓글 <span class="text-muted">5</span></small>
+                                    <small class="text-muted">댓글 <span class="text-muted" th:text="${post.commentCnt}">5</span></small>
                                     <i class="bi bi-chevron-down more-button" style="cursor: pointer;"></i>
                                 </p>
                             </div>

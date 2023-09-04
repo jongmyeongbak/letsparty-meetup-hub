@@ -70,7 +70,7 @@ public class LetsPartyService {
 	// 렛츠파티 게시물 상세 가져오기
 	public LetsPartyPost getPostDetail(long postNo) {
 	    Optional<LetsPartyPost> savedPartyPostOpt = Optional.ofNullable(letsPartyMapper.getPostDetailByNo(postNo));
-	    return savedPartyPostOpt.orElseThrow(() -> new PostNotFoundException("해당 게시물이 없습니다."));
+	    return savedPartyPostOpt.orElseThrow(() -> new PostNotFoundException("해당 게시물이 존재하지 않습니다."));
 	}
 
 	// 렛츠파티 게시물 조회수 올리기
