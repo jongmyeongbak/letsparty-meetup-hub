@@ -10,7 +10,7 @@ import lombok.ToString;
 @ToString
 public class ChatRoom {
 
-	private int no;
+	private long no;
 	private String id;
 	private int chattersCnt;
 	private Party party;

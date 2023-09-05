@@ -134,28 +134,23 @@
 			room_id = #{id}
 	</update>
 	
-	<update id="increaseChattersCntById" parameterType="string">
+	<update id="increaseChattersCntByNo" parameterType="long">
 		UPDATE chat_room
 		SET
 			chatters_cnt = chatters_cnt + 1
 		WHERE
-			room_id = #{value}
+			room_no = #{value}
 	</update>
 	
-	<update id="decreaseChattersCntById" parameterType="ChatRoom">
+	<update id="decreaseChattersCntByNo" parameterType="long">
 		UPDATE chat_room
 		SET
 			chatters_cnt = chatters_cnt - 1
 		WHERE
-			room_id = #{roomId}
-		<selectKey>
-			SELECT room_no as no, chatters_cnt, is_essential
-			FROM chat_room
-			WHERE room_id = #{roomId}
-		</selectKey>
+			room_no = #{value}
 	</update>
 	
-	<delete id="deleteChatRoomByNo" parameterType="int">
+	<delete id="deleteChatRoomByNo" parameterType="long">
 		DELETE FROM chat_room
 		WHERE
 			room_no = #{value}

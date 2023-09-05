@@ -19,9 +19,9 @@ public interface ChatRoomMapper {
 	List<ChatRoom> findAllByPartyNoAndUserNo(@Param("partyNo") int partyNo, @Param("userNo") int userNo);
 	
 	void updateChatRoom(ChatRoom chatRoom);
-	void increaseChattersCntById(String id);
-	void decreaseChattersCntById(ChatRoom chatRoom);
+	void increaseChattersCntByNo(long no);
+	void decreaseChattersCntByNo(long no);
 	
-	void deleteChatRoomByNo(int no);
+	void deleteChatRoomByNo(long no);
 	void deleteChatRoomById(String id);
 }

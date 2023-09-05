@@ -13,10 +13,11 @@ public interface ChatUserMapper {
 
 	boolean insertChatUser(ChatUser chatUser);
 	
-	ChatUser findById(@Param("roomId") String roomId, @Param("userNo") int userNo);
+	ChatUser findById(ChatUser chatUser);
 	Long findLastReadMessageNoByRoomNoAndUserNo(ChatUser chatUser);
 	List<ChatUserResponse> findByRoomId(String roomId);
-	List<ChatUserResponse> findByRoomIdWithoutMe(@Param("roomId") String roomId, @Param("myNo") int myNo);
+	List<ChatUserResponse> findWithoutMeByRoomId(@Param("roomId") String roomId, @Param("myNo") int myNo);
+	ChatUserResponse findByRoomIdAndUserNo(@Param("roomId") String roomId, @Param("userNo") int userNo);
 	
 	void updateLastReadMessageNoById(@Param("roomId") String roomId, @Param("userNo") int userNo);
 	

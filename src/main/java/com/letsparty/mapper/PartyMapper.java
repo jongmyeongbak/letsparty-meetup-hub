@@ -1,6 +1,7 @@
 package com.letsparty.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -26,5 +27,7 @@ public interface PartyMapper {
 	List<Party> getPartyByUserId(String id);
 
 	List<Party> getPartiesLimit5();
+
+	List<Party> getPartiesWithValue(Map<String, Object> param);
 	
 }

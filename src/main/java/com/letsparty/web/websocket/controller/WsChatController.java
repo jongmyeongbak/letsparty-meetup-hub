@@ -30,15 +30,14 @@ public class WsChatController {
 
 	@MessageMapping("/chat/{roomId}")
 //	@SendTo("/topic/chat/{roomId}")
-	public ChatMessageDto sendMessage(@DestinationVariable final String roomId, @Payload ChatMessageDto message,
+	public void sendMessage(@DestinationVariable final String roomId, @Payload final String text,
 			Principal principal, @Headers Map<String, Object> headers) {
 //		message.setUserNo(((LoginUser) ((Authentication) principal).getPrincipal()).getNo());
-		wsChatService.handleSendMessage(message, roomId, headers);
+		wsChatService.handleSendMessage(text, roomId, headers);
 		
 		log.info("SEND headers: {}", headers);
 		log.info("principal: {}", principal);
-		log.info("message: {}", message);
-		return message;
+		log.info("text: {}", text);
 	}
 //	
 //	@MessageMapping("/chat/{roomId}")

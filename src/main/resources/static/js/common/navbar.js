@@ -1,3 +1,7 @@
+$("#search").click(function(){
+	$("#search-party").submit();
+})
+
 $(".noti-outside").click(function(){
     close($(this).parent().siblings().children("div"));
     if (!$(this).children().hasClass("click")) {

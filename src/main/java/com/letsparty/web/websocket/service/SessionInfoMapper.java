@@ -92,11 +92,16 @@ public class SessionInfoMapper {
 		return roomToUserSessionMap.getOrDefault(roomId, Collections.emptyMap());
 	}
 	
-	public Set<String> getSessionIdsOfUserInRoom( int userNo, String roomId) {
+	public Set<String> getSessionIdsOfUserInRoom(int userNo, String roomId) {
 		Map<Integer, Set<String>> userSessionMap = roomToUserSessionMap.get(roomId);
 		if (userSessionMap == null) {
 			return Collections.emptySet();
 		}
 		return userSessionMap.getOrDefault(userNo, Collections.emptySet());
+	}
+	
+	public boolean isUserInRoom(int userNo, String roomId) {
+		Map<Integer, Set<String>> userSessionMap = roomToUserSessionMap.get(roomId);
+		return userSessionMap != null && userSessionMap.get(userNo) != null;
 	}
 }
