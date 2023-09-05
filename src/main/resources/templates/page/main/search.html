@@ -1,0 +1,29 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/common-base}">
+<!-- 고유 CSS -->
+<head>
+	<link rel="stylesheet" th:href="@{/css/page/main/party-search.css}" >
+</head>
+<!-- 고유 content -->
+<div layout:fragment="content-top" class="container">
+	<div class="category-list">
+		<div class="cat-button">
+		    <button type="button" id="cat-0" class="btn" onclick="selectCategory(0)">전체</button>
+		    <button type="button" id="cat-10" class="btn" onclick="selectCategory(10)">취미/동호회</button>
+		    <button type="button" id="cat-20" class="btn" onclick="selectCategory(20)">가족</button>
+		    <button type="button" id="cat-30" class="btn" onclick="selectCategory(30)">스터디</button>
+		    <button type="button" id="cat-40" class="btn" onclick="selectCategory(40)">학교/동아리</button>
+		    <button type="button" id="cat-50" class="btn" onclick="selectCategory(50)">운동</button>
+		    <button type="button" id="cat-60" class="btn" onclick="selectCategory(60)">지역/동네</button>
+		    <button type="button" id="cat-70" class="btn" onclick="selectCategory(70)">재테크</button>
+		    <button type="button" id="cat-100" class="btn" onclick="selectCategory(100)">자유주제</button>
+		</div>
+	</div>
+	<div class="party-list" id="party-list">
+	</div>
+	<div id="target"></div>
+</div>
+<!-- 고유 script -->
+<script layout:fragment="script" th:src="@{/js/page/main/party-search.js}"></script>
+</html>

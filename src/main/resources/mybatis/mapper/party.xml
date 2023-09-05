@@ -95,6 +95,41 @@
 	    LIMIT 5
 	</select>
 	
+	<!-- 파티 검색 -->
+	<select id="getPartiesWithValue" parameterType="map" resultType="com.letsparty.vo.Party">
+		SELECT 
+			p.party_no				as no,
+			p.leader_id				as "leader.id",
+			up.profile_nickname		as "leader.name",
+	        pc.category_name		as "category.name",
+	        p.party_name			as name,
+	        p.party_cur_cnt			as curCnt,
+	        p.party_quota			as quota,
+	        p.party_status			as status,
+	        p.updated_at 			as updatedAt,
+	        p.created_at			as createdAt,
+	        p.party_description		as description,
+	        p.party_filename		as filename,
+	       	p.visibility_status		as visibilityStatus
+	    FROM party p
+	    JOIN user_party_application upa ON p.party_no = upa.party_no AND upa.role_no = 6
+	    JOIN user_profile up ON upa.profile_no = up.profile_no
+     	JOIN party_category pc ON p.category_no = pc.category_no
+	    WHERE party_status = "활성"
+	    <choose>
+	    	<when test="value == null">
+	    		<if test="catNo != 0">
+	    			AND p.category_no = #{catNo}
+	    		</if>
+	    	</when>
+	    	<otherwise>
+			    AND p.party_name like concat('%', #{value}, '%')
+	    	</otherwise>
+	    </choose>
+	    ORDER BY p.created_at DESC
+	    LIMIT #{beginPage}, #{rows}
+	</select>
+	
 	<!-- 파티 수정 -->
 	<update id="updateParty" parameterType="com.letsparty.vo.Party">
 	    update party
