@@ -178,6 +178,8 @@ public class PartyService {
 		case "F":
 			req.setGender("여성");
 			break;
+		case "A":
+			req.setGender("모두");
 		}
 		return req;
 	}
