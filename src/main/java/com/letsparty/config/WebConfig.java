@@ -15,7 +15,6 @@ public class WebConfig implements WebMvcConfigurer {
 	@Autowired
 	public WebConfig(PartyInterceptor partyInterceptor) {
 		this.partyInterceptor = partyInterceptor;
-//		this.homeInterceptor = homeInterceptor;
 	}
 	
 	@Override

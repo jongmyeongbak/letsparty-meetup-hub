@@ -156,11 +156,7 @@ public class PartyService {
 	// 파티 번호로 파티 조회
 	public Party getPartyByNo(int partyNo) {
 		Party party = partyMapper.getPartyByNo(partyNo);
-			if (!party.getFilename().startsWith("cover-default")) {
-				party.setFilename(coversPath + party.getFilename());
-			} else {
-				party.setFilename("/images/party/" + party.getFilename());
-			}
+		party.setFilename(coversPath + party.getFilename());
 		return party;
 	}
 	
