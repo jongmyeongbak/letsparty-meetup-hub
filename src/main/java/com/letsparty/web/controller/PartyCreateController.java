@@ -26,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequiredArgsConstructor
+@PreAuthorize("isAuthenticated()")
 @Slf4j
 public class PartyCreateController {
 	
