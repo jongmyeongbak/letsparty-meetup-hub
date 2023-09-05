@@ -10,5 +10,5 @@ public interface ChatMessageMapper {
 
 	void insertChatMessage(ChatMessage chatMessage);
 	
-	void decreaseUnreadCntByRoomNoAndLastReadMessageNo(@Param("roomNo") int roomNo, @Param("lastReadMessageNo") long lastReadMessageNo);
+	void decreaseUnreadCntByRoomNoAndLastReadMessageNo(@Param("roomNo") long roomNo, @Param("lastReadMessageNo") long lastReadMessageNo);
 }

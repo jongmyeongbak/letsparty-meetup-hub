@@ -2,6 +2,8 @@ package com.letsparty.vo;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,11 +15,12 @@ import lombok.ToString;
 public class ChatMessage {
 
 	private long no;
+	@JsonIgnore
 	private long roomNo;
 	private int type;
 	private int userNo;
 	private LocalDateTime createdAt;
-	private Long unreadCnt;
+	private Long unreadCnt; // last_read_message_no를 담기 위하여 Integer 대신 Long을 사용함
 	private String text;
 	
 	@Builder

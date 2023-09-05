@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class ChatUserResponse {
 
-	private String userNo;
+	private int userNo;
 	private String nickname;
 	private String filename;
 	private boolean isUrl;

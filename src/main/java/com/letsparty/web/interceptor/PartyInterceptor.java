@@ -71,16 +71,17 @@ public class PartyInterceptor implements HandlerInterceptor {
 				// 내가 가입한 파티의 채팅방 목록 불러오기(내가 참여중인 방만)
 				List<ChatRoomWithUsers> chatRooms = chatService.getChatRoomByPartyNoAndUserId(partyNo, user.getNo());
 				for (ChatRoomWithUsers chatroom : chatRooms) {
-					// StringJoiner를 사용해서 여러 사용자의 이름을 ","로 이어서 저장함
-					StringJoiner sj = new StringJoiner(",");
+					// StringJoiner를 사용해서 여러 사용자의 이름을 ", "로 이어서 저장함
+					StringJoiner sj = new StringJoiner(", ");
 					for (ChatUserResponse chatUser : chatroom.getChatUsers()) {
-						if (chatUser.isUrl()) {
+						if (!chatUser.isUrl()) {
 							chatUser.setFilename(profilePath + chatUser.getFilename());
 						}
 						if (!chatroom.isPublic()) {
 							sj.add(chatUser.getNickname());
 						}
 					}
+					sj.setEmptyValue("대화상대없음");
 					chatroom.setChatUsersText(sj.toString());
 				}
 				

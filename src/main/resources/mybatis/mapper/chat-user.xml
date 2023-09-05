@@ -8,9 +8,9 @@
 			(#{roomId}, #{userNo}, #{joinMessageNo}, #{lastReadMessageNo})
 	</insert>
 
-	<select id="findById" resultType="ChatUser">
+	<select id="findById" parameterType="ChatUser" resultType="ChatUser">
 		SELECT
-			join_message_no
+			join_message_no,
 			last_read_message_no
 		FROM
 			chat_user
@@ -33,7 +33,8 @@
 		SELECT
 			u.user_no,
 			up.profile_nickname as nickname,
-			up.image_filename as filename
+			up.image_filename as filename,
+			up.is_url
 		FROM
 			chat_user cu
 		JOIN
@@ -47,14 +48,15 @@
 		WHERE
 			cu.room_id = #{value}
 		ORDER BY
-			up.profile_nickname;
+			up.profile_nickname
 	</select>
 	
-	<select id="findByRoomIdWithoutMe" resultType="com.letsparty.dto.ChatUserResponse">
+	<select id="findWithoutMeByRoomId" resultType="com.letsparty.dto.ChatUserResponse">
 		SELECT
 			u.user_no,
 			up.profile_nickname as nickname,
-			up.image_filename as filename
+			up.image_filename as filename,
+			up.is_url
 		FROM
 			chat_user cu
 		JOIN
@@ -68,9 +70,32 @@
 		WHERE
 			cu.room_id = #{roomId}
 		AND
+			EXISTS (
+				SELECT 1
+				FROM chat_user
+				WHERE room_id = cu.room_id
+				AND user_no = #{myNo}
+			)
+		AND
 			cu.user_no != #{myNo}
 		ORDER BY
-			up.profile_nickname;
+			up.profile_nickname
+	</select>
+	
+	<select id="findByUserNo" resultType="com.letsparty.dto.ChatUserResponse">
+		SELECT
+			u.user_no,
+			up.profile_nickname as nickname,
+			up.image_filename as filename,
+			up.is_url
+		FROM
+			user_party_application upa
+		JOIN
+			user u ON cu.user_no = {userNo} AND upa.user_id = u.user_id
+		JOIN
+			chat_room cr ON cr.room_id = {roomId} AND upa.party_no = cr.party_no
+		JOIN
+			user_profile up ON upa.profile_no = up.profile_no
 	</select>
 	
 	<update id="updateLastReadMessageNoById">
@@ -87,8 +112,8 @@
 	<delete id="deleteChatUser">
 		DELETE FROM chat_user
 		WHERE
-			room_id = {roomId} AND
-			user_no = {userNo}
+			room_id = #{roomId} AND
+			user_no = #{userNo}
 	</delete>
 	
 </mapper>
