@@ -1,5 +1,6 @@
 package com.letsparty.web.controller;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -123,18 +124,13 @@ public class LetsPartyController {
 	public String detail(@PathVariable long postNo, Model model, RedirectAttributes attributes, @AuthenticationPrincipal LoginUser loginUser) {
 	    try {
 	    	LetsPartyPostDto post = letsPartyService.getPostDetail(postNo);
-	        List<LetsPartyCommentDto> comments = letsPartyCommentService.getAllCommentsByPostNo(postNo);
 	        post.getParty().setFilename(coversPath + post.getParty().getFilename());
-	        for (LetsPartyCommentDto comment : comments) {
-	        	comment.getParty().setFilename(coversPath + comment.getParty().getFilename());
-	        }
 	        
 	        // 댓글에서의 파티 목록을 모델에 추가
 	        if (loginUser != null) {
 	            addUserPartyApplicationsToModel(loginUser, model);
 	        }
 	        
-	        model.addAttribute("comments", comments);
 	        model.addAttribute("post", post);
 	        return "page/letsparty/detail";
 	    } catch (PostNotFoundException e) {
@@ -174,19 +170,57 @@ public class LetsPartyController {
 	        return ResponseEntity.badRequest().body(response);
 	    }
 	    response.put("status", "success");
-	    // 새롭게 추가된 댓글 정보
-	    LetsPartyCommentDto insertedComment = letsPartyCommentService.insertComment(commentForm, loginUser);
-	    insertedComment.getParty().setFilename(coversPath + insertedComment.getParty().getFilename());
-	    // 댓글 수 변경을 위한 기존 게시물 정보
-	    LetsPartyPostDto savedPost = letsPartyService.getPostDetail(postNo);  
 	    
-	    response.put("comment", insertedComment); // 새로운 댓글 반환
-	    response.put("isAuthor", insertedComment.getUser().getId().equals(loginUser.getId())); // 현재 로그인한 사용자와 댓글 작성자가 동일한지 체크
-	    response.put("savedPost", savedPost); // 기존 게시물 정보 반환
-	    
+	    // 새 댓글 추가
+	    letsPartyCommentService.insertComment(commentForm, loginUser);
+	    // 댓글이 추가된 게시물
+	    LetsPartyPostDto savedPost = letsPartyService.getPostDetail(postNo);
+	    response.put("savedPost", savedPost); 	  // 저장된 게시물 반환
 	    return ResponseEntity.ok(response);
 	}
-
+	
+	// 최근 댓글 2개 가져오기
+	@PostMapping("/post/{postNo}/latest-two-comments")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> getLatestTwoComment(@PathVariable long postNo, @AuthenticationPrincipal LoginUser loginUser) {
+		Map<String, Object> response = new HashMap<>();
+		List<LetsPartyCommentDto> latestTwoComments;
+		
+		latestTwoComments = letsPartyCommentService.getLatestTwoCommentsByPostNo(postNo); 
+		for (LetsPartyCommentDto comment : latestTwoComments) {
+			comment.getParty().setFilename(coversPath + comment.getParty().getFilename());
+			if (loginUser != null) {
+				comment.setAuthor(comment.getUser().getId().equals(loginUser.getId()));
+			}
+		}
+		// 최근 2개 댓글 중 더 최근 댓글이 아래로 가도록 바꿈 
+		Collections.reverse(latestTwoComments); 
+		
+		response.put("status", "success");
+		response.put("latestTwoComments", latestTwoComments); // 최근 댓글 2개 반환
+		return ResponseEntity.ok(response);
+	}
+		
+	// 모든 댓글 가져오기
+	@PostMapping("/post/{postNo}/all-comments")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> getAllComments(@PathVariable long postNo, @AuthenticationPrincipal LoginUser loginUser) {
+	    Map<String, Object> response = new HashMap<>();
+	    List<LetsPartyCommentDto> allComments;
+	    
+        allComments = letsPartyCommentService.getAllCommentsByPostNo(postNo);
+	    for (LetsPartyCommentDto comment : allComments) {
+	        comment.getParty().setFilename(coversPath + comment.getParty().getFilename());
+	        if (loginUser != null) {
+	        	comment.setAuthor(comment.getUser().getId().equals(loginUser.getId()));
+	        }
+	    }
+	    
+	    response.put("status", "success");
+	    response.put("allComments", allComments); // 모든 댓글 반환
+	    return ResponseEntity.ok(response);
+	}
+	
 	private void addUserPartyApplicationsToModel(LoginUser loginUser, Model model) {
 	    List<UserPartyApplication> userPartyApplications = userPartyApplicationService.findAllByUserId(loginUser.getId());
 	    model.addAttribute("userPartyApplications", userPartyApplications);

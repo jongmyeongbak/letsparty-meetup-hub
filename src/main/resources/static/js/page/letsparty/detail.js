@@ -1,11 +1,168 @@
-$("#btn").click(function() {
-	let postNo = $("#postNo").val();
-    let partyNo = $("#partySelect").val();
-    let content = $("#content").val();
+let postNo = $("#postNo").val();
+// 페이지 로딩 시 처음에 댓글을 렌더링하기 위한 코드
+$(document).ready(function() {
+    fetchAndRenderLatestTwoComments();
+});
 
-    // 여기서 AJAX를 이용해 서버에 댓글 데이터를 전송
+// 댓글 더보기 버튼 최초에는 최신 댓글 2개, 버튼 클릭시 전체 댓글 
+// 한 번 더 클릭하면 다시 최신 댓글 2개를 표시
+$(".more-button").click(function() {
+    let commentContainer = $("#comment-container");
+    if (commentContainer.hasClass("two-show")) { 
+		commentContainer.removeClass("two-show d-none").addClass("all-show");
+	 	fetchAndRenderComments();
+		$(this).toggleClass("bi-chevron-down bi-chevron-up");
+	} else if(commentContainer.hasClass("all-show")) {
+		commentContainer.removeClass("all-show").addClass("two-show");
+		fetchAndRenderLatestTwoComments();
+		$(this).toggleClass("bi-chevron-down bi-chevron-up");
+	}
+});
+
+// 댓글쓰기 버튼을 누르면 댓글 등록 폼으로 스크롤 이동
+$("#write-comment-btn").click(function(e) {
+	e.preventDefault();
+    $('html, body').animate({
+        scrollTop: $("#comment-form").offset().top
+    });
+});
+
+// 최근 댓글 2개만 불러오는 ajax 요청
+function fetchAndRenderLatestTwoComments() {
     $.ajax({
-        url: "/letsparty/post/" + postNo+ "/comment", // 적절한 URL로 변경
+        url: "/letsparty/post/" + postNo + "/latest-two-comments",  // 최신 댓글 2개를 가져올 서버의 주소
+        method: 'POST',
+        dataType: 'json',
+        success: function(response) {
+            if (response.status === "success") {
+                renderComments(response.latestTwoComments);
+            } else {
+                alert('댓글을 가져오는 데 실패했습니다.');
+            }
+        }
+    });
+}
+
+// 댓글 전체를 불러오는 ajax 요청
+function fetchAndRenderComments() {
+    return $.ajax({
+        url: "/letsparty/post/" + postNo + "/all-comments",  // 댓글 데이터를 가져올 서버의 주소
+        method: 'POST',
+        dataType: 'json',
+        success: function(response) {
+            if (response.status === "success") {
+                renderComments(response.allComments);
+            } else {
+                alert('댓글을 가져오는 데 실패했습니다.');
+            }
+        }
+    });
+}
+
+// 게시물에 달린 댓글 수를 렌더링 하는 함수
+function renderCommentCnt(savedPost) {
+    $("#comment-count").text(savedPost.commentCnt);
+    console.log(savedPost.commentCnt);
+}
+
+// 댓글을 렌더링하는 함수
+function renderComments(allComments) {
+    // 댓글이 성공적으로 등록된 경우 처리
+	// 날짜 변환해서 추가 - 타임리프의 시간 변환 객체 여기서 사용불가
+	function formatDate(dateString) {
+	    const date = new Date(dateString);
+	    const year = date.getFullYear();
+	    const month = date.getMonth() + 1;
+	    const day = date.getDate();
+	    const hours = date.getHours();
+	    const minutes = date.getMinutes();
+	    const seconds = date.getSeconds();
+	    const paddedHours = String(hours).padStart(2, '0'); // 시간 앞에 0을 붙임
+	    
+	    return `${year}년 ${month}월 ${day}일 ${paddedHours}:${minutes}:${seconds}`;
+	}
+	
+	$("#comment-container").empty(); 
+	allComments.forEach(function(comment) {
+    	const formattedDate = formatDate(comment.createdAt);
+        let dropdownHtml = `
+            <div class="d-flex justify-content-end">
+                <div class="dropstart" style="position: relative;">
+                    <a href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-three-dots-vertical my-0 py-0 text-muted"></i>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">`;
+
+        if (comment.author) {
+            dropdownHtml += `
+                <li>
+                    <a class="dropdown-item" href="">댓글 수정</a>
+                    <a class="dropdown-item" href="">댓글 삭제</a>
+                </li>`;
+        } else {
+            dropdownHtml += `
+                <li>
+                    <a class="dropdown-item" href="">신고</a>
+                </li>`;
+        }
+
+        dropdownHtml += `</ul></div></div>`;
+        
+        let commentHtml = `
+            <div class="row pb-2">
+                <div class="col-12">
+                    <div class="row pe-3 border-bottom">
+                        <div class="col-12">
+                            <div class="row d-flex" style="margin-right: -75px;">
+                                <div class="col-1 post-comment-profile-container">
+                                    <div class="post-comment-profile-container-inner">
+                                        <img src="${comment.party.filename}" alt="" class="comment-image">
+                                    </div>
+                                </div>
+                                <div class="col-11" style="margin: 0 -12px;">
+                                    <div class="col-12 d-flex justify-content-between">
+                                        <div class="d-flex justify-content-start party-name-id-container">
+                                            <p class="ellipsis-party-name">
+                                                <a href="/party/${comment.party.no}">${comment.party.name}</a>
+                                            </p>
+                                            <span>(${comment.profile.nickname})</span>
+                                        </div>
+                                        ${dropdownHtml}
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <p style="margin-bottom: -5px;">${comment.content}</p>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="mt-1 mb-1">
+                                            <small class="text-muted">${formattedDate}</small>  
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        $("#comment-container").append(commentHtml);
+        });
+}
+
+// 엔터키로도 등록
+$("#content").keypress(function(event) {
+    if (event.which == 13) { 
+        event.preventDefault(); 
+        $("#btn").click();
+    }
+});
+
+// 클릭 등록
+$("#btn").click(function() {
+	let partyNo = $("#partySelect").val();
+	let content = $("#content").val();
+	$(".comment-textarea").val("");
+    $.ajax({
+        url: "/letsparty/post/" + postNo + "/comment", 
         method: "POST",
         data: {
             partyNo: partyNo,
@@ -13,100 +170,13 @@ $("#btn").click(function() {
         }
     })
     .done(function(response) {
-		if (response.status === "success") {
-			
-		// 댓글이 성공적으로 등록된 경우 처리
-		// 날짜 변환해서 추가 - 타임리프의 시간 변환 객체 여기서 사용불가
-		function formatDate(dateString) {
-			$("#comment-count").replaceWith(
-				response.savedPost.commentCnt
-			);
-		    const date = new Date(dateString);
-		    const year = date.getFullYear();
-		    const month = date.getMonth() + 1;
-		    const day = date.getDate();
-		    const hours = date.getHours();
-		    const minutes = date.getMinutes();
-		    const seconds = date.getSeconds();
-		    
-		    return `${year}년 ${month}월 ${day}일 ${hours}:${minutes}:${seconds}`;
-		}
-		const commentDate = response.comment.createdAt; //서버로부터 받아온 댓글의 날짜
-		const formattedDate = formatDate(commentDate);
-		
-        let dropdownHtml = `
-       		<div class="d-flex justify-content-end">
-		        <div class="dropstart" style="position: relative;">
-		            <a href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-		                <i class="bi bi-three-dots-vertical my-0 py-0 text-muted"></i>
-		            </a>
-		            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">`;
-		
-		        if (response.isAuthor) {
-		            dropdownHtml += `
-		                <li>
-		                    <a class="dropdown-item" href="">댓글 수정</a>
-		                    <a class="dropdown-item" href="">댓글 삭제</a>
-		                </li>`;
-		        } else {
-		            dropdownHtml += `
-		                <li>
-		                    <a class="dropdown-item" href="">신고</a>
-		                </li>`;
-		        }
-
-        dropdownHtml += `</ul></div></div>`;
-        
-        let commentHtml = `
-			<!-- 댓글 -->
-			<div class="row pb-2">
-			    <div class="col-12" id="comment">
-			        <div class="row pe-3 border-bottom">
-			            <div class="col-12">
-			                <div class="row d-flex" style="margin-right: -75px;">
-			                    <!-- 프로필 -->
-			                    <div class="col-1 post-comment-profile-container ">
-			                        <div class="post-comment-profile-container-inner">
-			                            <img src="${response.comment.party.filename}" alt="" class="comment-image">
-			                        </div>
-			                    </div>
-			                    <div class="col-11" style="margin: 0 -12px;">
-			                        <div class="col-12 d-flex justify-content-between">
-		                                <!-- 파티명 및 닉네임 구간 -->
-		                                <div class="d-flex justify-content-start party-name-id-container">
-		                                    <!-- 파티명 -->
-		                                    <p class="ellipsis-party-name">
-		                                        <a href="/party/${response.comment.party.no}">${response.comment.party.name}</a>
-		                                    </p>
-		                                    <!-- 닉네임 -->
-		                                    <span>(${response.comment.profile.nickname})</span>
-		                                </div>
-			                            `
-			                            + dropdownHtml +
-			                        `
-			                        </div>
-			                        <!-- 내용 -->
-			                        <div class="d-flex justify-content-between">
-			                            <p style="margin-bottom: -5px;">${response.comment.content}</p>
-			                        </div>
-			                        <div class="d-flex align-items-center">
-			                            <!-- 날짜 -->
-			                            <div class="mt-1 mb-1" >
-			                                <small class="text-muted">${formattedDate}</small>  
-			                            </div>
-			                        </div>
-			                    </div>
-			                </div>
-			            </div>
-			        </div>
-			    </div>
-			</div>
-			`;
-        $("#comment-container").append(commentHtml);
-        } else if (response.status === "error") {
-			alert(response.message); 
-		}
-    })
+	    if (response.status === "success") {
+	        fetchAndRenderComments();  // 댓글을 등록한 뒤 신규 댓글 포함 전체 댓글을 불러와 렌더링
+	        renderCommentCnt(response.savedPost);
+	    } else if (response.status === "error") {
+	        alert(response.message);
+	    }
+	})
     .fail(function(jqXHR) {
 	    let response = jqXHR.responseJSON;
 	    if (response && response.message) {

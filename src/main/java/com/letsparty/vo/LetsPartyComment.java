@@ -33,7 +33,4 @@ public class LetsPartyComment {
 		this.updatedAt = updatedAt;
 		this.createdAt = createdAt;
 	}
-	
-	
-	
 }

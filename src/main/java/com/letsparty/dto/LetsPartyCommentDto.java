@@ -25,6 +25,7 @@ public class LetsPartyCommentDto {
 	private String content;
 	private LocalDateTime updatedAt;
 	private LocalDateTime createdAt;
+	private boolean isAuthor;
 
 	public LetsPartyCommentDto() {}
 	
