@@ -14,64 +14,14 @@
 				<ul class="list-group list-group-flush">
 					<li class="list-group-item">
 						<div class="profile">
-							<h5>
-								사용중인 프로필 <span>7</span>
-							</h5>
+							<h5> 사용중인 프로필 <span th:text="${#lists.size(profiles)}">7</span></h5>
 							<div class="profile-container">
-								<div class="profile-item">
+								<div th:each="profile : ${profiles}" class="profile-item">
 									<div class="pf-image">
-										<img src="/img/hong.jpeg" alt="">
+										<img th:src="${profile.filename}" alt="">
 									</div>
 									<div class="name">
-										<span>홍길동</span>
-									</div>
-								</div>
-								<div class="profile-item">
-									<div class="pf-image">
-										<img src="/img/hong.jpeg" alt="">
-									</div>
-									<div class="name">
-										<span>홍길동</span>
-									</div>
-								</div>
-								<div class="profile-item">
-									<div class="pf-image">
-										<img src="/img/hong.jpeg" alt="">
-									</div>
-									<div class="name">
-										<span>홍길동</span>
-									</div>
-								</div>
-								<div class="profile-item">
-									<div class="pf-image">
-										<img src="/img/hong.jpeg" alt="">
-									</div>
-									<div class="name">
-										<span>홍길동</span>
-									</div>
-								</div>
-								<div class="profile-item">
-									<div class="pf-image">
-										<img src="/img/hong.jpeg" alt="">
-									</div>
-									<div class="name">
-										<span>홍길동</span>
-									</div>
-								</div>
-								<div class="profile-item">
-									<div class="pf-image">
-										<img src="/img/hong.jpeg" alt="">
-									</div>
-									<div class="name">
-										<span>홍길동</span>
-									</div>
-								</div>
-								<div class="profile-item">
-									<div class="pf-image">
-										<img src="/img/hong.jpeg" alt="">
-									</div>
-									<div class="name">
-										<span>홍길동</span>
+										<span th:text="${profile.nickname}">홍길동</span>
 									</div>
 								</div>
 							</div>
@@ -85,11 +35,11 @@
 							<div class="personal-container">
 								<div class="my-birthday">
 									<h6>생일</h6>
-									<span>1995년 5월 13일</span>
+									<span th:text="${#dates.format(userInfo.birthday, 'yyyy년 M월 d일')}">1995년 5월 13일</span>
 								</div>
 								<div class="my-gender">
 									<h6>성별</h6>
-									<span>남성</span>
+									<span th:text="${userInfo.gender == 'M' ? '남성' : '여성'}">남성</span>
 								</div>
 							</div>
 							<div></div>
@@ -101,11 +51,11 @@
 							<div class="login-container">
 								<div class="my-tel">
 									<h6>휴대폰 번호</h6>
-									<span>010-56**-89**</span>
+									<span th:text="${userInfo.tel}">010-56**-89**</span>
 								</div>
 								<div class="my-email">
 									<h6>이메일</h6>
-									<span>skroy0513@naver.com</span>
+									<span th:text="${userInfo.email}">skroy0513@naver.com</span>
 								</div>
 							</div>
 							<div></div>

@@ -1,9 +1,6 @@
 @charset "UTF-8";
 
-.profile,
-.personal,
-.login,
-.withdraw {
+.profile, .personal, .login, .withdraw {
 	display: flex;
 	padding: 15px 0;
 	justify-content: space-between;
@@ -63,19 +60,15 @@ h6 {
 	width: 80px;
 }
 
-.personal-container,
-.login-container,
-.withdraw-text {
+.personal-container, .login-container, .withdraw-text {
 	width: 520px;
 }
 
-.my-birthday,
-.my-tel {
+.my-birthday, .my-tel {
 	margin-bottom: 30px;
 }
 
-.personal-container span,
-.login-container span {
+.personal-container span, .login-container span {
 	margin-left: 50px;
 }
 

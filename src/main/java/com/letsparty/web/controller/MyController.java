@@ -1,5 +1,7 @@
 package com.letsparty.web.controller;
 
+import java.util.List;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letsparty.security.user.LoginUser;
 import com.letsparty.service.UserProfileService;
+import com.letsparty.service.UserService;
+import com.letsparty.util.PhoneNumberFormatter;
+import com.letsparty.vo.User;
 import com.letsparty.vo.UserProfile;
 import com.letsparty.web.form.UserProfileForm;
 
@@ -26,10 +31,16 @@ import lombok.extern.slf4j.Slf4j;
 public class MyController {
 
 	private final UserProfileService myService;
+	private final UserService userService;
 	
 	@GetMapping
 	public String myPage(@AuthenticationPrincipal LoginUser loginUser, Model model) {
+		List<UserProfile> profileList = myService.getAllProfileByUserId(loginUser.getId());
+		User user =  userService.getUserByName(loginUser.getId());
+		user.setTel(PhoneNumberFormatter.formatPhoneNumber(user.getTel()));
 		
+		model.addAttribute("profiles", profileList);
+		model.addAttribute("userInfo", user);
 		return "/page/main/mypage";
 	}
 	
