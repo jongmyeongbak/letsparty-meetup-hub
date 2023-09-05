@@ -53,6 +53,48 @@
 	    	party_name = #{partyName}
 	</select>
 	
+	<select id="getPartyByUserId" parameterType="string" resultType="com.letsparty.vo.Party">
+		SELECT 
+			p.party_no				as no,
+			p.leader_id				as "leader.id",
+	        p.category_no			as "category.no",
+	        p.party_name			as name,
+	        p.party_cur_cnt			as curCnt,
+	        p.party_quota			as quota,
+	        p.party_status			as status,
+	        p.updated_at 			as updatedAt,
+	        p.created_at			as createdAt,
+	        p.party_description		as description,
+	        p.party_filename		as filename,
+	       	p.visibility_status		as visibilityStatus
+		FROM party p
+		JOIN user_party_application upa ON upa.party_no = p.party_no
+		WHERE 
+			upa.user_id = #{value}
+		ORDER BY
+			upa.created_at desc
+		LIMIT 5;
+	</select>
+	
+	<select id="getPartiesLimit5" resultType="com.letsparty.vo.Party">
+		SELECT 
+			party_no			as no,
+			leader_id			as "leader.id",
+	        category_no			as "category.no",
+	        party_name			as name,
+	        party_cur_cnt		as curCnt,
+	        party_quota			as quota,
+	        party_status		as status,
+	        updated_at 			as updatedAt,
+	        created_at			as createdAt,
+	        party_description	as description,
+	        party_filename		as filename,
+	       	visibility_status	as visibilityStatus
+	    FROM party
+	    ORDER BY created_at DESC
+	    LIMIT 5
+	</select>
+	
 	<!-- 파티 수정 -->
 	<update id="updateParty" parameterType="com.letsparty.vo.Party">
 	    update party

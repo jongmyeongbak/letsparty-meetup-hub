@@ -35,11 +35,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>홍길동파티</td>
-                                        <td><a href="#">수영할사람</a></td>
-                                        <td>23.08.12</td>
-                                        <td>10</td>
+                                    <tr th:each="post : ${lpPosts}">
+                                        <td>
+                                        	<span th:text="${post.party.name}" class="post-name">홍길동파티</span>
+                                        </td>
+                                        <td>
+                                        	<a th:href="@{/letsparty/read/{postNo}(postNo=${post.no})}" th:text="${post.title}" class="post-title">수영할사람</a>
+                                        </td>
+                                        <td th:text="${#temporals.format(post.createdAt, 'yyyy.MM.dd')}">23.08.12</td>
+                                        <td th:text="${post.readCnt}">10</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -49,7 +53,7 @@
                         <div class="col-11">
                             <p class="border p-3"></p>
                             <div class="text-end">
-                                <a href="#" class="btn btn-sm">더보기</a>
+                                <a th:href="@{/letsparty}" class="btn btn-sm">더보기</a>
                             </div>
                         </div>
                     </div>
@@ -77,11 +81,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr><td colspan="3">당신의 파티를 추가해보세요.</td></tr>
-                                    <tr>
-                                        <td><a href="party/board/home.jsp?no=">파티이름</a></td>
-                                        <td>10 / 5</td>
-                                        <td class ="ellipsis">파티설명</td>      
+                                    <tr sec:authorize="isAnonymous()"><td colspan="3">로그인을 하고 당신의 파티를 추가해보세요.</td></tr>
+                                    <tr th:if="${userParty}" th:each="party : ${userParty}">
+                                        <td>
+                                        	<a th:href="@{/party/{partyNo}(partyNo=${party.no})}" th:text="${party.name}" class="party-name">파티이름</a>
+                                        </td>
+                                        <td><span th:text="${party.quota}">10</span> / <span th:text="${party.curCnt}">5</span></td>
+                                        <td>
+                                        	<span class ="party-description" th:text="${party.description}">파티설명</span>
+                                        </td>      
                                     </tr>
                                 </tbody>
                             </table>
@@ -170,58 +178,26 @@
                 <div class="border fs-5 p-2 mt-5">새로 생긴 파티</div>
             </div>
             <div class="box-container">
-                <div class="box">
-                    <div class="image" onclick="window.location.href='#';">
-                        <img src="/img/sample.png" alt=" ">
+                <div th:each="newParty : ${parties}" class="box">
+                    <div class="image">
+                        <a th:href="@{/party/{partyNo}(partyNo=${newParty.no})}">
+                        	<img th:src="${newParty.filename}" alt=" ">
+                        </a>
                     </div>
                     <div class="separator"></div>
-                    <div class="text" onclick="window.location.href='#';">
-                        <ul>
-                            <li class="name">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magnam reiciendis provident recusandae unde odio eaque eveniet hic vitae quaerat rerum doloribus, tempora mollitia esse, delectus nemo natus nulla accusantium ipsam.</li>
-                            <li>파티인원 : 5 명</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="box">
-                    <div class="image" onclick="window.location.href='#';">
-                        <img src="/img/sooyeong1.jpeg" alt=" ">
-                    </div>
-                    <div class="separator"></div>
-                    <div class="text" onclick="window.location.href='#';">
-                        <ul>
-                            <li class="name">물놀이</li>
-                            <li>파티인원 : 3 명</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="box">
-                    <div class="image" onclick="window.location.href='#';">
-                        <img src="/img/sooyeong2.jpeg" alt=" ">
-                    </div>
-                    <div class="separator"></div>
-                    <div class="text" onclick="window.location.href='#';">
-                        <ul>
-                            <li class="name">반려동물 키우기</li>
-                            <li>파티인원 : 40 명</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="box">
-                    <div class="image" onclick="window.location.href='#';">
-                        <img src="/img/sooyeong3.jpeg" alt=" ">
-                    </div>
-                    <div class="separator"></div>
-                    <div class="text" onclick="window.location.href='#';">
-                        <ul>
-                            <li class="name">공구합시다</li>
-                            <li>파티인원 : 130 명</li>
-                        </ul>
+                    <div class="text">
+                        <a th:href="@{/party/{partyNo}(partyNo=${newParty.no})}">
+	                        <ul>
+	                            <li th:text="${newParty.name}" class="name">홍길동파티</li>
+	                            <li>파티인원 : <span th:text="${newParty.curCnt}">5</span> 명</li>
+	                        </ul>
+						</a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- 인기 게시글  -->
+        <!-- 인기 게시글
         <div class="popular-post">
             <div class="col">
                 <div class="border fs-5 p-2 mt-5">인기 게시글</div>
@@ -233,7 +209,7 @@
                             <div class="pname">파티명</div>
                         </div>
                         <div class="post-content">
-                            <!-- 게시글에 이미지가 있다면 추가(첫번째 이미지) -->
+                            	/* 게시글에 이미지가 있다면 추가(첫번째 이미지) */
                             <div class="post-image">
                                 <img src="img/sample.png" alt="">
                             </div>
@@ -270,9 +246,6 @@
                             <div class="pname">Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores error, debitis minima corporis, rem iure, commodi libero mollitia nostrum quam optio amet nobis ratione cumque nisi inventore nemo saepe fuga. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Pariatur delectus est eos dolorem quisquam aliquam facilis corporis accusantium provident blanditiis quis mollitia id repellat alias soluta perferendis, architecto in sed.</div>
                         </div>
                         <div class="post-content">
-                            <!-- <div class="post-image">
-                                <img src="img/sample.png" alt="">
-                            </div> -->
                             <div class="post-text">
                                 <div class="ptext">Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis quos unde non sed adipisci rem repellat fugit eos at consequatur, deleniti saepe earum asperiores nesciunt, dolores possimus orem ipsum dolor sit amet consectetur adipisicing elit. Asperiores error, debitis minima corporis, rem iure, commodi libero mollitia nostrum quam optio amet nobis ratione cumque nisi inventore nemo saepe fuga. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Pariatur delectus est eos dolorem quisquam aliquam facilis corporis accusantium provident blanditiis quis mollitia id repellat alias soluta perferendis, architecto in sed.aspernatur commodi. Iste.</div>
                             </div>
@@ -301,7 +274,7 @@
                     </a>
                 </div>
             </div>
-        </div>
+        </div>  -->
     </div>
 <!-- 모달 등 추가 div가 필요할 경우만 사용 -->
 <div layout:fragment="content-bottom">

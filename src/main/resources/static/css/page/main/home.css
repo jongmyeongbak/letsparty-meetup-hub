@@ -13,6 +13,41 @@ td a:hover {
     color: rgb(58, 156, 255);
     text-decoration: none;
 }
+td .post-name {
+	display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: normal;
+    white-space: nowrap;
+    width: 140px;
+}
+td .post-title {
+	display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: normal;
+    white-space: nowrap;
+    padding-left: 5%;
+    width: 200px;
+}
+td .party-name {
+	display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: normal;
+    white-space: nowrap;
+    padding-left: 5%;
+    width: 150px;
+}
+td .party-description {
+	display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: normal;
+    white-space: nowrap;
+    padding-left: 5%;
+    width: 390px;
+}
 .border {
     background-color: rgb(237, 246, 255);
 }
@@ -109,7 +144,7 @@ td a:hover {
     text-overflow: ellipsis;
 }
 
-/* 인기 게시글 */
+/* 인기 게시글 
 .post-item a {
     text-decoration: none;
 }
@@ -165,4 +200,4 @@ td a:hover {
     margin: 8px 20px;
     color: #888;
     font-size: 14px;
-}
+} */

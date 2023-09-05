@@ -79,5 +79,9 @@ public class LetsPartyService {
 	    savedPartyPost.setReadCnt(savedPartyPost.getReadCnt() + 1);
 	    letsPartyMapper.updatePost(savedPartyPost);
 	}
+
+	public List<LetsPartyPost> getPostsLimit5() {
+		return letsPartyMapper.getPostsLimit5();
+	}
 	
 }

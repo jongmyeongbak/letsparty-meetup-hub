@@ -19,6 +19,6 @@ public class WebConfig implements WebMvcConfigurer {
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(partyInterceptor).addPathPatterns("/party/**");
+		registry.addInterceptor(partyInterceptor).addPathPatterns("/party/{partyNo}/**");
 	}
 }
