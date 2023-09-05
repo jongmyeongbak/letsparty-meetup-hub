@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.letsparty.dto.LetsPartyCommentDto;
 import com.letsparty.vo.LetsPartyComment;
 
 @Mapper
@@ -13,8 +14,8 @@ public interface LetsPartyCommentMapper {
 	void insertComment(LetsPartyComment comment);
 	
 	// 렛츠파티 게시판에 등록된 댓글들 불러오기
-	List<LetsPartyComment> getAllCommentsByPostNo(long postNo);
+	List<LetsPartyCommentDto> getAllCommentsByPostNo(long postNo);
 
-	LetsPartyComment getCommentByNo(long no);
+	LetsPartyCommentDto getCommentByNo(long no);
 
 }

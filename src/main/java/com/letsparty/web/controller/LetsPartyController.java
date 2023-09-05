@@ -23,13 +23,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.letsparty.dto.LetsPartyCommentDto;
+import com.letsparty.dto.LetsPartyPostDto;
 import com.letsparty.exception.PostNotFoundException;
 import com.letsparty.security.user.LoginUser;
 import com.letsparty.service.LetsPartyCommentService;
 import com.letsparty.service.LetsPartyService;
 import com.letsparty.service.UserPartyApplicationService;
-import com.letsparty.vo.LetsPartyComment;
-import com.letsparty.vo.LetsPartyPost;
 import com.letsparty.vo.UserPartyApplication;
 import com.letsparty.web.form.LetsPartyCommentForm;
 import com.letsparty.web.form.LetsPartyPostForm;
@@ -123,10 +123,10 @@ public class LetsPartyController {
 	@GetMapping("/post/{postNo}")
 	public String detail(@PathVariable long postNo, Model model, RedirectAttributes attributes, @AuthenticationPrincipal LoginUser loginUser) {
 	    try {
-	        LetsPartyPost post = letsPartyService.getPostDetail(postNo);
-	        List<LetsPartyComment> comments = letsPartyCommentService.getAllCommentsByPostNo(postNo);
+	    	LetsPartyPostDto post = letsPartyService.getPostDetail(postNo);
+	        List<LetsPartyCommentDto> comments = letsPartyCommentService.getAllCommentsByPostNo(postNo);
 	        post.getParty().setFilename(coversPath + post.getParty().getFilename());
-	        for (LetsPartyComment comment : comments) {
+	        for (LetsPartyCommentDto comment : comments) {
 	        	comment.getParty().setFilename(coversPath + comment.getParty().getFilename());
 	        }
 	        
@@ -174,13 +174,17 @@ public class LetsPartyController {
 	        }
 	        return ResponseEntity.badRequest().body(response);
 	    }
-
-	    LetsPartyComment newComment = letsPartyCommentService.insertComment(commentForm, loginUser);
-	    newComment.getParty().setFilename(coversPath + newComment.getParty().getFilename());
 	    response.put("status", "success");
-	    response.put("message", "댓글이 성공적으로 등록되었습니다.");
-	    response.put("comment", newComment);  // 새로 추가된 댓글 정보를 반환합니다.
-	    response.put("isAuthor", newComment.getUser().getId().equals(loginUser.getId())); // 현재 로그인한 사용자와 댓글 작성자가 동일한지 체크
+	    // 새롭게 추가된 댓글 정보
+	    LetsPartyCommentDto insertedComment = letsPartyCommentService.insertComment(commentForm, loginUser);
+	    insertedComment.getParty().setFilename(coversPath + insertedComment.getParty().getFilename());
+	    // 댓글 수 변경을 위한 기존 게시물 정보
+	    LetsPartyPostDto savedPost = letsPartyService.getPostDetail(postNo);  
+	    
+	    response.put("comment", insertedComment); // 새로운 댓글 반환
+	    response.put("isAuthor", insertedComment.getUser().getId().equals(loginUser.getId())); // 현재 로그인한 사용자와 댓글 작성자가 동일한지 체크
+	    response.put("savedPost", savedPost); // 기존 게시물 정보 반환
+	    
 	    return ResponseEntity.ok(response);
 	}
 

@@ -7,39 +7,39 @@
 		values(#{post.no}, #{party.no}, #{user.id}, #{content});
 	</insert>
 	
-	<select id="getCommentByNo" parameterType="long" resultType="com.letsparty.vo.LetsPartyComment">
+	<select id="getCommentByNo" parameterType="long" resultType="com.letsparty.dto.LetsPartyCommentDto">
 		select 
 			lc.comment_no			as no,
-			lp.post_no				as "post.no",
 			p.party_no				as "party.no",
 			p.party_name			as "party.name",
 			p.party_filename		as "party.filename",
-			u.user_id				as "user.id",
+			upa.user_id				as "user.id",
+            up.profile_nickname     as "profile.nickname",
         	lc.comment_content		as content,
         	lc.comment_updated_at	as updatedAt,
         	lc.comment_created_at 	as createdAt
 		from letsparty_comment lc
-		inner join letsparty_post lp on lc.post_no = lp.post_no
 		inner join party p on lc.party_no = p.party_no
-		inner join user u on lc.user_id = u.user_id
+        inner join user_party_application upa on lc.party_no = upa.party_no and lc.user_id = upa.user_id
+        inner join user_profile up on upa.profile_no = up.profile_no
 		where lc.comment_no = #{value}
 	</select>
 
-	<select id="getAllCommentsByPostNo" parameterType="long" resultType="com.letsparty.vo.LetsPartyComment">
+	<select id="getAllCommentsByPostNo" parameterType="long" resultType="com.letsparty.dto.LetsPartyCommentDto">
 		select 
 			lc.comment_no			as no,
-			lp.post_no				as "post.no",
 			p.party_no				as "party.no",
 			p.party_name			as "party.name",
 			p.party_filename		as "party.filename",
-			u.user_id				as "user.id",
+			upa.user_id				as "user.id",
+            up.profile_nickname     as "profile.nickname",
         	lc.comment_content		as content,
         	lc.comment_updated_at	as updatedAt,
         	lc.comment_created_at 	as createdAt
 		from letsparty_comment lc
-		inner join letsparty_post lp on lc.post_no = lp.post_no
 		inner join party p on lc.party_no = p.party_no
-		inner join user u on lc.user_id = u.user_id
+        inner join user_party_application upa on lc.party_no = upa.party_no and lc.user_id = upa.user_id
+        inner join user_profile up on upa.profile_no = up.profile_no
 		where lc.post_no = #{value}
 	</select>
 </mapper>

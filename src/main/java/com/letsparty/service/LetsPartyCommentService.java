@@ -2,11 +2,10 @@ package com.letsparty.service;
 
 import java.util.List;
 
-import javax.validation.Valid;
-
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import com.letsparty.dto.LetsPartyCommentDto;
+import com.letsparty.dto.LetsPartyPostDto;
 import com.letsparty.mapper.LetsPartyCommentMapper;
 import com.letsparty.mapper.LetsPartyMapper;
 import com.letsparty.mapper.PartyMapper;
@@ -14,7 +13,6 @@ import com.letsparty.security.user.LoginUser;
 import com.letsparty.vo.LetsPartyComment;
 import com.letsparty.vo.LetsPartyPost;
 import com.letsparty.vo.Party;
-import com.letsparty.vo.Post;
 import com.letsparty.vo.User;
 import com.letsparty.web.form.LetsPartyCommentForm;
 
@@ -29,27 +27,37 @@ public class LetsPartyCommentService {
 	private final PartyMapper partyMapper;
 	
 	// 댓글등록
-	public LetsPartyComment insertComment(LetsPartyCommentForm commentForm, LoginUser loginUser) {
-		LetsPartyPost post = letsPartyMapper.getPostDetailByNo(commentForm.getPostNo());
+	public LetsPartyCommentDto insertComment(LetsPartyCommentForm commentForm, LoginUser loginUser) {
+		// 기존 게시물을 불러오는 dto
+		LetsPartyPostDto savedLetsPartyPost = letsPartyMapper.getPostDetailByNo(commentForm.getPostNo());
+		
+		// 댓글 vo에 set할 게시물 vo
+		LetsPartyPost letsPartyPost = new LetsPartyPost();
+		letsPartyPost.setNo(commentForm.getPostNo());
 		Party party = partyMapper.getPartyByNo(commentForm.getPartyNo());
 		User user = new User();
 		user.setId(loginUser.getId());
 		
-		LetsPartyComment letsPartyComment = LetsPartyComment.builder()
-											.post(post)
+		LetsPartyComment newComment = LetsPartyComment.builder()
+											.post(letsPartyPost)
 											.party(party)
 											.user(user)
 											.content(commentForm.getContent())
 											.build();
+		// 댓글등록
+		letsPartyCommentMapper.insertComment(newComment);
+		// 해당 게시물에 댓글 수 증가 후 업데이트
+		savedLetsPartyPost.setCommentCnt(savedLetsPartyPost.getCommentCnt()+1);
+		letsPartyMapper.updatePost(savedLetsPartyPost);
 		
-		letsPartyCommentMapper.insertComment(letsPartyComment);
-		post.setCommentCnt(post.getCommentCnt()+1);
-		LetsPartyComment insertedComment = letsPartyCommentMapper.getCommentByNo(letsPartyComment.getNo());
+		// 새롭게 추가된 댓글을 등록과 동시에 반환
+		LetsPartyCommentDto insertedComment = letsPartyCommentMapper.getCommentByNo(newComment.getNo());
 		
 		return insertedComment;
 	}
 	
-	public List<LetsPartyComment> getAllCommentsByPostNo(long postNo){
+	// 게시물에 달린 모든 댓글 출력
+	public List<LetsPartyCommentDto> getAllCommentsByPostNo(long postNo){
 		return letsPartyCommentMapper.getAllCommentsByPostNo(postNo);
 	}
 

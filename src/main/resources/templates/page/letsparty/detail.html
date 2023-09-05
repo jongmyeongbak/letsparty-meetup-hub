@@ -42,7 +42,7 @@
 								</h5>
 	                        </div>
 	                        <!-- 작성자 -->
-                            <p class="card-text pb-2" th:text="'(' + ${post.user.id} + ')'"></p>
+                            <p class="card-text pb-2" th:text="'(' + ${post.profile.nickname} + ')'"></p>
                             <!-- 드롭다운 구간 -->
                             <div class="dropdown-center pb-4" style="position: relative;">
                                 <a href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
@@ -80,7 +80,7 @@
                                     <small class=""><i class="fa-regular fa-face-smile text-muted"></i> <span class="text-muted" th:text="${post.likeCnt}">99</span></small>
                                 </div>
                                 <p class="">
-                                    <small class="text-muted">댓글 <span class="text-muted" th:text="${post.commentCnt}">5</span></small>
+                                    <small class="text-muted">댓글 <span id="comment-count" class="text-muted" th:text="${post.commentCnt}"></span></small>
                                 </p>
                             </div>
 
@@ -88,7 +88,7 @@
                             <div class="d-flex ">
                                 <p class="">
                                     <i class="bi bi-eye" style="cursor: pointer;"></i>
-                                    <small class="text-muted"><span class="text-muted">999</span></small>
+                                    <small class="text-muted"><span class="text-muted" th:text="${post.readCnt}"></span></small>
                                 </p>
                             </div>
                         </div>
@@ -128,7 +128,7 @@
 											            <a th:text="${comment.party.name}" th:href="@{/party/{partyNo}(partyNo=${comment.party.no})}"></a>
 											        </p>
 											        <!-- 닉네임 -->
-											        <span th:text="'(' + ${comment.user.id } + ')'"></span>
+											        <span th:text="'(' + ${comment.profile.nickname } + ')'"></span>
 											    </div>
 											
 											    <!-- 드롭다운 구간 -->

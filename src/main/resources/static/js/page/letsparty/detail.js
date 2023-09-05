@@ -2,10 +2,6 @@ $("#btn").click(function() {
 	let postNo = $("#postNo").val();
     let partyNo = $("#partySelect").val();
     let content = $("#content").val();
-    
-    console.log(postNo);
-    console.log(partyNo);
-    console.log(content);
 
     // 여기서 AJAX를 이용해 서버에 댓글 데이터를 전송
     $.ajax({
@@ -18,12 +14,16 @@ $("#btn").click(function() {
     })
     .done(function(response) {
 		if (response.status === "success") {
+			
 		// 댓글이 성공적으로 등록된 경우 처리
+		// 날짜 변환해서 추가 - 타임리프의 시간 변환 객체 여기서 사용불가
 		function formatDate(dateString) {
+			$("#comment-count").replaceWith(
+				response.savedPost.commentCnt
+			);
 		    const date = new Date(dateString);
-		    
 		    const year = date.getFullYear();
-		    const month = date.getMonth() + 1; // 월은 0부터 시작하므로 1을 더해야 합니다.
+		    const month = date.getMonth() + 1;
 		    const day = date.getDate();
 		    const hours = date.getHours();
 		    const minutes = date.getMinutes();
@@ -33,6 +33,7 @@ $("#btn").click(function() {
 		}
 		const commentDate = response.comment.createdAt; //서버로부터 받아온 댓글의 날짜
 		const formattedDate = formatDate(commentDate);
+		
         let dropdownHtml = `
         <div class="d-flex justify-content-end">
 		        <div class="dropstart" style="position: relative;">
@@ -77,7 +78,7 @@ $("#btn").click(function() {
 			                                        <a href="/party/${response.comment.party.no}">${response.comment.party.name}</a>
 			                                    </p>
 			                                    <!-- 닉네임 -->
-			                                    <span>(${response.comment.user.id })</span>
+			                                    <span>(${response.comment.profile.nickname})</span>
 			                                </div>
 				                            `
 				                            + dropdownHtml +

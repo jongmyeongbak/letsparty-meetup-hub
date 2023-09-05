@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.letsparty.dto.LetsPartyPostDto;
 import com.letsparty.exception.PostNotFoundException;
 import com.letsparty.info.Pagination;
 import com.letsparty.mapper.LetsPartyMapper;
@@ -68,14 +69,14 @@ public class LetsPartyService {
 	}
 
 	// 렛츠파티 게시물 상세 가져오기
-	public LetsPartyPost getPostDetail(long postNo) {
-	    Optional<LetsPartyPost> savedPartyPostOpt = Optional.ofNullable(letsPartyMapper.getPostDetailByNo(postNo));
+	public LetsPartyPostDto getPostDetail(long postNo) {
+	    Optional<LetsPartyPostDto> savedPartyPostOpt = Optional.ofNullable(letsPartyMapper.getPostDetailByNo(postNo));
 	    return savedPartyPostOpt.orElseThrow(() -> new PostNotFoundException("해당 게시물이 존재하지 않습니다."));
 	}
 
 	// 렛츠파티 게시물 조회수 올리기
 	public void increaseReadCount(long postNo) {
-		LetsPartyPost savedPartyPost = getPostDetail(postNo);
+		LetsPartyPostDto savedPartyPost = getPostDetail(postNo);
 	    savedPartyPost.setReadCnt(savedPartyPost.getReadCnt() + 1);
 	    letsPartyMapper.updatePost(savedPartyPost);
 	}

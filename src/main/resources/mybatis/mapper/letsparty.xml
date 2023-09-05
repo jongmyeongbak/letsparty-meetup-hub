@@ -6,14 +6,14 @@
 		values (#{category.no}, #{party.no}, #{user.id}, #{title}, #{content})
 	</insert>
 	
-	<select id="getPostDetailByNo" parameterType="long" resultType="com.letsparty.vo.LetsPartyPost">
+	<select id="getPostDetailByNo" parameterType="long" resultType="com.letsparty.dto.LetsPartyPostDto">
 		select 
 			p.party_no			as "party.no",
 	        p.party_name        as "party.name",
 	        p.party_filename	as "party.filename",
 			lt.post_no          as no,
 			lt.user_id			as "user.id",
-	   <!-- up.profile_nickname as "profile.nickname", -->
+	 		up.profile_nickname as "profile.nickname",
 	        lt.post_title       as title,
 	        lt.post_content     as content,
 	        lt.created_at       as createdAt,
@@ -23,8 +23,8 @@
 	        lt.post_like_cnt	as likeCnt
 		from letsparty_post lt
 		inner join party p on lt.party_no = p.party_no
-		<!-- inner join user_party_application upa on lt.user_id = upa.user_id and lt.party_no = upa.party_no
-    	inner join user_profile up on upa.profile_no = up.profile_no -->
+		inner join user_party_application upa on lt.user_id = upa.user_id and lt.party_no = upa.party_no
+    	inner join user_profile up on upa.profile_no = up.profile_no
 		where 
 		    post_no = #{no}
 		and 
@@ -119,6 +119,7 @@
 	        post_title = #{title},
 	        post_content = #{content},
 	        post_read_cnt = #{readCnt},
+	        post_comment_cnt = #{commentCnt},
 	        updated_at = now()
 	    where 
 	        post_no = #{no}

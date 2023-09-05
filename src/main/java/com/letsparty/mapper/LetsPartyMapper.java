@@ -5,14 +5,15 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.letsparty.dto.LetsPartyPostDto;
 import com.letsparty.vo.LetsPartyPost;
 
 @Mapper
 public interface LetsPartyMapper {
 
 	void insertPost(LetsPartyPost letsPartyPost);
-	void updatePost(LetsPartyPost letsPartyPost);
-	LetsPartyPost getPostDetailByNo(long postNo);
+	void updatePost(LetsPartyPostDto letsPartyPost);
+	LetsPartyPostDto getPostDetailByNo(long postNo);
 	
 	
 	int getTotalRows(Map<String, Object> param);
