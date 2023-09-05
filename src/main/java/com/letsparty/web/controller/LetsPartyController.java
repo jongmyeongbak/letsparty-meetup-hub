@@ -112,8 +112,7 @@ public class LetsPartyController {
 			param.put("keyword", keyword);
 		}
 		
-																LetsPartyPostList result = letsPartyService.getPosts(param);
-		
+		LetsPartyPostList result = letsPartyService.getPosts(param);
 		model.addAttribute("result", result);
 		model.addAttribute("isLeader", userPartyApplicationService.isLeader(loginUser));
 		return "page/letsparty/home";

@@ -28,7 +28,7 @@ public class LetsPartyCommentService {
 	
 	// 댓글등록
 	public LetsPartyCommentDto insertComment(LetsPartyCommentForm commentForm, LoginUser loginUser) {
-		// 기존 게시물을 불러오는 dto
+		// 저장된 게시물을 불러오는 dto
 		LetsPartyPostDto savedLetsPartyPost = letsPartyMapper.getPostDetailByNo(commentForm.getPostNo());
 		
 		// 댓글 vo에 set할 게시물 vo

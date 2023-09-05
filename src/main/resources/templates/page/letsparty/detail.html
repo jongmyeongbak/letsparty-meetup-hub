@@ -11,10 +11,8 @@
 	 <div class="row mb-3">
         <div class="col-12">
             <div class="card card-line">
-                
                 <!-- 프로필, 게시물 제목, 닉네임 -->
                 <div class="card-body">
-                    
                    <div class="d-flex justify-content-between align-items-center" style="margin-top: -10px;">
                         <div class="d-flex justify-content-between align-items-center">
                             <!-- 파티의 헤더 -->
@@ -33,7 +31,6 @@
                                 </div>
                             </div>
                         </div>
-                    
                         <div class="d-flex justify-content-center align-items-center pb-2">
 	                        <div class="card-text pb-3">
 	                        <!-- 파티명 -->
@@ -48,19 +45,19 @@
                                 <a href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bi bi-three-dots-vertical text-muted"></i>
                                 </a>
-                                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-	                                  <li th:if="${#authentication.name == post.user.id}">
-								            <a class="dropdown-item" href="">글 수정</a>
-								            <a class="dropdown-item" href="">삭제</a>
-								      </li>
-	                                  <li sec:authorize="isAuthenticated()" th:if="${#authentication.name != post.user.id}">
-	                                      <a class="dropdown-item" href="">채팅하기</a>
-	                                      <a class="dropdown-item" href="">신고</a>
-	                                  </li>
-	                                  <li>
-	                                      <a class="dropdown-item" href="">공유</a>
-	                                  </li>
-                                  </ul>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                 <li th:if="${#authentication.name == post.user.id}">
+						            <a class="dropdown-item" href="">글 수정</a>
+						            <a class="dropdown-item" href="">삭제</a>
+						     	 </li>
+                                 <li sec:authorize="isAuthenticated()" th:if="${#authentication.name != post.user.id}">
+                                     <a class="dropdown-item" href="">채팅하기</a>
+                                     <a class="dropdown-item" href="">신고</a>
+                                 </li>
+                                 <li>
+                                     <a class="dropdown-item" href="">공유</a>
+                                 </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -71,7 +68,6 @@
                             <p class="card-text" th:text="${post.content}"></p>
                         </div>
                     </div>
-
                     <!-- 게시물 하단 공감수, 댓글 수, 조회수  -->
                     <div class="card-text">
                         <div class="d-flex justify-content-between align-items-center" style="margin-bottom: -20px;">
@@ -83,7 +79,6 @@
                                     <small class="text-muted">댓글 <span id="comment-count" class="text-muted" th:text="${post.commentCnt}"></span></small>
                                 </p>
                             </div>
-
                             <!-- 우 -->
                             <div class="d-flex ">
                                 <p class="">
@@ -149,7 +144,6 @@
 											        </div>
 											    </div>
 											</div>
-                                            
                                             <!-- 내용 -->
                                             <div class="d-flex justify-content-between">
                                                 <p style="margin-bottom: -5px;" th:text="${comment.content}"></p>
@@ -169,7 +163,6 @@
                     </div>
                     <!-- 댓글 하나 끝 -->
                 </div>
-				
 				<div th:if="${userPartyApplications != null && userPartyApplications.size() > 0}">
 	                <!-- 댓글 작성 폼 -->
 	                <form id="comment-form">
