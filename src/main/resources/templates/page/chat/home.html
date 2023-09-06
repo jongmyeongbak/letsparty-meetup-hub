@@ -32,8 +32,23 @@
           </button>
         </div>
         <div class="">
-          <h1 class="text-center">홍길동</h1>
-          <h2 class="text-center">렛츠파티</h2>
+          <h1 class="text-center">
+            <span
+              class="chat-head-left"
+              th:text="${chatRoom.isEssential} ? ${chatRoom.party.name} : (${chatRoom.isPublic} ? ${chatRoom.title} : '')"
+            ></span
+            >(<span
+              class="chat-head-right"
+              th:text="${chatRoom.chattersCnt}"
+            ></span
+            >)
+          </h1>
+          <h2
+            class="text-center"
+            th:text="${chatRoom.isEssential} ? '' : ${chatRoom.party.name}"
+          >
+            렛츠파티
+          </h2>
         </div>
         <div class="align-self-center text-end">
           <button class="btn btn-setting">

@@ -69,15 +69,17 @@ body {
 }
 
 .log-data {
-  padding: 8px 8px 8px 15px;
+  padding: 0px 8px 8px 15px;
 }
 
-.log-date {
-  margin-bottom: 15px;
+.log-date,
+.log-move {
+  margin: 8px 0;
 }
 
-.log-date time {
-  margin: 5px 0px;
+.log-date time,
+.log-move p {
+  margin: 7px 0px;
   padding: 4px 10px 5px;
   border-radius: 10px;
   font-size: 11px;
@@ -85,20 +87,30 @@ body {
   background-color: #d9dcff;
 }
 
+.log-move {
+  width: 100%;
+  text-align: center;
+}
+
+.log-move p {
+  display: inline;
+}
+
 .log-friend,
 .log-my {
   display: flex;
   align-items: flex-start;
   width: 100%;
-  margin-bottom: 5px;
 }
 
 .log-friend {
   flex-direction: row;
+  margin-bottom: 5px;
 }
 
 .log-my {
   flex-direction: row-reverse;
+  margin: 5px 0;
 }
 
 .pf-image {
@@ -123,7 +135,7 @@ body {
 }
 
 .nickname {
-  padding: 2px 3px;
+  padding: 0 3px 2px;
   width: max-content;
   font-size: 11px;
   color: #333;
@@ -136,7 +148,7 @@ body {
 
 .log-bubble {
   position: relative;
-  margin: 0 2px;
+  margin: 2px 2px;
   padding: 5px 8px 7px;
   /* flex-grow: 1; */
   /* width: max-content; */
@@ -164,6 +176,7 @@ body {
 }
 
 .log-friend .log-bubble {
+  margin-top: 0;
   background-color: #f2f9ff;
 }
 .log-my .log-bubble {
