@@ -2,20 +2,28 @@ package com.letsparty.web.websocket.interceptor;
 
 import java.util.Map;
 
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.messaging.SessionSubscribeEvent;
 
+import com.letsparty.mapper.ChatMessageMapper;
 import com.letsparty.mapper.ChatUserMapper;
 import com.letsparty.security.user.LoginUser;
 import com.letsparty.vo.ChatUser;
+import com.letsparty.web.websocket.dto.ChatMessageCon;
 import com.letsparty.web.websocket.service.SessionInfoMapper;
 import com.letsparty.web.websocket.service.SessionInfoMapper.SessionDetail;
 import com.letsparty.web.websocket.util.WebSocketUtils;
@@ -38,7 +46,6 @@ public class ChatChannelInterceptor implements ChannelInterceptor {
 	public Message<?> preSend(Message<?> message, MessageChannel channel) {
 //		final StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
 		final StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-//		String sessionId = (String) message.getHeaders().get("simpSessionId");
 		final String sessionId = accessor.getSessionId();
 		
 	    switch (accessor.getCommand()) {
@@ -66,30 +73,10 @@ public class ChatChannelInterceptor implements ChannelInterceptor {
             log.info("ws접속: {}", accessor);
             break;
             
-        case SUBSCRIBE:
-            roomId = WebSocketUtils.getLastVariableFromDestination(accessor.getDestination());
-            Map<String, Object> sessionAttributes = accessor.getSessionAttributes();
-            log.info("sessionAttributes -> {}", sessionAttributes);
-            
-            if (sessionAttributes == null || !roomId.equals(sessionAttributes.get("roomId"))) {
-                throw new AccessDeniedException("허가되지 않은 구독 요청");
-            }
-            
-            int userNo = ((LoginUser) ((Authentication) accessor.getUser()).getPrincipal()).getNo();
-            // 참가한 room이 아니면 구독 거부
-            if (!isUserInRoom(roomId, userNo)) {
-                 throw new AccessDeniedException("topic을 구독할 권한이 없음");
-            }
-            sessionInfoMapper.addSession(sessionId, roomId, userNo);
-            log.info("ws구독 -> 방:{}, 유저:{}", roomId, userNo);
-            break;
-            
         case DISCONNECT:
         	sessionDetail = sessionInfoMapper.removeSession(sessionId);
-            // 개발 확인용 코드
             if (sessionDetail != null) {
-//                userNo = ((LoginUser) ((Authentication) accessor.getUser()).getPrincipal()).getNo();
-            	userNo = sessionDetail.getUserNo();
+            	int userNo = sessionDetail.getUserNo();
             	// 해당 유저의 채팅방 접속이 남아있지 않다면 마지막읽은메시지번호를 저장
             	if (sessionInfoMapper.getSessionIdsOfUserInRoom(userNo, sessionDetail.getRoomId()).isEmpty()) {
             		chatUserMapper.updateLastReadMessageNoById(sessionDetail.getRoomId(), userNo);
@@ -100,11 +87,5 @@ public class ChatChannelInterceptor implements ChannelInterceptor {
 		}
 		
 		return message;
-	}
-	
-	private boolean isUserInRoom(String roomId, int userNo) {
-		ChatUser chatUser = ChatUser.builder().roomId(roomId).userNo(userNo).build();
-		Long lastReadMessageNo = chatUserMapper.findLastReadMessageNoByRoomNoAndUserNo(chatUser);
-		return lastReadMessageNo != null;
 	}
 }
