@@ -191,7 +191,7 @@ public class PartyService {
 //		게시물 저장 후 반환된 postId가 등록되어야 함
 //		long postId = post.getId();
 
-		post.setId(1); // 삭제 필요
+		post.setId(1); //TODO: 삭제 필요
 
 		// 폼에 지도 정보가 있다면 반환받은 게시물 id와 지도 정보 db 저장
 		if (postForm.getPlace().getId() != null && !postForm.getPlace().getId().isBlank()) {
