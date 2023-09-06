@@ -113,7 +113,7 @@
 		LIMIT 5;
 	</select>
 	
-	<update id="updatePost" parameterType="com.letsparty.vo.LetsPartyPost">
+	<update id="updatePost" parameterType="com.letsparty.dto.LetsPartyPostDto">
 	    update letsparty_post
 	    set 
 	        post_title = #{title},
