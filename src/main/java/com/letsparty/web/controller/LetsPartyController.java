@@ -182,9 +182,7 @@ public class LetsPartyController {
 	@GetMapping("/post/{postNo}/latest-two-comments")
 	@ResponseBody
 	public List<LetsPartyCommentDto> getLatestTwoComments(@PathVariable long postNo, @AuthenticationPrincipal LoginUser loginUser) {
-		List<LetsPartyCommentDto> latestTwoComments;
-		
-		latestTwoComments = letsPartyCommentService.getLatestTwoCommentsByPostNo(postNo); 
+		List<LetsPartyCommentDto> latestTwoComments = letsPartyCommentService.getLatestTwoCommentsByPostNo(postNo); 
 		for (LetsPartyCommentDto comment : latestTwoComments) {
 			comment.getParty().setFilename(coversPath + comment.getParty().getFilename());
 			if (loginUser != null) {
@@ -201,9 +199,7 @@ public class LetsPartyController {
 	@GetMapping("/post/{postNo}/all-comments")
 	@ResponseBody
 	public List<LetsPartyCommentDto> getAllComments(@PathVariable long postNo, @AuthenticationPrincipal LoginUser loginUser) {
-	    List<LetsPartyCommentDto> allComments;
-	    
-        allComments = letsPartyCommentService.getAllCommentsByPostNo(postNo);
+	    List<LetsPartyCommentDto> allComments = letsPartyCommentService.getAllCommentsByPostNo(postNo);
 	    for (LetsPartyCommentDto comment : allComments) {
 	        comment.getParty().setFilename(coversPath + comment.getParty().getFilename());
 	        if (loginUser != null) {
