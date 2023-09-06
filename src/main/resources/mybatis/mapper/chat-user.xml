@@ -82,7 +82,7 @@
 			up.profile_nickname
 	</select>
 	
-	<select id="findByUserNo" resultType="com.letsparty.dto.ChatUserResponse">
+	<select id="findByRoomIdAndUserNo" resultType="com.letsparty.dto.ChatUserResponse">
 		SELECT
 			u.user_no,
 			up.profile_nickname as nickname,
@@ -91,9 +91,9 @@
 		FROM
 			user_party_application upa
 		JOIN
-			user u ON cu.user_no = {userNo} AND upa.user_id = u.user_id
+			user u ON u.user_no = #{userNo} AND upa.user_id = u.user_id
 		JOIN
-			chat_room cr ON cr.room_id = {roomId} AND upa.party_no = cr.party_no
+			chat_room cr ON cr.room_id = #{roomId} AND upa.party_no = cr.party_no
 		JOIN
 			user_profile up ON upa.profile_no = up.profile_no
 	</select>

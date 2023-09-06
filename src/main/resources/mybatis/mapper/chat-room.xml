@@ -106,7 +106,7 @@
 	</select>
 	
 	<select id="findAllByPartyNoAndUserNo" resultType="ChatRoom">
-		SELECT 
+		SELECT
 			cr.room_no as no,
 			cr.room_id as id,
 			cr.chatters_cnt,
@@ -120,6 +120,26 @@
 		JOIN chat_user cu ON cr.room_id = cu.room_id
 		WHERE cr.party_no = #{partyNo}
 		AND cu.user_no = #{userNo}
+		ORDER BY
+			CASE WHEN cr.is_essential = 1 THEN 0 ELSE 1 END,
+		 	cr.room_no DESC;
+	</select>
+	
+	<select id="getAccessibleRoomsByPartyNoAndUserNo" resultType="ChatRoom">
+		SELECT DISTINCT
+			cr.room_no as no,
+			cr.room_id as id,
+			cr.chatters_cnt,
+			cr.party_no as "party.no",
+			cr.creator_no,
+			cr.is_public,
+			cr.is_essential,
+			cr.room_title as title,
+			cr.room_description as description
+		FROM chat_room cr
+		LEFT JOIN chat_user cu ON cr.room_id = cu.room_id AND cu.user_no = #{userNo}
+		WHERE cr.party_no = #{partyNo}
+		AND (cr.is_public = true OR cu.user_no IS NOT NULL)
 		ORDER BY
 			CASE WHEN cr.is_essential = 1 THEN 0 ELSE 1 END,
 		 	cr.room_no DESC;

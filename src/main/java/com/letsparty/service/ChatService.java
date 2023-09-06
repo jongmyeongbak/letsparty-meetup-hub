@@ -24,6 +24,7 @@ import com.letsparty.vo.ChatRoom;
 import com.letsparty.vo.ChatUser;
 import com.letsparty.vo.Party;
 import com.letsparty.vo.UserPartyApplication;
+import com.letsparty.web.websocket.dto.ChatMessageJoin;
 import com.letsparty.web.websocket.service.SessionInfoMapper;
 import com.letsparty.web.websocket.service.SessionStore;
 
@@ -141,7 +142,10 @@ public class ChatService {
 		chatUserMapper.insertChatUser(ChatUser.builder().roomId(roomId).userNo(userNo)
 				.joinMessageNo(chatMessage.getNo()).lastReadMessageNo(chatMessage.getNo()).build());
 		chatRoomMapper.increaseChattersCntByNo(roomNo);
-		messagingTemplate.convertAndSend(String.format("/topic/chat/%s", roomId), chatMessage);
+		
+		ChatMessageJoin chatMessageJoin = new ChatMessageJoin(chatMessage.getNo(), 1, chatMessage.getCreatedAt());
+		BeanUtils.copyProperties(chatUserMapper.findByRoomIdAndUserNo(roomId, userNo), chatMessageJoin);
+		messagingTemplate.convertAndSend(String.format("/topic/chat/%s", roomId), chatMessageJoin);
 	}
 	
 	public void exitRoom(String userId, int userNo, String roomId) {
@@ -165,8 +169,8 @@ public class ChatService {
 		}
 		
 		// 퇴장메시지 송신
-		//	TODO 구독자가 본인이면 창이 닫히도록
-		//	TODO 구독자가 타인이면 퇴장메시지가 출력되고 읽지 않은 메시지의 안읽은수가 감소되도록
+		//	구독자가 본인이면 창이 닫히도록
+		//	구독자가 타인이면 퇴장메시지가 출력되고 읽지 않은 메시지의 안읽은수가 감소되도록
 		messagingTemplate.convertAndSend(String.format("/topic/chat/%s", roomId), chatMessage);
 		if (chatRoom.getChattersCnt() == 1 && !chatRoom.isEssential()) {
 			// 채팅유저 삭제
@@ -192,7 +196,7 @@ public class ChatService {
 	
 	public List<ChatRoomWithUsers> getChatRoomByPartyNoAndUserId(int partyNo, int userNo) {
 		List<ChatRoomWithUsers> dtos = new ArrayList<>();
-		List<ChatRoom> chatRoomList = chatRoomMapper.findAllByPartyNoAndUserNo(partyNo, userNo);
+		List<ChatRoom> chatRoomList = chatRoomMapper.getAccessibleRoomsByPartyNoAndUserNo(partyNo, userNo);
 		for (ChatRoom cr : chatRoomList) {
 			ChatRoomWithUsers dto = new ChatRoomWithUsers();
 			BeanUtils.copyProperties(cr, dto);
@@ -212,5 +216,9 @@ public class ChatService {
 
 	public ChatUserResponse getUserByRoomIdAndUserNo(String roomId, int userNo) {
 		return chatUserMapper.findByRoomIdAndUserNo(roomId, userNo);
+	}
+	
+	public ChatRoom getChatRoom(String roomId) {
+		return chatRoomMapper.findById(roomId);
 	}
 }
