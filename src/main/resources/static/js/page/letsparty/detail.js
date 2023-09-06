@@ -30,7 +30,7 @@ $("#write-comment-btn").click(function(e) {
 // 최근 댓글 2개만 불러오는 ajax 요청
 function fetchAndRenderLatestTwoComments() {
     $.ajax({
-        url: "/letsparty/post/" + postNo + "/latest-two-comments",  // 최신 댓글 2개를 가져올 서버의 주소
+        url: `/letsparty/post/${postNo}/latest-two-comments`,  // 최신 댓글 2개를 가져올 서버의 주소
         method: "get"
         })
     .done(function(response) {
@@ -45,7 +45,7 @@ function fetchAndRenderLatestTwoComments() {
 // 댓글 전체를 불러오는 ajax 요청
 function fetchAndRenderComments() {
 	$.ajax({
-	    url: "/letsparty/post/" + postNo + "/all-comments",  // 댓글 데이터를 가져올 서버의 주소
+	    url: `/letsparty/post/${postNo}/all-comments`,  // 댓글 데이터를 가져올 서버의 주소
 	    method: "get"
 	})
     .done(function(response) {
@@ -75,9 +75,9 @@ function renderComments(comments) {
 	    let seconds = date.getSeconds();
 	    
 	    // 시, 분, 초 한 자리 수 일 때 앞에 0을 붙임
-        hours = hours >= 10 ? hours : '0' + hours;
-        minutes = minutes >= 10 ? minutes : '0' + minutes;
-        seconds = seconds >= 10 ? seconds : '0' + seconds;
+        hours = String(hours).padStart(2, "0");
+        minutes = String(minutes).padStart(2, "0");
+        seconds = String(seconds).padStart(2, "0");
 	    
 	    return `${year}년 ${month}월 ${day}일 ${hours}:${minutes}:${seconds}`;
 	}
@@ -162,7 +162,7 @@ $("#btn").click(function() {
 	let content = $("#content").val();
 	$(".comment-textarea").val("");
     $.ajax({
-        url: "/letsparty/post/" + postNo + "/comment", 
+        url: `/letsparty/post/${postNo}/comment`, 
         method: "post",
         data: {
             partyNo: partyNo,
@@ -176,11 +176,15 @@ $("#btn").click(function() {
 	        // 총 댓글 수 렌더링
 	        renderCommentCnt(response.savedPost);
 	    } else if (response.status === "error") {
-			// 댓글 유효성 검사 실패시 설정한 각 메시지 표시
 	        alert(response.message);		
 	    }
 	})
-    .fail(function() {
-        alert("댓글 추가 중 오류가 발생했습니다.");
+    .fail(function(jqXHR) {
+		if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
+			// 서버에서 반환한 메시지를 출력
+			alert(jqXHR.responseJSON.message);
+		} else {
+			alert("댓글 추가 중 오류가 발생했습니다.");
+		}	
 	});
 });
