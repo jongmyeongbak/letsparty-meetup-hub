@@ -3,6 +3,7 @@ package com.letsparty.vo;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -20,7 +21,9 @@ public class ChatMessage {
 	private int type;
 	private int userNo;
 	private LocalDateTime createdAt;
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private Long unreadCnt; // last_read_message_no를 담기 위하여 Integer 대신 Long을 사용함
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private String text;
 	
 	@Builder
