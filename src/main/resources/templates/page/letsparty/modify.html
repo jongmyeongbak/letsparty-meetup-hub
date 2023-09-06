@@ -1,0 +1,58 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/common-base}">
+<head>
+    <link rel="stylesheet" th:href="@{/css/page/letsparty/modify.css}" >
+</head>
+<div layout:fragment="content-top" class="container">
+	<div class="row mb-3">
+        <div class="col-12">
+            <div class="card card-line">
+                <div class="card-header">
+                    <div class="d-flex jutstify-content-start">
+                        <h5 class="pt-1 h5-text-black">렛츠 파티 게시물을 수정해보세요!</h5>
+                    </div>
+                </div>			
+                <form method="post" th:action="@{/letsparty/post/{postNo}/modify(postNo=${postNo})}" th:object="${letsPartyPostModifyForm}">
+	                <div class="card-body">
+	                    <div class="row d-flex align-items-center">
+	                        <div class="form-group mb-3 col-9">
+	                            <label class="form-label">게시글 제목</label>
+	                            <input th:field="*{title}" type="text" class="form-control form-control" 
+	                            		th:classappend="${#fields.hasErrors('*{title}') ? 'is-invalid' : ''}" placeholder="게시글 제목을 입력해주세요.">
+	                            <div th:errors="*{title}" class="invalid-feedback"></div>
+	                        </div>
+	                        <div class="d-flex jutstify-content-end col-3 pb-3">
+								<div class="party-select-container">
+									<label class="form-label">소속 파티</label>
+		                            <select id="partySelect" class="form-select form-select select-party" readonly>
+		                        		<option selected th:text="${letsPartyPostModifyForm.partyName}" >
+		                            </select>
+								</div>
+	                        </div>
+	                    </div>
+	                    <div class="mb-3">
+	                        <label class="form-label">게시글 내용</label>
+	                        <textarea class="form-control" id="" cols="30" rows="10" placeholder="다른 파티에서 관심을 보일 수 있는 내용을 작성해주세요."
+	                        			th:field="*{content}" th:classappend="${#fields.hasErrors('*{content}') ? 'is-invalid' : ''}"></textarea>
+                   			<div th:errors="*{content}" class="invalid-feedback"></div>
+	                    </div>
+	                </div>     
+	                <div class="card-footer background-color-gray">
+	                    <div class="text-end">
+	                        <a id="cancel-btn" class="btn btn-secondary">취소</a>
+	                        <button id="btn" type="submit" class="btn btn-primary">게시</button>
+	                    </div>
+	                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div layout:fragment="content-bottom">
+	<div class="modal">
+		<h1>modal영역</h1>
+	</div>
+</div>
+<script layout:fragment="script" th:src="@{/js/page/letsparty/modify.js}"></script>
+</html>
