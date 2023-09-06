@@ -1,4 +1,4 @@
-package com.letsparty.web.websocket.etc;
+package com.letsparty.web.websocket.interceptor;
 
 import java.util.Map;
 
