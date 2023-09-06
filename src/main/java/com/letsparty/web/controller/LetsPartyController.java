@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -182,8 +181,7 @@ public class LetsPartyController {
 	// 최근 댓글 2개 가져오기
 	@PostMapping("/post/{postNo}/latest-two-comments")
 	@ResponseBody
-	public ResponseEntity<Map<String, Object>> getLatestTwoComment(@PathVariable long postNo, @AuthenticationPrincipal LoginUser loginUser) {
-		Map<String, Object> response = new HashMap<>();
+	public ResponseEntity<List<LetsPartyCommentDto>> getLatestTwoComments(@PathVariable long postNo, @AuthenticationPrincipal LoginUser loginUser) {
 		List<LetsPartyCommentDto> latestTwoComments;
 		
 		latestTwoComments = letsPartyCommentService.getLatestTwoCommentsByPostNo(postNo); 
@@ -196,16 +194,13 @@ public class LetsPartyController {
 		// 최근 2개 댓글 중 더 최근 댓글이 아래로 가도록 바꿈 
 		Collections.reverse(latestTwoComments); 
 		
-		response.put("status", "success");
-		response.put("latestTwoComments", latestTwoComments); // 최근 댓글 2개 반환
-		return ResponseEntity.ok(response);
+		return ResponseEntity.ok(latestTwoComments);
 	}
 		
 	// 모든 댓글 가져오기
 	@PostMapping("/post/{postNo}/all-comments")
 	@ResponseBody
-	public ResponseEntity<Map<String, Object>> getAllComments(@PathVariable long postNo, @AuthenticationPrincipal LoginUser loginUser) {
-	    Map<String, Object> response = new HashMap<>();
+	public ResponseEntity<List<LetsPartyCommentDto>> getAllComments(@PathVariable long postNo, @AuthenticationPrincipal LoginUser loginUser) {
 	    List<LetsPartyCommentDto> allComments;
 	    
         allComments = letsPartyCommentService.getAllCommentsByPostNo(postNo);
@@ -215,10 +210,8 @@ public class LetsPartyController {
 	        	comment.setAuthor(comment.getUser().getId().equals(loginUser.getId()));
 	        }
 	    }
-	    
-	    response.put("status", "success");
-	    response.put("allComments", allComments); // 모든 댓글 반환
-	    return ResponseEntity.ok(response);
+
+	    return ResponseEntity.ok(allComments);
 	}
 	
 	private void addUserPartyApplicationsToModel(LoginUser loginUser, Model model) {

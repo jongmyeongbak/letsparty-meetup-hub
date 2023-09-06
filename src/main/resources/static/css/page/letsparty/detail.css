@@ -66,6 +66,7 @@ color: rgb(194, 225, 255);
 #btn {
     border-color: #6DA1FF;
     background-color: #6DA1FF;
+    width: 75px;
 }
 #btn:hover {
     color: #ffffff;

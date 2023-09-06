@@ -1,11 +1,11 @@
 let postNo = $("#postNo").val();
-// 페이지 로딩 시 처음에 댓글을 렌더링하기 위한 코드
-$(document).ready(function() {
-    fetchAndRenderLatestTwoComments();
+
+// 최초 상세화면 이동시 댓글 2개 불러옴
+$(function() {
+	fetchAndRenderLatestTwoComments();
 });
 
-// 댓글 더보기 버튼 최초에는 최신 댓글 2개, 버튼 클릭시 전체 댓글 
-// 한 번 더 클릭하면 다시 최신 댓글 2개를 표시
+// 댓글 더보기 버튼 클릭시 전체 댓글 렌더링, 한 번 더 클릭하면 다시 최신 댓글 2개를 표시
 $(".more-button").click(function() {
     let commentContainer = $("#comment-container");
     if (commentContainer.hasClass("two-show")) { 
@@ -19,7 +19,7 @@ $(".more-button").click(function() {
 	}
 });
 
-// 댓글쓰기 버튼을 누르면 댓글 등록 폼으로 스크롤 이동
+// 댓글쓰기 버튼을 누르면 댓글 등록 폼위치로 스크롤 이동
 $("#write-comment-btn").click(function(e) {
 	e.preventDefault();
     $('html, body').animate({
@@ -31,59 +31,59 @@ $("#write-comment-btn").click(function(e) {
 function fetchAndRenderLatestTwoComments() {
     $.ajax({
         url: "/letsparty/post/" + postNo + "/latest-two-comments",  // 최신 댓글 2개를 가져올 서버의 주소
-        method: 'POST',
-        dataType: 'json',
-        success: function(response) {
-            if (response.status === "success") {
-                renderComments(response.latestTwoComments);
-            } else {
-                alert('댓글을 가져오는 데 실패했습니다.');
-            }
-        }
-    });
+        method: "post",
+        })
+    .done(function(response) {
+        renderComments(response);
+    })
+    .fail(function(){
+		 alert("댓글을 가져오는 데 오류가 발생했습니다.");
+	});
 }
+		
 
 // 댓글 전체를 불러오는 ajax 요청
 function fetchAndRenderComments() {
-    return $.ajax({
-        url: "/letsparty/post/" + postNo + "/all-comments",  // 댓글 데이터를 가져올 서버의 주소
-        method: 'POST',
-        dataType: 'json',
-        success: function(response) {
-            if (response.status === "success") {
-                renderComments(response.allComments);
-            } else {
-                alert('댓글을 가져오는 데 실패했습니다.');
-            }
-        }
-    });
+	$.ajax({
+	    url: "/letsparty/post/" + postNo + "/all-comments",  // 댓글 데이터를 가져올 서버의 주소
+	    method: "post"
+	})
+    .done(function(response) {
+        renderComments(response);
+    })
+    .fail(function(){
+		 alert("댓글을 가져오는 데 오류가 발생했습니다.");
+	});
 }
 
 // 게시물에 달린 댓글 수를 렌더링 하는 함수
 function renderCommentCnt(savedPost) {
     $("#comment-count").text(savedPost.commentCnt);
-    console.log(savedPost.commentCnt);
 }
 
 // 댓글을 렌더링하는 함수
-function renderComments(allComments) {
+function renderComments(comments) {
     // 댓글이 성공적으로 등록된 경우 처리
-	// 날짜 변환해서 추가 - 타임리프의 시간 변환 객체 여기서 사용불가
+	// 날짜 변환 함수
 	function formatDate(dateString) {
-	    const date = new Date(dateString);
-	    const year = date.getFullYear();
-	    const month = date.getMonth() + 1;
-	    const day = date.getDate();
-	    const hours = date.getHours();
-	    const minutes = date.getMinutes();
-	    const seconds = date.getSeconds();
-	    const paddedHours = String(hours).padStart(2, '0'); // 시간 앞에 0을 붙임
+	    let date = new Date(dateString);
+	    let year = date.getFullYear();
+	    let month = date.getMonth() + 1;
+	    let day = date.getDate();
+	    let hours = date.getHours();
+	    let minutes = date.getMinutes();
+	    let seconds = date.getSeconds();
 	    
-	    return `${year}년 ${month}월 ${day}일 ${paddedHours}:${minutes}:${seconds}`;
+	    // 시, 분, 초 한 자리 수 일 때 앞에 0을 붙임
+        hours = hours >= 10 ? hours : '0' + hours;
+        minutes = minutes >= 10 ? minutes : '0' + minutes;
+        seconds = seconds >= 10 ? seconds : '0' + seconds;
+	    
+	    return `${year}년 ${month}월 ${day}일 ${hours}:${minutes}:${seconds}`;
 	}
 	
 	$("#comment-container").empty(); 
-	allComments.forEach(function(comment) {
+	comments.forEach(function(comment) {
     	const formattedDate = formatDate(comment.createdAt);
         let dropdownHtml = `
             <div class="d-flex justify-content-end">
@@ -156,14 +156,14 @@ $("#content").keypress(function(event) {
     }
 });
 
-// 클릭 등록
+// 클릭 새 댓글 등록
 $("#btn").click(function() {
 	let partyNo = $("#partySelect").val();
 	let content = $("#content").val();
 	$(".comment-textarea").val("");
     $.ajax({
         url: "/letsparty/post/" + postNo + "/comment", 
-        method: "POST",
+        method: "post",
         data: {
             partyNo: partyNo,
             content: content
@@ -171,18 +171,16 @@ $("#btn").click(function() {
     })
     .done(function(response) {
 	    if (response.status === "success") {
-	        fetchAndRenderComments();  // 댓글을 등록한 뒤 신규 댓글 포함 전체 댓글을 불러와 렌더링
+			// 댓글을 등록한 뒤 신규 댓글 포함 전체 댓글을 불러와 렌더링
+	        fetchAndRenderComments();		
+	        // 총 댓글 수 렌더링
 	        renderCommentCnt(response.savedPost);
 	    } else if (response.status === "error") {
-	        alert(response.message);
+			// 댓글 유효성 검사 실패시 설정한 각 메시지 표시
+	        alert(response.message);		
 	    }
 	})
-    .fail(function(jqXHR) {
-	    let response = jqXHR.responseJSON;
-	    if (response && response.message) {
-	        alert(response.message);
-	    } else {
-	        alert("댓글 추가 중 오류가 발생했습니다.");
-	    }
+    .fail(function() {
+        alert("댓글 추가 중 오류가 발생했습니다.");
 	});
 });
