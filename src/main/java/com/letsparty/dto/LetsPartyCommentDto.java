@@ -27,19 +27,4 @@ public class LetsPartyCommentDto {
 	private LocalDateTime createdAt;
 	private boolean isAuthor;
 
-	public LetsPartyCommentDto() {}
-	
-	@Builder
-	public LetsPartyCommentDto(LetsPartyPost post, Party party, User user, UserProfile profile, String content, LocalDateTime updatedAt,
-			LocalDateTime createdAt) {
-		super();
-		this.post = post;
-		this.party = party;
-		this.user = user;
-		this.profile= profile;
-		this.content = content;
-		this.updatedAt = updatedAt;
-		this.createdAt = createdAt;
-	}
-
 }

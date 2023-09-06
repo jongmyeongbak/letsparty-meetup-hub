@@ -31,24 +31,4 @@ public class LetsPartyPostDto {
 	private LocalDateTime updatedAt;
 	private LocalDateTime createdAt;
 	
-	public LetsPartyPostDto() {}
-
-	@Builder
-	public LetsPartyPostDto(Category category, Party party, User user, UserProfile profile, String title,
-			String content, int readCnt, int commentCnt, int likeCnt, boolean isDeleted, LocalDateTime updatedAt,
-			LocalDateTime createdAt) {
-		super();
-		this.category = category;
-		this.party = party;
-		this.user = user;
-		this.profile = profile;
-		this.title = title;
-		this.content = content;
-		this.readCnt = readCnt;
-		this.commentCnt = commentCnt;
-		this.likeCnt = likeCnt;
-		this.isDeleted = isDeleted;
-		this.updatedAt = updatedAt;
-		this.createdAt = createdAt;
-	}
 }
