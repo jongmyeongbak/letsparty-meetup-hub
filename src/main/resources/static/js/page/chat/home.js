@@ -272,23 +272,29 @@ $(function () {
   }
 
   function getDateString(date) {
-    const days = ["일", "월", "화", "수", "목", "금", "토"];
-    const dayOfWeek = days[date.getDay()];
-
-    const dateOptions = { year: "numeric", month: "long", day: "numeric" };
-    return `${date.toLocaleDateString(
-      userLocale,
-      dateOptions
-    )} ${dayOfWeek}요일`;
+    const dateOptions = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      weekday: "long",
+    };
+    return date.toLocaleDateString(undefined, dateOptions);
   }
 
   function getTimeString(date) {
-    const hours = date.getHours();
-    const minutes = String(date.getMinutes()).padStart(2, "0");
+    if (userLocale === "ko-KR") {
+      const hours = date.getHours();
+      const minutes = String(date.getMinutes()).padStart(2, "0");
 
-    const displayHours = ((hours + 11) % 12) + 1;
+      const displayHours = ((hours + 11) % 12) + 1;
 
-    return `${hours < 12 ? "오전 " : "오후 "}${displayHours}:${minutes}`;
+      return `${hours < 12 ? "오전 " : "오후 "}${displayHours}:${minutes}`;
+    } else {
+      return date.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    }
   }
 
   let isNotComposing = true;

@@ -45,7 +45,7 @@ public class WsChatService {
 				.text(text)
 				.build();
 		
-		messagingTemplate.convertAndSend(String.format("/topic/chat/%s", roomId), message);
 		chatMessageMapper.insertChatMessage(message);
+		messagingTemplate.convertAndSend(String.format("/topic/chat/%s", roomId), message);
 	}
 }
