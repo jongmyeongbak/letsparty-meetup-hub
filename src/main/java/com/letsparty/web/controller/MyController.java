@@ -43,10 +43,25 @@ public class MyController {
 		model.addAttribute("userInfo", user);
 		return "/page/main/mypage";
 	}
+	@GetMapping("/profile")
+	public String myProfile(@AuthenticationPrincipal LoginUser loginUser, Model model) {
+		List<UserProfile> profileList = myService.getAllProfileByUserId(loginUser.getId());
+		model.addAttribute("profiles", profileList);
+		return "/page/main/my-profile";
+	}
 	
+	@PostMapping("/change-my-profile")
+	public String changeMyProfile(@AuthenticationPrincipal LoginUser loginUser, UserProfileForm userProfileForm) {
+		userProfileForm.setId(loginUser.getId());
+		myService.changeProfile(userProfileForm);
+		
+		return "redirect:/my/profile";
+	}
+	
+	@PreAuthorize("isAnonymous()")
 	@PostMapping("/profile")
 	public String changeProfile(UserProfileForm userProfileForm) {
-		
+		System.out.println("폼제출");
 		log.info("form ->{}, {}, {}, {}, {}",userProfileForm.getNo(), userProfileForm.getId(), userProfileForm.getNickname(), userProfileForm.getFilename(), userProfileForm.getIsDefault());
 		myService.changeProfile(userProfileForm);
 		

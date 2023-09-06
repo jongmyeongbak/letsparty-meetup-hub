@@ -40,17 +40,18 @@
 	</select>
 	
 	<select id="getProfileByUserId" parameterType="string" resultType="com.letsparty.vo.UserProfile">
-		select 
+		SELECT 
 			profile_no as no,
 			user_id as id,
 			profile_nickname nickname, 
 			image_filename as filename,
 			is_default,
 			is_url
-		from
+		FROM
 			user_profile
-		where 
+		WHERE 
 			user_id = #{value}
+		ORDER BY is_default DESC
 	</select>
 	
 	<update id="updateProfile" parameterType="com.letsparty.vo.UserProfile">
@@ -58,7 +59,8 @@
 		set
 			profile_nickname = #{nickname},
 			image_filename = #{filename},
-			is_url = #{isUrl}
+			is_url = #{isUrl},
+			is_default = #{isDefault}
 		where
 			profile_no = #{no}
 	</update>

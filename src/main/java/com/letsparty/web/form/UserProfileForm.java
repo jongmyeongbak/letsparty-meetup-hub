@@ -3,9 +3,11 @@ package com.letsparty.web.form;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class UserProfileForm {
 
 	private int no;

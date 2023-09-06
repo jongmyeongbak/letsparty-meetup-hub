@@ -53,8 +53,6 @@ public class SignupController {
 		
 		boolean checkDuplicate = false;
 		
-		log.info("signupForm 정보 -> {}", signupForm.toString());
-		
 		checkDuplicate = validationService.checkstep1(signupForm, errors);
 		
 		if (checkDuplicate) {
@@ -69,8 +67,6 @@ public class SignupController {
 	public String signup2(@ModelAttribute("signupForm") SignupForm signupForm, BindingResult errors, SessionStatus sessionStatus, RedirectAttributes redirectAttributes) {
 		
 		boolean checkDuplicate = false;
-		
-		log.info("signupForm 정보 -> {}", signupForm.toString());
 		
 		checkDuplicate = validationService.checkstep2(signupForm, errors);
 	

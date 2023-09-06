@@ -1,0 +1,135 @@
+@charset "UTF-8";
+h5 {
+    width: 130px;
+}
+ul .list-group-item {
+    padding: 0;
+}
+.profile-container {
+    display: flex;
+    padding: 10px 25px;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 5%;
+}
+.profile-item {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+.pf-nickname {
+    margin-top: 15px;
+}
+.default {
+    font-size: 14px;
+    font-weight: 600;
+    color: blue;
+}
+.pf-image {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 5px;
+    text-align: center;
+    margin: 0 auto;
+}
+.pf-image img {
+    border-radius: 35px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.profile-item .name {
+    text-align: center;
+    height: 45px;
+}
+.profile-setting {
+    text-align: center;
+}
+.profile-setting .btn-setting {
+    border: 1px solid black;
+    height: 25px;
+    line-height: 1em;
+}
+.profile-setting .btn-setting:hover {
+    margin-top: 0;
+    border: 1px solid black;
+    background-color: #e1e1e1;
+    transition: 0.3s;
+}
+.modal-body .text-center {
+    margin-top: 1em;
+    margin-bottom: 0;
+}
+
+.party-container {
+    width: 500px;
+}
+.party-container ul {
+    padding: 0;
+}
+.party-item {
+    display: flex;
+    margin-top: 10px;
+    width: 550px;
+    border-bottom: 1px solid rgb(236, 236, 236);
+    padding-bottom: 10px;
+}
+.party-cover {
+    width: 50px;
+    height: 50px;
+    margin-right: 30px;
+}
+.party-cover img{
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+}
+.party-name {
+    line-height: 3.5em;
+}
+.pf-setting {
+    margin-top: 15px;
+    position: absolute;
+    right: 15px;
+}
+.party-item .button {
+    cursor: pointer;
+    border-radius: 10px;
+    font-weight: 600;
+    width: 50px;
+    height: 25px;
+    text-align: center;
+    line-height: 1.6em;
+    border: 1px solid #333;
+    background-color: #d6f0ff;
+    margin-right: 15px;
+}
+.party-item .button:hover {
+    transition: .3s;
+    background-color: #bce6ff;
+}
+.modal-body .pf-img{
+    margin: auto;
+    width: 150px;
+    height: 150px;
+}
+.change-img {
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    border-radius: 75px;
+    object-fit: cover;
+}
+.pf-change input {
+    display: block;
+    margin: auto;
+    /* margin-top: 5px; */
+    background-color: rgb(239, 239, 239);
+    border: 1px solid rgb(187, 187, 187);
+    border-radius: 0;
+}
+.list-group-item button {
+    float: right;
+    margin: 15px 10px;
+}
