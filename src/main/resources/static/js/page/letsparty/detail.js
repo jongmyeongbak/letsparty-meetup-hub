@@ -9,7 +9,7 @@ $(function() {
 $(".more-button").click(function() {
     let commentContainer = $("#comment-container");
     if (commentContainer.hasClass("two-show")) { 
-		commentContainer.removeClass("two-show d-none").addClass("all-show");
+		commentContainer.removeClass("two-show").addClass("all-show");
 	 	fetchAndRenderComments();
 		$(this).toggleClass("bi-chevron-down bi-chevron-up");
 	} else if(commentContainer.hasClass("all-show")) {
