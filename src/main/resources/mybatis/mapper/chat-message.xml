@@ -18,4 +18,14 @@
 			message_no > #{lastReadMessageNo}
 	</update>
 	
+	<update id="decreaseUnreadCntByRoomIdAndLastReadMessageNo">
+		UPDATE chat_message cm
+		JOIN
+			chat_room cr ON cm.room_no = cr.room_no AND cr.room_id = #{roomId}
+		SET
+			cm.unread_cnt = cm.unread_cnt - 1
+		WHERE
+			cm.message_no > #{lastReadMessageNo}
+	</update>
+	
 </mapper>
