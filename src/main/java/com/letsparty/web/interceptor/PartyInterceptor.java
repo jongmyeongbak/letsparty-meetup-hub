@@ -67,7 +67,7 @@ public class PartyInterceptor implements HandlerInterceptor {
 			
 			UserPartyApplication upa =  userPartyApplicationService.findByPartyNoAndUserId(partyNo, user.getId());
 			if (upa != null && upa.getStatus().equals("승인")) {
-				// 내가 가입한 파티의 채팅방 목록 불러오기(내가 참여중인 방만)
+				// 내가 가입한 파티의 채팅방 목록 불러오기(공개 및 내가 참여중인 비공개방)
 				List<ChatRoomWithUsers> chatRooms = chatService.getChatRoomByPartyNoAndUserId(partyNo, user.getNo());
 				for (ChatRoomWithUsers chatroom : chatRooms) {
 					// StringJoiner를 사용해서 여러 사용자의 이름을 ", "로 이어서 저장함

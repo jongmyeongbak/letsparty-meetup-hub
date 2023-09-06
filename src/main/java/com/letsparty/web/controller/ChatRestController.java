@@ -30,8 +30,8 @@ public class ChatRestController {
 		return ResponseEntity.ok(chatUsers);
 	}
 	
-	@GetMapping("/members/{RoomId}/{userNo}")
-	public ResponseEntity<ChatUserResponse> getUserInRoom(@PathVariable final String roomId, @PathVariable final int userNo) {
+	@GetMapping("/members/{roomId}/{userNo}")
+	public ResponseEntity<ChatUserResponse> findUserInPartyByRoomIdAndUserNo(@PathVariable final String roomId, @PathVariable final int userNo) {
 		ChatUserResponse chatUser = chatService.getUserByRoomIdAndUserNo(roomId, userNo);
 		return ResponseEntity.ok(chatUser);
 	}

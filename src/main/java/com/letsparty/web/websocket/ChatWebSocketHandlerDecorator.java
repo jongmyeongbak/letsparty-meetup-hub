@@ -25,7 +25,6 @@ public class ChatWebSocketHandlerDecorator extends WebSocketHandlerDecorator {
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
 		sessionStore.removeSession(session.getId());
-		// TODO 강제 close 시 메서드 및 stomp disconnect가 정상 수행되는지 확인
 		super.afterConnectionClosed(session, closeStatus);
 	}
 }

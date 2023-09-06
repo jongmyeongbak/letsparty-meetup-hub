@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.letsparty.dto.ChatUserResponse;
 import com.letsparty.security.user.LoginUser;
 import com.letsparty.service.ChatService;
 
@@ -36,6 +37,7 @@ public class ChatController {
 		if (!chatService.joinRoomIfPossible(loginUser.getId(), loginUser.getNo(), roomId)) {
 			return "redirect:/";
 		}
+		model.addAttribute("chatRoom", chatService.getChatRoom(roomId));
 		session.setAttribute("roomId", roomId);
 		model.addAttribute("myNo", loginUser.getNo());
 		return "page/chat/home";

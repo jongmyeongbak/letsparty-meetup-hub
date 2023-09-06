@@ -44,7 +44,8 @@ public class WsChatService {
 				.unreadCnt((long) chatRoom.getChattersCnt() - sessionInfoMapper.getUserCntInRoom(roomId))
 				.text(text)
 				.build();
-		// TODO DB에 채팅메시지 삽입하기
+		
 		messagingTemplate.convertAndSend(String.format("/topic/chat/%s", roomId), message);
+		chatMessageMapper.insertChatMessage(message);
 	}
 }
