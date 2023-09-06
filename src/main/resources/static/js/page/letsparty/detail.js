@@ -31,7 +31,7 @@ $("#write-comment-btn").click(function(e) {
 function fetchAndRenderLatestTwoComments() {
     $.ajax({
         url: "/letsparty/post/" + postNo + "/latest-two-comments",  // 최신 댓글 2개를 가져올 서버의 주소
-        method: "post",
+        method: "get"
         })
     .done(function(response) {
         renderComments(response);
@@ -46,7 +46,7 @@ function fetchAndRenderLatestTwoComments() {
 function fetchAndRenderComments() {
 	$.ajax({
 	    url: "/letsparty/post/" + postNo + "/all-comments",  // 댓글 데이터를 가져올 서버의 주소
-	    method: "post"
+	    method: "get"
 	})
     .done(function(response) {
         renderComments(response);
@@ -145,7 +145,7 @@ function renderComments(comments) {
             </div>
         `;
         $("#comment-container").append(commentHtml);
-        });
+	});
 }
 
 // 엔터키로도 등록

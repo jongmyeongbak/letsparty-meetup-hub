@@ -179,9 +179,9 @@ public class LetsPartyController {
 	}
 	
 	// 최근 댓글 2개 가져오기
-	@PostMapping("/post/{postNo}/latest-two-comments")
+	@GetMapping("/post/{postNo}/latest-two-comments")
 	@ResponseBody
-	public ResponseEntity<List<LetsPartyCommentDto>> getLatestTwoComments(@PathVariable long postNo, @AuthenticationPrincipal LoginUser loginUser) {
+	public List<LetsPartyCommentDto> getLatestTwoComments(@PathVariable long postNo, @AuthenticationPrincipal LoginUser loginUser) {
 		List<LetsPartyCommentDto> latestTwoComments;
 		
 		latestTwoComments = letsPartyCommentService.getLatestTwoCommentsByPostNo(postNo); 
@@ -194,13 +194,13 @@ public class LetsPartyController {
 		// 최근 2개 댓글 중 더 최근 댓글이 아래로 가도록 바꿈 
 		Collections.reverse(latestTwoComments); 
 		
-		return ResponseEntity.ok(latestTwoComments);
+		return latestTwoComments;
 	}
 		
 	// 모든 댓글 가져오기
-	@PostMapping("/post/{postNo}/all-comments")
+	@GetMapping("/post/{postNo}/all-comments")
 	@ResponseBody
-	public ResponseEntity<List<LetsPartyCommentDto>> getAllComments(@PathVariable long postNo, @AuthenticationPrincipal LoginUser loginUser) {
+	public List<LetsPartyCommentDto> getAllComments(@PathVariable long postNo, @AuthenticationPrincipal LoginUser loginUser) {
 	    List<LetsPartyCommentDto> allComments;
 	    
         allComments = letsPartyCommentService.getAllCommentsByPostNo(postNo);
@@ -211,7 +211,7 @@ public class LetsPartyController {
 	        }
 	    }
 
-	    return ResponseEntity.ok(allComments);
+	    return allComments;
 	}
 	
 	private void addUserPartyApplicationsToModel(LoginUser loginUser, Model model) {
