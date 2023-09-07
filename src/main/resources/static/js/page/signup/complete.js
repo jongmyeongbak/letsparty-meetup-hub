@@ -139,6 +139,12 @@ $approve.on("click", function(){
 				name: "filename",
 				value: savedName
 			}).appendTo($profileForm);
+
+			$("<input>").attr({
+				type: "hidden",
+				name: "isUrl",
+				value: false
+			}).appendTo($profileForm);
 			
 			// 기본 프로필 이미지가 저장된 필드 삭제
 			input.remove();

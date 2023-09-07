@@ -58,6 +58,14 @@ public class MyController {
 		return "redirect:/my/profile";
 	}
 	
+	@PostMapping("/add-my-profile")
+	public String addMyprofile(@AuthenticationPrincipal LoginUser loginUser, UserProfileForm userProfileForm) {
+		userProfileForm.setId(loginUser.getId());
+		myService.addProfileWithLogin(userProfileForm);
+		
+		return "redirect:/my/profile";
+	}
+	
 	@PreAuthorize("isAnonymous()")
 	@PostMapping("/profile")
 	public String changeProfile(UserProfileForm userProfileForm) {

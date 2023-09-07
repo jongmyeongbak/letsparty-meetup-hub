@@ -19,16 +19,23 @@ avatar.addEventListener("click", function(e) {
 
 staticBackdropLabel.addEventListener('show.bs.modal', event => {
 	profileNo = event.relatedTarget.getAttribute('data')
-	let count = $(event.relatedTarget).parent().prev().children().length;
-	let nick = $("#pf-nickname" + profileNo).text();
-	$("#nick").val(nick);
-	img = $("#pf-show" + profileNo).attr("src");
-	if (count == 2) {
-		$("#default").prop('checked', true);
+	if (profileNo == 0){
+		avatar.src = "/images/party/profile-default.png";
+		$("#approve").text("추가");
+		$("#pf-change").attr("action", "/my/add-my-profile");
 	} else {
-		$("#default").prop('checked', false);
+		$("#pf-change").attr("action", "/my/change-my-profile");
+		let count = $(event.relatedTarget).parent().prev().children().length;
+		let nick = $("#pf-nickname" + profileNo).text();
+		$("#nick").val(nick);
+		img = $("#pf-show" + profileNo).attr("src");
+		if (count == 2) {
+			$("#default").prop('checked', true);
+		} else {
+			$("#default").prop('checked', false);
+		}
+		avatar.src = img;
 	}
-	avatar.src = img;
 })
 
 // b64데이터를 Blob객체로 변환하는 함수
@@ -127,13 +134,13 @@ document.getElementById('crop').addEventListener('click', function() {
 $approve.on("click", function() {
 	console.log(profileNo)
 	let src = avatar.src;
+	$("#profile-no").val(profileNo);
 	// 사진이 변경된 경우
 	if (isChanged) {
 		console.log(isChanged);
 		// 미리보기 이미지의 src를 b64데이터에서 Blob객체로 변환
 		let blob = b64toBlob(src, 'image/png');
 		$("#pf-nick" + profileNo).val(nick);
-		$("#profile-no").val(profileNo);
 		// Blob객체를 image.png 파일로 변환
 		let file = new File([blob], "image", { type: "image/png" });
 		// 새로운 폼객체 생성후 이미지 파일 첨부
@@ -168,11 +175,9 @@ $approve.on("click", function() {
 	} else {
 		console.log(isChanged);
 		// input의 타입을 file에서 text로 변환해서 파일명을 그대로 저장한다.
-		$("#pf-img" + profileNo).prop("type", "text");
 		document.querySelector("#input").type = "text";
 		$("#input").val(" ");
 		$("#pf-nick" + profileNo).val(nick);
-		$("#profile-no").val(profileNo);
 		$pfChange.submit();
 	}
 })

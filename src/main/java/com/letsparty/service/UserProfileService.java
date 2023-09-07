@@ -29,7 +29,32 @@ public class UserProfileService {
 		
 		return userProfile.getNo();
 	}
-
+	
+	public void addProfileWithLogin(UserProfileForm userProfileForm) {
+		UserProfile userProfile = new UserProfile();
+		BeanUtils.copyProperties(userProfileForm, userProfile);
+		if (userProfile.getFilename().isBlank()) {
+			userProfile.setFilename("/images/party/profile-default.png");
+			userProfile.setIsUrl(true);
+		}
+		if (null == userProfile.getNickname()) {
+			userProfile.setNickname("이름없음");
+		}
+		if (null == userProfile.getIsDefault()) {
+			userProfile.setIsDefault(false);
+		} else if (userProfile.getIsDefault()) {
+			// 기본으로 설정했다면 해당 아이디로 모두 불러와서 해당 프로필을 제외한 모든 프로필의 default값을 false로 변경
+			List<UserProfile> profileList = userProfileMapper.getProfileByUserId(userProfile.getId());
+			for (UserProfile profile : profileList) {
+				if (profile.getNo() != userProfile.getNo()) {
+					profile.setIsDefault(false);
+					userProfileMapper.updateProfile(profile);
+				}
+			}
+		}
+		userProfileMapper.addProfile(userProfile);
+	}
+	
 	public void changeProfile(UserProfileForm userProfileForm) {
 
 		UserProfile userProfile = new UserProfile();
@@ -85,5 +110,5 @@ public class UserProfileService {
 	public UserProfile getProfileByNo(int profileNo) {
 		return userProfileMapper.getProfileByNo(profileNo);
 	}
-	
+
 }

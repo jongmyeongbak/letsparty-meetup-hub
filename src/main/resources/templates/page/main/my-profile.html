@@ -34,6 +34,17 @@
 									<div class="btn btn-setting" data-bs-toggle="modal" data-bs-target="#staticBackdrop" th:data="${profile.no}">수정</div>
 								</div>
 							</div>
+							<div class="profile-item">
+								<div class="pf-image">
+									<img src="/images/party/add-profile.png" alt="">
+								</div>
+								<div class="name">
+									<div class="default"></div>
+								</div>
+								<div class="profile-setting">
+									<div class="btn btn-setting" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data="0">프로필 추가</div>
+								</div>
+							</div>
 						</div>
 					</li>
 					<li class="list-group-item">
@@ -61,7 +72,7 @@
 							<img class="change-img" id="avatar" src="" alt="">
 						</div>
 						<label class="label" data-toggle="tooltip" title="Change your avatar">
-							<input type="file" class="sr-only" id="input" name="filename" value="a" accept="image/*">
+							<input type="file" class="sr-only" id="input" name="filename" value="" accept="image/*">
 						</label> 
 						<input id="profile-no" type="hidden" name="no" value="">
 						<input id="nick" type="text" name="nickname" value=""> 

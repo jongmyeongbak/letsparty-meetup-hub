@@ -17,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@PreAuthorize("isAuthenticated()")
 public class FileRestController {
 
 	private final FileService fileService;

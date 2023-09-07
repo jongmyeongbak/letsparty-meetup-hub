@@ -10,7 +10,7 @@ import lombok.ToString;
 @ToString
 public class UserProfileForm {
 
-	private int no;
+	private Integer no;
 	private String id;
 	private String nickname;
 	private String filename;
