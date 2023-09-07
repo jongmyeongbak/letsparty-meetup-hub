@@ -67,7 +67,7 @@ function getParties(pageNo) {
 			response.forEach(item => {
 				htmlContent += `
 						<div class="party-item">
-							<a href="/party/board/home.jsp?no=${item.no}">        
+							<a href="/party/${item.no}">        
 				            	<div class="img">
 				                	<img src="${item.filename}" alt="">
 				            	</div>
