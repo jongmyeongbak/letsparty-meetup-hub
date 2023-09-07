@@ -6,6 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -80,5 +81,13 @@ public class MyController {
 	@ResponseBody
 	public UserProfile getProfile(@PathVariable("profileNo") int profileNo) {
 		return myService.getProfileByNo(profileNo);
+	}
+	
+	@PostMapping("/delete/{profileNo}")
+	@ResponseBody
+	public String deleteProfile(@AuthenticationPrincipal LoginUser loginUser, @PathVariable("profileNo") int profileNo) {
+		System.out.println(profileNo);
+		myService.deleteProfile(profileNo, loginUser.getId());
+		return "redirect:my/profile";
 	}
 }

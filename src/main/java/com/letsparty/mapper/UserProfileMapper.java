@@ -19,4 +19,6 @@ public interface UserProfileMapper {
 
 	List<UserProfile> getProfileByUserId(String id);
 
+	void deleteProfileByProfileNo(int profileNo);
+
 }

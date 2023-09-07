@@ -1,5 +1,6 @@
 let $save = $("#save");
 let $approve = $("#approve");
+let $delete = $("#delete");
 let avatar = document.getElementById('avatar');
 let image = document.getElementById('image');
 let input = document.getElementById('input');
@@ -13,7 +14,8 @@ let staticBackdropLabel = document.getElementById('staticBackdrop')
 let profileNo;
 let img;
 let $img = $("#change-img");
-avatar.addEventListener("click", function(e) {
+
+avatar.addEventListener("click", function() {
 	$("#input").click();
 })
 
@@ -23,6 +25,7 @@ staticBackdropLabel.addEventListener('show.bs.modal', event => {
 		avatar.src = "/images/party/profile-default.png";
 		$("#approve").text("추가");
 		$("#pf-change").attr("action", "/my/add-my-profile");
+		$("#delete").remove();
 	} else {
 		$("#pf-change").attr("action", "/my/change-my-profile");
 		let count = $(event.relatedTarget).parent().prev().children().length;
@@ -179,6 +182,35 @@ $approve.on("click", function() {
 		$("#input").val(" ");
 		$("#pf-nick" + profileNo).val(nick);
 		$pfChange.submit();
+	}
+})
+
+$delete.on("click", function(){
+	if(confirm("프로필을 삭제하시겠습니까?")){
+		if ($(":checkbox").prop("checked")){
+			console.log("기본값 설정이라 삭제 안됨")
+			alert("기본 프로필은 삭제할 수 없습니다.")
+		}
+		else {
+			console.log("삭제")
+			let formdata = new FormData();
+			formdata.append("text", profileNo);
+			
+			$.ajax({
+				url: "/my/delete/" + profileNo,
+				type: "POST",
+				data: formdata,
+				processData: false,
+				contentType: false
+			}).done(function(){
+				console.log("삭제완료");
+				location.reload();
+			}).fail(function(){
+				console.log("삭제실패");
+			})
+		}
+	}else{
+		console.log("취소")
 	}
 })
 

@@ -18,6 +18,8 @@
     width: 330px;
 }
 .loginBtnList .login img {
-    width: 330px;
-   	object-fit: contain;
+   	width: 300px;
+    height: 46px;
+    object-fit: cover;
+    border-radius: 5px;
 }

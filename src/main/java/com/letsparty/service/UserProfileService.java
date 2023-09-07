@@ -37,7 +37,7 @@ public class UserProfileService {
 			userProfile.setFilename("/images/party/profile-default.png");
 			userProfile.setIsUrl(true);
 		}
-		if (null == userProfile.getNickname()) {
+		if (userProfile.getNickname().isBlank()) {
 			userProfile.setNickname("이름없음");
 		}
 		if (null == userProfile.getIsDefault()) {
@@ -109,6 +109,14 @@ public class UserProfileService {
 
 	public UserProfile getProfileByNo(int profileNo) {
 		return userProfileMapper.getProfileByNo(profileNo);
+	}
+
+	public void deleteProfile(int profileNo, String id) {
+		System.out.println("프로필 삭제하기!!");
+		UserProfile savedProfile = userProfileMapper.getProfileByNo(profileNo);
+		if (savedProfile.getId().equals(id)) {
+			userProfileMapper.deleteProfileByProfileNo(profileNo);
+		}
 	}
 
 }

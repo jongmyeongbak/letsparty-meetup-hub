@@ -65,4 +65,9 @@
 			profile_no = #{no}
 	</update>
 	
+	<delete id="deleteProfileByProfileNo" parameterType="int">
+		DELETE FROM user_profile
+		WHERE profile_no = #{value};
+	</delete>
+	
 </mapper>
