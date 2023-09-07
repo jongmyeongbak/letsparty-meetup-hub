@@ -30,7 +30,6 @@ import com.letsparty.security.user.LoginUser;
 import com.letsparty.service.LetsPartyCommentService;
 import com.letsparty.service.LetsPartyService;
 import com.letsparty.service.UserPartyApplicationService;
-import com.letsparty.vo.LetsPartyPost;
 import com.letsparty.vo.UserPartyApplication;
 import com.letsparty.web.form.LetsPartyCommentForm;
 import com.letsparty.web.form.LetsPartyPostForm;
@@ -92,37 +91,38 @@ public class LetsPartyController {
 	    return "redirect:/letsparty";
 	}
 	
-	// 렛츠파티 게시글 수정 화면으로 이동
+	// 렛츠파티 게시물 수정 화면으로 이동
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/post/{postNo}/modify")
 	public String modify (@PathVariable long postNo, @AuthenticationPrincipal LoginUser loginUser, Model model) {
 		LetsPartyPostDto savedLetsPartyPost = letsPartyService.getPostDetail(postNo);
-		
 		// 수정을 시도한 유저가 파티의 리더가 아니라면 설정화면으로 리다이렉트
-		if (!userPartyApplicationService.isLeader(loginUser)) {
+		if (!savedLetsPartyPost.getUser().getId().equals(loginUser.getId())) {
 	        return "redirect:/letsparty";
 	    }
-		// 저장된 게시물 폼에 저장
-		LetsPartyPostModifyForm letsPartyPostModifyForm = new LetsPartyPostModifyForm();
-		
-		letsPartyPostModifyForm.setTitle(savedLetsPartyPost.getTitle());
-		letsPartyPostModifyForm.setContent(savedLetsPartyPost.getContent());
-		letsPartyPostModifyForm.setPartyName(savedLetsPartyPost.getParty().getName());
-		
+		// 저장된 게시물, 폼에 저장
+		LetsPartyPostModifyForm letsPartyPostModifyForm = LetsPartyPostModifyForm.builder()
+														  .title(savedLetsPartyPost.getTitle())
+														  .content(savedLetsPartyPost.getContent())
+														  .partyName(savedLetsPartyPost.getParty().getName())
+														  .readCnt(savedLetsPartyPost.getReadCnt())
+														  .commentCnt(savedLetsPartyPost.getCommentCnt())
+														  .build();
 	    model.addAttribute("letsPartyPostModifyForm", letsPartyPostModifyForm);
-		
 		return "page/letsparty/modify";
 	}
 	
+	// 게시물 수정
 	@PostMapping("/post/{postNo}/modify")
 	public String modify(@PathVariable long postNo, @Valid LetsPartyPostModifyForm letsPartyPostModifyForm, BindingResult error, Model model) {
 		if (error.hasErrors()) {
 			LetsPartyPostDto savedLetsPartyPost = letsPartyService.getPostDetail(postNo);
 			letsPartyPostModifyForm.setPartyName(savedLetsPartyPost.getParty().getName());
-			log.info("실패로 돌아온 객체의 값 ====> {}",letsPartyPostModifyForm);
-			System.out.println(error.getAllErrors());
 			model.addAttribute("letsPartyPostModifyForm", letsPartyPostModifyForm);
 			return "page/letsparty/modify"; 
 		}
+		letsPartyPostModifyForm.setNo(postNo);
+		letsPartyService.updatePost(letsPartyPostModifyForm);
 		return "redirect:/letsparty/post/{postNo}";
 	}
 	

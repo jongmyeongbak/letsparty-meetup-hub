@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-
 import com.letsparty.dto.LetsPartyPostDto;
 import com.letsparty.exception.PostNotFoundException;
 import com.letsparty.info.Pagination;
@@ -15,6 +15,7 @@ import com.letsparty.vo.LetsPartyPost;
 import com.letsparty.vo.Party;
 import com.letsparty.vo.User;
 import com.letsparty.web.form.LetsPartyPostForm;
+import com.letsparty.web.form.LetsPartyPostModifyForm;
 import com.letsparty.web.model.LetsPartyPostList;
 
 import lombok.RequiredArgsConstructor;
@@ -80,7 +81,14 @@ public class LetsPartyService {
 	    savedPartyPost.setReadCnt(savedPartyPost.getReadCnt() + 1);
 	    letsPartyMapper.updatePost(savedPartyPost);
 	}
-
+	
+	// 렛츠파티 게시물 업데이트
+	public void updatePost(LetsPartyPostModifyForm letsPartyPostModifyForm) {
+		LetsPartyPostDto letsPartyPost = new LetsPartyPostDto();
+		BeanUtils.copyProperties(letsPartyPostModifyForm, letsPartyPost);
+		letsPartyMapper.updatePost(letsPartyPost);
+	}
+	
 	public List<LetsPartyPost> getPostsLimit5() {
 		return letsPartyMapper.getPostsLimit5();
 	}
