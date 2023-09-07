@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.letsparty.mapper.UserProfileMapper;
+import com.letsparty.vo.UserPartyApplication;
 import com.letsparty.vo.UserProfile;
+import com.letsparty.web.form.PartyProfileForm;
 import com.letsparty.web.form.UserProfileForm;
 
 import lombok.RequiredArgsConstructor;
@@ -69,8 +71,6 @@ public class UserProfileService {
 			userProfile.setFilename(savedUserProfile.getFilename());
 			if (null == userProfileForm.getIsUrl()) {
 				userProfile.setIsUrl(savedUserProfile.getIsUrl());
-				System.out.println(userProfile.toString());
-				System.out.println(savedUserProfile.toString());
 			}
 		}
 		
@@ -108,15 +108,17 @@ public class UserProfileService {
 	}
 
 	public UserProfile getProfileByNo(int profileNo) {
-		return userProfileMapper.getProfileByNo(profileNo);
+		UserProfile profile = userProfileMapper.getProfileByNo(profileNo); 
+		if (!profile.getIsUrl()) {
+			profile.setFilename(profilePath + profile.getFilename());
+		}
+		return profile;
 	}
 
 	public void deleteProfile(int profileNo, String id) {
-		System.out.println("프로필 삭제하기!!");
 		UserProfile savedProfile = userProfileMapper.getProfileByNo(profileNo);
 		if (savedProfile.getId().equals(id)) {
 			userProfileMapper.deleteProfileByProfileNo(profileNo);
 		}
 	}
-
 }

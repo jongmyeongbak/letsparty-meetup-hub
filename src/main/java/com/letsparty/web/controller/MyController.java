@@ -14,11 +14,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letsparty.security.user.LoginUser;
+import com.letsparty.service.PartyService;
+import com.letsparty.service.UserPartyApplicationService;
 import com.letsparty.service.UserProfileService;
 import com.letsparty.service.UserService;
 import com.letsparty.util.PhoneNumberFormatter;
+import com.letsparty.vo.Party;
 import com.letsparty.vo.User;
+import com.letsparty.vo.UserPartyApplication;
 import com.letsparty.vo.UserProfile;
+import com.letsparty.web.form.PartyProfileForm;
 import com.letsparty.web.form.UserProfileForm;
 
 import lombok.RequiredArgsConstructor;
@@ -33,6 +38,8 @@ public class MyController {
 
 	private final UserProfileService myService;
 	private final UserService userService;
+	private final PartyService partyService;
+	private final UserPartyApplicationService userPartyApplicationService;
 	
 	@GetMapping
 	public String myPage(@AuthenticationPrincipal LoginUser loginUser, Model model) {
@@ -47,7 +54,10 @@ public class MyController {
 	@GetMapping("/profile")
 	public String myProfile(@AuthenticationPrincipal LoginUser loginUser, Model model) {
 		List<UserProfile> profileList = myService.getAllProfileByUserId(loginUser.getId());
+		List<UserPartyApplication> myUpa = userPartyApplicationService.findAllByUserId(loginUser.getId());
+		
 		model.addAttribute("profiles", profileList);
+		model.addAttribute("myUpa", myUpa);
 		return "/page/main/my-profile";
 	}
 	
@@ -89,5 +99,12 @@ public class MyController {
 		System.out.println(profileNo);
 		myService.deleteProfile(profileNo, loginUser.getId());
 		return "redirect:my/profile";
+	}
+	
+	@PostMapping("/change/user-profile")
+	public String changePartyProfile(@AuthenticationPrincipal LoginUser loginUser, PartyProfileForm partyProfileForm) {
+		System.out.println(partyProfileForm.toString());
+		userPartyApplicationService.updatePartyProfile(partyProfileForm, loginUser.getId());
+		return "redirect:/my";
 	}
 }

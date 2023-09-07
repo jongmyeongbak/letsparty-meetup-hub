@@ -9,6 +9,7 @@ let $pfChange = $("#pf-change");
 let cropper;
 let $cancel = $("#cancel");
 let $profileForm = $("#profile-form")
+let $partyProfileChange = $("#party-profile-change")
 let isChanged = false;
 let staticBackdropLabel = document.getElementById('staticBackdrop')
 let profileNo;
@@ -215,5 +216,6 @@ $delete.on("click", function(){
 })
 
 $save.on("click", function() {
-	$profileForm.submit();
+	console.log("click");
+	$partyProfileChange.submit();
 })

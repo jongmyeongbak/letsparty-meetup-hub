@@ -23,6 +23,7 @@ public interface UserPartyApplicationMapper {
 	
 	int countPartyMemberByPartyNoAndStatus(@Param("partyNo")int partyNo, @Param("status")String status);
 
+	List<UserPartyApplication> findAllThatNotMemberByUserId(String userId);
 	List<UserPartyApplication> findAllByUserId(String userId);
 
 }

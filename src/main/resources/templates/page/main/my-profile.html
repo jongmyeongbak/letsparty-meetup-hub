@@ -48,6 +48,28 @@
 						</div>
 					</li>
 					<li class="list-group-item">
+						<div class="party-container">
+							<ul>
+								<form action="/my/change/user-profile" method="post" id="party-profile-change">
+									<li th:each="upa : ${myUpa}" class="party-item d-flex align-items-center">
+										<div class="party-info">
+											<div class="party-cover">
+												<img th:src="${upa.party.filename}" alt="">
+											</div>
+											<div class="party-name">
+												<a th:href="@{/party/{partyNo}(partyNo=${upa.party.no})}"><span th:text="${upa.party.name}">파티명1</span></a>
+												<input type="hidden" th:value="${upa.no}" name="upaNo[]">
+											</div>
+										</div>
+										<select class="form-select form-select-sm" name="profileNo[]">
+											<option th:each="profile : ${profiles}" th:value="${profile.no}" th:text="${profile.nickname}" th:selected="${upa.userProfile.no == profile.no} ? true : false">2번프로필</option>
+										</select>
+									</li>
+								</form>
+							</ul>
+						</div>
+					</li>
+					<li class="list-group-item">
 						<button class="btn btn-primary" id="save">저장</button>
 						<button class="btn btn-danger" id="cancel">취소</button>
 					</li>
@@ -55,7 +77,6 @@
 			</div>
 		</div>
 	</div>
-	<!--  -->
 </div>
 <!-- 모달 등 추가 div가 필요할 경우만 사용 -->
 <div layout:fragment="content-bottom">

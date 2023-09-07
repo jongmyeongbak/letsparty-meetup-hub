@@ -3,6 +3,7 @@ package com.letsparty.service;
 import java.util.Calendar;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.letsparty.mapper.PartyReqMapper;
@@ -15,6 +16,7 @@ import com.letsparty.vo.PartyReq;
 import com.letsparty.vo.User;
 import com.letsparty.vo.UserPartyApplication;
 import com.letsparty.vo.UserProfile;
+import com.letsparty.web.form.PartyProfileForm;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,6 +28,8 @@ public class UserPartyApplicationService {
 	private final UserProfileMapper userProfileMapper;
 	private final UserMapper userMapper;
 	private final PartyReqMapper partyReqMapper;
+	@Value("${s3.path.covers}")
+	private String coversPath;
 	
 	public void addLeaderUserPartyApplication(int partyNo, String leaderId) {
 		addUserPartyApplicationWithApproved(partyNo, leaderId, 6, userProfileMapper.getDefaultProfileById(leaderId));
@@ -77,13 +81,27 @@ public class UserPartyApplicationService {
 	}
 
 	public List<UserPartyApplication> findAllByUserId(String userId) {
-		return userPartyApplicationMapper.findAllByUserId(userId);
+		List<UserPartyApplication> upaList = userPartyApplicationMapper.findAllByUserId(userId);
+		for (UserPartyApplication upa : upaList) {
+			upa.getParty().setFilename(coversPath + upa.getParty().getFilename());
+		}
+		return upaList;
 	}
 	
 	public boolean isLeader(LoginUser loginUser) {
-		if (loginUser != null && !userPartyApplicationMapper.findAllByUserId(loginUser.getId()).isEmpty()) {
+		if (loginUser != null && !userPartyApplicationMapper.findAllThatNotMemberByUserId(loginUser.getId()).isEmpty()) {
 			return true;
 		}
 		return false;
+	}
+
+	public void updatePartyProfile(PartyProfileForm partyProfileForm, String id) {
+		for (int i = 0; i < partyProfileForm.getUpaNo().length; i++) {
+			UserPartyApplication savedUpa = userPartyApplicationMapper.findByNo(partyProfileForm.getUpaNo()[i]);
+			savedUpa.setUserProfile(UserProfile.builder().no(partyProfileForm.getProfileNo()[i]).build());
+			if (savedUpa.getUser().getId().equals(id)) {
+				userPartyApplicationMapper.update(savedUpa);
+			}
+		}
 	}
 }

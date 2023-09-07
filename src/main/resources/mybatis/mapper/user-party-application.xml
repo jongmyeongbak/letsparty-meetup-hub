@@ -86,7 +86,7 @@
 			up.profile_nickname as "userProfile.nickname",
 			up.image_filename as "userProfile.filename",
 			up.is_default as "userProfile.isDefault",
-			up.is_default as "userProfile.isUrl",
+			up.is_url as "userProfile.isUrl",
 			upa.user_id as "user.id",
 			u.user_no as "user.no"
 		FROM user_party_application upa
@@ -109,10 +109,10 @@
 		FROM user_party_application
 		WHERE party_no = #{partyNo}
 		AND application_status = #{status};
-  </select>
+  	</select>
     
 	<!-- 사용자가 리더인 파티들 조회 -->
-	<select id="findAllByUserId" parameterType="string" resultType="UserPartyApplication">
+	<select id="findAllThatNotMemberByUserId" parameterType="string" resultType="UserPartyApplication">
 		select 
 			upa.application_no	as no,
 			upa.party_no		as "party.no",
@@ -125,8 +125,26 @@
 			user_party_application upa
 		inner join party p on upa.party_no = p.party_no
 		where user_id = #{value}
-		and role_no in(6, 7)
+		and role_no != 8
 		and application_status = '승인';
+	</select>
+	
+	<select id="findAllByUserId" parameterType="string" resultType="UserPartyApplication">
+		SELECT 
+			upa.application_no	as no,
+			upa.party_no		as "party.no",
+			upa.user_id		 	as "user.id",
+			upa.role_no			as roleNo, 
+			p.party_name		as "party.name",
+			p.party_filename	as "party.filename",
+			up.profile_nickname	as "userProfile.nickname",
+			up.profile_no		as "userProfile.no"
+		FROM 
+			user_party_application upa
+		JOIN party p ON upa.party_no = p.party_no
+		JOIN user_profile up ON upa.profile_no = up.profile_no
+		WHERE upa.user_id = #{value}
+		AND application_status = '승인';
 	</select>
 
 	<update id="update" parameterType="UserPartyApplication">

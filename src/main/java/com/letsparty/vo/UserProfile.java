@@ -21,7 +21,8 @@ public class UserProfile {
 	}
 	
 	@Builder
-	public UserProfile(String id, String nickname, String filename, Boolean isDefault, Boolean isUrl) {
+	public UserProfile(int no, String id, String nickname, String filename, Boolean isDefault, Boolean isUrl) {
+		this.no = no;
 		this.id = id;
 		this.nickname = nickname;
 		this.filename = filename;

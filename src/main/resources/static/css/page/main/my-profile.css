@@ -62,16 +62,25 @@ ul .list-group-item {
 }
 
 .party-container {
-    width: 500px;
+    width: 90%;
+    margin: auto
 }
 .party-container ul {
-    padding: 0;
+    padding: 10px 50px;
 }
 .party-item {
     display: flex;
     margin-top: 10px;
+    margin-left: 60px;
     width: 550px;
+    height: 70px;
     border-bottom: 1px solid rgb(236, 236, 236);
+    padding-bottom: 10px;
+    justify-content: space-between;
+}
+.party-info {
+    display: flex;
+    margin-top: 10px;
     padding-bottom: 10px;
 }
 .party-cover {
@@ -88,26 +97,14 @@ ul .list-group-item {
 .party-name {
     line-height: 3.5em;
 }
-.pf-setting {
-    margin-top: 15px;
-    position: absolute;
-    right: 15px;
+.party-name span:hover{
+    color: rgb(58, 156, 255);
+    text-decoration: none;
 }
-.party-item .button {
-    cursor: pointer;
-    border-radius: 10px;
-    font-weight: 600;
-    width: 50px;
-    height: 25px;
-    text-align: center;
-    line-height: 1.6em;
-    border: 1px solid #333;
-    background-color: #d6f0ff;
-    margin-right: 15px;
-}
-.party-item .button:hover {
-    transition: .3s;
-    background-color: #bce6ff;
+.party-item .form-select {
+	width: 130px;
+	height: 40px;
+	vertical-align: middle;
 }
 .modal-body .pf-img{
     margin: auto;

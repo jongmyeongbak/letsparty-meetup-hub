@@ -280,7 +280,11 @@ public class PartyService {
 	}
 
 	public List<Party> getpartyByUserId(String id) {
-		return partyMapper.getPartyByUserId(id);
+		List<Party> parties = partyMapper.getPartyByUserId(id);
+		for (Party party : parties) {
+			party.setFilename(coversPath + party.getFilename());
+		}
+		return parties;
 	}
 
 	public List<Party> getPartiesLimit5() {
