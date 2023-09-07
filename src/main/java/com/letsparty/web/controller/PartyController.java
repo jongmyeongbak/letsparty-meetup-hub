@@ -214,6 +214,12 @@ public class PartyController {
 		return "page/party/setting";
 	}
 	
+	@GetMapping("/{partyNo}/withdraw/{upaNo}")
+	public String withdraw(@PathVariable("partyNo") int partyNo, @PathVariable("upaNo") int upaNo) {
+		userPartyApplicationService.withdraw(upaNo);
+		return "redirect:/party/{partyNo}";
+	}
+	
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/{partyNo}/attachment")
 	public String attachment(@PathVariable int partyNo){

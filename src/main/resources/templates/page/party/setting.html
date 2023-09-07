@@ -3,77 +3,72 @@
 	layout:decorate="~{layout/party-base}">
 <!-- 고유 CSS -->
 <head>
-	<link rel="stylesheet" th:href="@{/css/page/party/setting.css}" >
+<link rel="stylesheet" th:href="@{/css/page/party/setting.css}">
 </head>
 <!-- 고유 content -->
 <div layout:fragment="content-top" class="content">
 	<div class="party-setting">
-                <div class="col"><h5>파티 설정</h5></div>
-                <div class="col bg">
-                    <div class="user-setting">
-                        <div class="user-setting-item">
-                            <div class="my-profile">    
-                                <div class="pf-image">
-                                    <img th:src="${upa.userProfile.filename}" alt="">
-                                </div>
-                                <div class="name">
-                                    <span th:text="${upa.userProfile.nickname}">홍길동</span>
-                                </div>
-                            </div>
-                            <a href="">
-                                <div class="button btn-change">
-                                    변경
-                                </div>
-                            </a>
-                        </div>
-                        <div class="user-setting-item">
-                            <div class="withdraw">파티 탈퇴</div>
-                            <a href="">
-                                <div class="button btn-withdraw danger">
-                                    탈퇴
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <hr>
-                    <div th:if="${upa.roleNo != 8}" class="leader-setting">
-                        <div class="leader-setting-item">
-                            <div class="party-info-setting text">
-                                파티정보관리
-                            </div>
-                            <a href="">
-                                <div class="button party-info-btn">
-                                    관리
-                                </div>
-                            </a>
-                        </div>
-                        <div class="leader-setting-item">
-                            <div class="text">멤버탈퇴, 차단설정</div>
-                            <a href="">
-                                <div class="button party-member-btn">관리</div>
-                            </a>
-                        </div>
-                        <div class="leader-setting-item">
-                            <div class="text">공동리더</div>
-                            <a href="">
-                                <div class="button co-leader-btn">임명</div>
-                            </a>
-                        </div>
-                        <div class="leader-setting-item">
-                            <div class="text">리더위임</div>
-                            <a href="">
-                                <div class="button change-leader-btn">위임</div>
-                            </a>
-                        </div>
-                        <div class="leader-setting-item">
-                            <div class="text">파티 삭제</div>
-                            <a href="">
-                                <div class="button party-delete-btn danger">삭제</div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+		<div class="col">
+			<h5>파티 설정</h5>
+		</div>
+		<div class="col bg">
+			<div class="user-setting">
+				<div class="user-setting-item">
+					<div class="my-profile">
+						<div class="pf-image">
+							<img th:src="${upa.userProfile.filename}" alt="">
+						</div>
+						<div class="name">
+							<span th:text="${upa.userProfile.nickname}">홍길동</span>
+						</div>
+					</div>
+					<a href="/my/profile">
+						<div class="button btn-change">변경</div>
+					</a>
+				</div>
+				<div class="user-setting-item">
+					<div class="withdraw">파티 탈퇴</div>
+					<a	id="withdraw"
+						th:href="@{/party/{partyNo}/withdraw/{upaNo}/(partyNo = ${upa.party.no}, upaNo = ${upa.no})}">
+						<div class="button btn-withdraw danger">탈퇴</div>
+					</a>
+				</div>
+			</div>
+			<hr>
+			<div th:if="${upa.roleNo != 8}" class="leader-setting">
+				<div class="leader-setting-item">
+					<div class="party-info-setting text">파티정보관리</div>
+					<a href="">
+						<div class="button party-info-btn">관리</div>
+					</a>
+				</div>
+				<div class="leader-setting-item">
+					<div class="text">멤버탈퇴, 차단설정</div>
+					<a href="">
+						<div class="button party-member-btn">관리</div>
+					</a>
+				</div>
+				<div class="leader-setting-item">
+					<div class="text">공동리더</div>
+					<a href="">
+						<div class="button co-leader-btn">임명</div>
+					</a>
+				</div>
+				<div class="leader-setting-item">
+					<div class="text">리더위임</div>
+					<a href="">
+						<div class="button change-leader-btn">위임</div>
+					</a>
+				</div>
+				<div class="leader-setting-item">
+					<div class="text">파티 삭제</div>
+					<a href="">
+						<div class="button party-delete-btn danger">삭제</div>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 <!-- 모달 등 추가 div가 필요할 경우만 사용 -->
 <div layout:fragment="content-bottom">
@@ -82,5 +77,5 @@
 	</div>
 </div>
 <!-- 고유 script -->
-<script layout:fragment="script" th:src="@{/js/page/main/home.js}"></script>
+<script layout:fragment="script" th:src="@{/js/page/party/setting.js}"></script>
 </html>

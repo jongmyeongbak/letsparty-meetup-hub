@@ -25,5 +25,6 @@ public interface UserPartyApplicationMapper {
 
 	List<UserPartyApplication> findAllThatNotMemberByUserId(String userId);
 	List<UserPartyApplication> findAllByUserId(String userId);
+	void withdraw(int upaNo);
 
 }

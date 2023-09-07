@@ -158,7 +158,7 @@
 			application_no = #{no}
 	</update>
 	
-	<delete id="withdrawParty" parameterType="long">
+	<delete id="withdraw" parameterType="int">
 		DELETE FROM 
 			user_party_application
 		WHERE 
