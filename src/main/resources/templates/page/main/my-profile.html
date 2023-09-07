@@ -1,0 +1,135 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/common-base}">
+<!-- 고유 CSS -->
+<head>
+<link rel="stylesheet" th:href="@{/css/page/main/my-profile.css}">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css"
+	integrity="sha512-cyzxRvewl+FOKTtpBzYjW6x6IAYUCZy3sGP40hn+DQkqeluGRCax7qztK2ImL64SA+C7kVWdLI6wvdlStawhyw=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"
+	integrity="sha512-6lplKUSl86rUVprDIjiW8DuOniNX8UDoRATqZSds/7t6zCQZfaCe3e5zcGaQwxa8Kpn5RTM9Fvl3X2lLV4grPQ=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<!-- 고유 content -->
+<div layout:fragment="content-top" class="container">
+	<div class="row justify-content-md-center">
+		<div class="col-8">
+			<div class="card">
+				<h3 class="card-header">프로필 관리</h3>
+				<ul class="list-group list-group-flush">
+					<li class="list-group-item">
+						<div class="profile-container">
+							<div th:each="profile : ${profiles}" class="profile-item">
+								<div class="pf-image">
+									<img th:id="pf-show + ${profile.no}" th:src="${profile.filename}" alt="">
+								</div>
+								<div class="name">
+									<div th:text="${profile.nickname}" th:id="pf-nickname + ${profile.no}">홍길동</div>
+									<div th:if="${profile.isDefault}" class="default">기본프로필</div>
+								</div>
+								<div class="profile-setting">
+									<div class="btn btn-setting" data-bs-toggle="modal" data-bs-target="#staticBackdrop" th:data="${profile.no}">수정</div>
+								</div>
+							</div>
+							<div class="profile-item">
+								<div class="pf-image">
+									<img src="/images/party/add-profile.png" alt="">
+								</div>
+								<div class="name">
+									<div class="default"></div>
+								</div>
+								<div class="profile-setting">
+									<div class="btn btn-setting" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data="0">프로필 추가</div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li class="list-group-item">
+						<div class="party-container">
+							<ul>
+								<form action="/my/change/user-profile" method="post" id="party-profile-change">
+									<li th:each="upa : ${myUpa}" class="party-item d-flex align-items-center">
+										<div class="party-info">
+											<div class="party-cover">
+												<img th:src="${upa.party.filename}" alt="">
+											</div>
+											<div class="party-name">
+												<a th:href="@{/party/{partyNo}(partyNo=${upa.party.no})}"><span th:text="${upa.party.name}">파티명1</span></a>
+												<input type="hidden" th:value="${upa.no}" name="upaNo[]">
+											</div>
+										</div>
+										<select class="form-select form-select-sm" name="profileNo[]">
+											<option th:each="profile : ${profiles}" th:value="${profile.no}" th:text="${profile.nickname}" th:selected="${upa.userProfile.no == profile.no} ? true : false">2번프로필</option>
+										</select>
+									</li>
+								</form>
+							</ul>
+						</div>
+					</li>
+					<li class="list-group-item">
+						<button class="btn btn-primary" id="save">저장</button>
+						<button class="btn btn-danger" id="cancel">취소</button>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 모달 등 추가 div가 필요할 경우만 사용 -->
+<div layout:fragment="content-bottom">
+	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="staticBackdropLabel">프로필 변경</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form action="/my/change-my-profile" method="post" class="pf-change" id="pf-change">
+						<div class="pf-img">
+							<img class="change-img" id="avatar" src="" alt="">
+						</div>
+						<label class="label" data-toggle="tooltip" title="Change your avatar">
+							<input type="file" class="sr-only" id="input" name="filename" value="" accept="image/*">
+						</label> 
+						<input id="profile-no" type="hidden" name="no" value="">
+						<input id="nick" type="text" name="nickname" value=""> 
+						<input type="hidden" value="">
+						<p class="text-center">기본값으로 설정</p>
+						<input type="checkbox" name="isDefault" id="default"> 
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="delete">삭제</button>
+					<button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="approve">변경</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalLabel">Crop the image</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="img-container">
+						<img id="image" src="">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+					<button type="button" class="btn btn-primary" id="crop">Crop</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 고유 script -->
+<script layout:fragment="script" th:src="@{/js/page/main/my-profile.js}"></script>
+</html>

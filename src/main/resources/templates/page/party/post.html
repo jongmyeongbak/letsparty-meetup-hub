@@ -1,0 +1,230 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/party-home-base}">
+<head>
+	<link rel="stylesheet" th:href="@{/css/page/party/place.css}">
+	<link rel="stylesheet" th:href="@{/css/page/party/post-poll.css}">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+	<link rel="stylesheet" th:href="@{/css/page/party/post.css}" >
+	<script th:src="@{//dapi.kakao.com/v2/maps/sdk.js?appkey=220587205376aa7075ef6e81683508d3&libraries=services,clusterer,drawing}"></script>
+</head>
+<div layout:fragment="content-top" class="content">
+	<div class="row mb-3">
+		<div class="col-12">
+			<div class="card card-line">
+				<div class="card-header card-header-text" style="background-color: rgb(237, 246, 255);">
+					<h5 class="pt-1 post-header-text">파티에 게시물을 작성해보세요!</h5>
+				</div>
+				<form method="post" th:action="@{/party/{partyNo}/post(partyNo=${partyNo})}" id="party-post-form">
+					<div class="card-body">
+						<div class="form-group mb-3 col-12">
+							<label class="form-label">게시글 제목</label>
+							<input class="form-control form-control-lg" type="text" name="post.title" placeholder="게시글 제목을 입력해주세요."> 
+						</div>
+						<div class="mb-3 col-12">
+							<label class="form-label">게시글 내용</label>
+							<div class="row d-flex justify-content-center" id="text">						
+								<textarea class="form-control" style="width: 97%; border-color: rgb(211, 211, 211);" name="post.content"
+									cols="30" rows="10" placeholder="게시글 내용을 입력해주세요."></textarea>
+							</div>
+							<!-- 지도를 첨부했을 때 폼으로 보낼 때 쓰이는 input -->
+							<div>
+								<input id="imageInput" type="file" multiple accept="image/*">
+								<input id="videoInput" type="file" multiple accept="video/*">
+							</div>
+							<div class="media-container">
+								<div class="image-container"></div>
+								<div class="video-container"></div>
+							</div>
+							<div id = "place-input-div">
+							    <input type="hidden" id="place-id" name="place.id" value="" />
+							    <input type="hidden" id="place-name" name="place.placeName" value="" />
+							    <input type="hidden" id="place-address-name" name="place.addressName" value="" />
+							    <input type="hidden" id="place-road-address-name" name="place.roadAddressName" value="" />
+							</div>
+							<div class="background-color-gray my-3 d-none" id="place-short-form">
+								<div class="border d-flex align-items-center">
+									<div class="col-1 me-2 d-flex justify-content-center align-items-center">
+										<div class="">
+											<i class="fa-solid fa-map-location-dot fa-xl post-item-color"></i>
+										</div>
+									</div>
+									<div class="col-11">
+										<div class="my-1">
+											<h5 id="placeName" class=""><strong>중앙에이치티에이</strong></h5>
+											<h6 id="loadLocation" class="mb-0">서울특별시 종로구 봉익동 율곡로10길 디아망 쥬얼리</h6>
+											<div id="place-delete-btn" class="d-flex justify-content-end">
+	                                            <button class="btn d-flex pb-3 pe-3">
+	                                                <i class="fa-regular fa-circle-xmark fa-xl"></i>
+	                                            </button>
+                                           </div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div id="poll-input-div">
+										<input type="hidden" id="poll-title" name="poll.title" value="" /> 
+										<input type="hidden" id="poll-is-anonymous" name="poll.anonymous" value="" />
+										<input type="hidden" id="poll-is-duplicable" name="poll.duplicable" value="" />
+						  	</div>
+								<div class="my-3" id="poll-short-form">
+									<div class="background-color-gray border-bottom d-flex align-items-center poll-status">
+                 	 				
+                 					</div>
+								</div>
+							<div class="background-color-gray my-3" id="event">
+								<div class="border d-flex align-items-center">
+									<div class="col-1 me-1 ms-1 d-flex justify-content-center align-items-center">
+										<div class="">
+											<h1>07</h1>
+											<h6><strong class="post-item-text-color">월요일</strong></h6>
+										</div>
+									</div>
+									<div class="col-11">
+										<div class="">
+											<h5 class=""><strong>강서구 보드게임하러 가실 분?</strong></h5>
+											<p class="mb-0">2023년 8월 7일 오전 11 : 30</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="bottom-btns pe-4">
+						<ul class="d-flex justify-content-end gap-4 mb-0">
+							<li class="list-item">
+								<button class="image" id="openimage" type="button">
+									<i class="fa-regular fa-image fa-xl post-item-color"></i>
+								</button>
+							</li>
+							<li class="list-item">
+								<button class="v" id="openvideo" type="button">
+									<i class="fa-solid fa-video fa-xl post-item-color"></i>
+								</button>
+							</li>
+							<li class="list-item">
+                              <button class="file" id="openfile" type="button"  data-bs-toggle="modal" data-bs-target="#filemodal">
+                                 <i class="fa-regular fa-file fa-xl post-item-color"></i>
+                              </button>
+                           </li>
+                           <li class="list-item">
+                              <button class="calender" id="opencalender" type="button"  data-bs-toggle="modal" data-bs-target="#calendermodal">
+                                 <i class="fa-regular fa-calendar-days fa-xl post-item-color"></i>
+                              </button>
+                           </li>
+                           <li class="list-item">
+                              <button class="poll" id="openpoll" type="button"  data-bs-toggle="modal" data-bs-target="#poll-modal">
+                                 <i class="fa-solid fa-square-poll-horizontal fa-xl post-item-color"></i>
+                              </button>
+                           </li>
+							<li class="list-item">
+								<button class="place" type="button" data-bs-toggle="modal" data-bs-target="#place-modal" aria-labelledby="#place-modal">
+									<i id="open-place"class="fa-solid fa-map-location-dot fa-xl post-item-color"></i>
+								</button>
+							</li>
+						</ul>
+					</div>
+					<div class="card-footer background-color-gray">
+						<div class="d-flex justify-content-end">
+							<button id="add-post-btn" class="btn btn-primary" type="submit">게시</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div layout:fragment="content-bottom" class="container my-3">
+		<div class="modal fade" id="place-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="modalLabel">지도 첨부</h5>
+					</div>
+					<div class="modal-body">
+						<div class="map_wrap">
+							<div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+							<div id="menu_wrap" class="bg_white">
+								<div class="option">
+									<div>
+										<form onsubmit="return false;">
+											키워드 : <input type="text" value="중앙에이치티에이" id="keyword" size="10">
+											<button class="btn btn-primary" type="submit" onclick="searchPlaces();">검색하기</button>
+										</form>
+									</div>
+								</div>
+								<ul id="placesList"></ul>
+								<div id="pagination"></div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button id="" type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+						<button id="attachButton" type="submit" class="btn btn-primary">첨부</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		 <!-- 투표모달 -->
+			<div class="modal fade" id="poll-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="modalLabel">투표 첨부</h5>
+						</div>
+						<div class="bar"></div>
+						<div class="modal-body">
+							<div class="poll_wrap">
+								<div class="titleWrap">
+									<input type="text" id="pollTitle" maxlength="200" value=""
+										placeholder="투표 제목">
+								</div>
+								<div class="poll-list">
+									<ul class="poll-subject">
+										<li class="poll-item"><span class="item-number"></span> <input
+											type="text" class="inputItem" maxlength="200" value=""
+											name="poll_item" placeholder="항목 입력"></li>
+										<li class="poll-item"><span class="item-number"></span> <input
+											type="text" class="inputItem" maxlength="200" value=""
+											name="poll_item" placeholder="항목 입력"></li>
+										<li class="poll-item"><span class="item-number"></span> <input
+											type="text" class="inputItem" maxlength="200" value=""
+											name="poll_item" placeholder="항목 입력"></li>
+									</ul>
+								</div>
+								<button class="add-item">
+									<i class="fa-sharp fa-solid fa-plus"></i> 항목 추가
+								</button>
+								<div class="option-check">
+									<label for="poll-anonymous-option" class="uCheck -checkbox -fs13">
+										<input type="checkbox" id="anonymous-option" class="checkInput"
+											bm-bind="postPoll|isSubjectAddible"> 
+										<span class="checkLabel"> 
+											 <span class="shape"></span>
+											 <span class="text">익명 투표가능</span>
+										</span>
+									</label> 
+									<label for="poll-duplicable-option" class="uCheck -checkbox -fs13">
+										<input type="checkbox" id="duplicable-option" class="checkInput"
+											bm-bind="postPoll|isSubjectAddible"> 
+										<span class="checkLabel"> 
+											<span class="shape"></span> 
+											<span class="text">중복 투표가능</span>
+										</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="bar"></div>
+						<div class="modal-footer">
+							<button id="" type="button" class="btn btn-secondary"
+								data-bs-dismiss="modal">취소</button>
+							<button id="poll-attachment-button" type="submit" class="btn btn-primary">첨부</button>
+						</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script layout:fragment="script" th:src="@{/js/page/party/post.js}"></script>
+<script layout:fragment="place-script" th:src="@{/js/page/party/place.js}"></script>
+<script layout:fragment="poll-script" th:src="@{/js/page/party/post-poll.js}"></script>
+</html>

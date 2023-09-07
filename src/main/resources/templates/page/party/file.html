@@ -1,27 +1,10 @@
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/party-base}">
 <head>
 <link rel="stylesheet" th:href="@{/css/page/party/file.css}">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
-<div layout:fragment="content-top" class="content">
-	<div class="attachment-container">
-		<div class="col">
-			<h5>첨부 모아보기</h5>
-		</div>
-		<div class="col bg">
-			<div class="attachment-tag">
-			    <button class="tag-name" id="albumButton">
-			        사진첩
-			    </button>
-			    <button class="tag-name" id="pollButton">
-			        투표
-			    </button>
-			    <button class="tag-name" id="fileButton">
-			        파일
-			    </button>
-			</div>
+	<div class="attachment-content">
 			<div class="attachment-content">
 				<div class="attachment-poll">
 					<div class="inputWrap">
@@ -166,7 +149,5 @@
 				</div>
 			</div>
 		</div>
-	</div>
-</div>
 </body>
 </html>

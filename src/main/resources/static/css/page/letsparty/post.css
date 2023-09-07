@@ -1,0 +1,32 @@
+@charset "UTF-8";
+#btn {
+    border-color: #6DA1FF;
+    background-color: #6DA1FF;
+}
+#btn:hover {
+    color: #ffffff;
+    border-color: #578ae7;;
+    background-color: #578ae7;
+}
+
+.card-line {
+    border: solid 3px; 
+    color: rgb(194, 225, 255);
+}
+
+.background-color-gray {
+ background-color: #fafafa;
+}
+
+.select-party {
+    overflow-y: auto;
+}
+
+.party-select-container {
+	display: block;
+	width: 100%;
+}
+
+.card-header {
+	background-color: rgb(237, 246, 255);
+}

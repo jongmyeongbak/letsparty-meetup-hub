@@ -49,10 +49,13 @@
   color: white;
   padding: 5px;
   display: flex;
+  justify-content: space-between; /* 좌우 공간 균등 배분 */
   align-items: center;
+  padding-left: 20px; /* 좌측 공간 크기 설정 */
+  padding-right: 20px; /* 우측 공간 크기 설정 */
 }
 .item .top-btn{
-	margin-left: 550px;
+	margin-left: 400px;
 }
 
 .menu button {
@@ -187,4 +190,8 @@ i {
    	margin-left: 30px;
    	margin-bottom: 30px;
 }
- 
+.menu .searchFilter {
+    text-align: left;
+    margin-left: 20px;
+    margin-bottom: 10px;
+}

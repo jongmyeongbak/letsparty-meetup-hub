@@ -1,52 +1,59 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/common-base}">
-<!-- 고유 CSS -->
 <head>
     <link rel="stylesheet" th:href="@{/css/page/letsparty/home.css}" >
 </head>
-<!-- 고유 content -->
 <div layout:fragment="content-top" class="container">
+	<div th:if="${errorMessage}" class="alert alert-danger">
+		<span th:text="${errorMessage}"></span>
+	</div>
 	<div class="row mb-3">
         <div class="col-12">
             <div class="card card-line">
-                <div class="card-header" style="background-color: rgb(237, 246, 255);">
-                    <ul id="letsparty-category" class="nav nav-tabs card-header-tabs" >
-                        <li class="nav-item active">
-                            <a href="#" class="nav-link active" aria-current="true">취미/동호회</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">가족</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">스터디</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">학교/동아리</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link" >운동</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">지역</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link" >자유주제</a>
-                        </li>
+	            <div class="card-header">
+	            	<ul id="letsparty-categorys" class="nav nav-tabs card-header-tabs" >
+						<li class="nav-item">
+						    <a href="#" data-value="0" class="nav-link"  >전체</a>
+						</li>
+                    	<li class="nav-item">
+	                    	<a href="#" data-value="10" class="nav-link" >취미/동호회</a>
+                		</li>
+						<li class="nav-item">
+						    <a href="#" data-value="20" class="nav-link" >가족</a>
+						</li>
+						<li class="nav-item">
+						    <a href="#" data-value="30" class="nav-link" >스터디</a>
+						</li>
+						<li class="nav-item">
+						    <a href="#" data-value="40" class="nav-link">학교/동아리</a>
+						</li>
+						<li class="nav-item">
+						    <a href="#" data-value="50" class="nav-link">운동</a>
+						</li>
+						<li class="nav-item">
+						    <a href="#" data-value="60" class="nav-link">지역</a>
+						</li>
+						<li class="nav-item">
+						    <a href="#" data-value="70" class="nav-link">재테크</a>
+						</li>
+						<li class="nav-item">
+						    <a href="#" data-value="100" class="nav-link">자유주제</a>
+						</li>
                     </ul>
-                </div>			
+                </div>		
                 <div class="card-body">
                     <div class="d-flex jutstify-content-start mb-3">
-                        <select class="form-select me-3" style="width: 150px;" name="sort" onchange="changeSort()">
-                            <option value="latest" > 최신순</option>
-                            <option value="oldest" > 오래된순</option>
-                            <option value="popular"> 공감순</option>
-                        </select>
-                        <select class="form-select me-3" style="width: 150px;" name="rows" onchange="changeRows()">
-                            <option value="10"> 10개씩</option>
-                            <option value="20"> 20개씩</option>
-                            <option value="50"> 50개씩</option>
-                        </select>
+                        <select class="form-select me-3" style="width: 150px;" name="sort">
+						    <option value="latest" th:selected="${#request.getParameter('sort') == 'latest'}">최신순</option>
+  							<option value="oldest" th:selected="${#request.getParameter('sort') == 'oldest'}">오래된 순</option>
+  							<option value="popular" th:selected="${#request.getParameter('sort') == 'popular'}">인기순</option>
+						</select>
+						<select class="form-select me-3" style="width: 150px;" name="rows">
+						    <option value="10" th:selected="${#request.getParameter('rows') == '10'}">10개씩</option>
+						    <option value="20" th:selected="${#request.getParameter('rows') == '20'}">20개씩</option>
+						    <option value="50" th:selected="${#request.getParameter('rows') == '50'}">50개씩</option>
+						</select>
                     </div>
                     <table class="table">
                         <thead>
@@ -59,95 +66,78 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1001</td>
-                                <td>홍길동의 파티에 놀러오세요!</td>
-                                <td>홍길동의 스터디 파티</td>
-                                <td>2023년8월01일</td>
-                                <td>10/5</td>
-                            </tr>
-                            <tr>
-                                <td>1002</td>
-                                <td>김유신의 파티에 놀러오세요!</td>
-                                <td>김유신의 농구 파티</td>
-                                <td>2023년7월31일</td>
-                                <td>10/5</td>
-                            </tr>
-                            <tr>
-                                <td>1003</td>
-                                <td>강감찬의 파티에 놀러오세요!</td>
-                                <td>강감찬의 수채화 파티</td>
-                                <td>2023년7월31일</td>
-                                <td>10/5</td>
-                            </tr>
-                            <tr>
-                                <td>1004</td>
-                                <td>이순신의 파티에 놀러오세요!</td>
-                                <td>이순신의 수영 파티</td>
-                                <td>2023년7월27일</td>
-                                <td>10/5</td>
-                            </tr>
-                            <tr>
-                                <td>1005</td>
-                                <td>유관순의 파티에 놀러오세요!</td>
-                                <td>유관순의 노래 파티</td>
-                                <td>2023년7월26일</td>
-                                <td>10/5</td>
-                            </tr>
-                                <tr>
-                                    <td colspan="5" class="text-center">검색결과가 존재하지 않습니다.</td>
-                                </tr>
-                        </tbody>
+                            <tbody>
+						    <!-- 검색 결과가 있을 경우 -->
+						    <tr th:each="post : ${result.posts}" th:if="${not #lists.isEmpty(result.posts)}">
+						        <td class="postNo-td" th:text="${post.no}"></td>
+						        <td class="ellipsis-post-title"><a th:href="@{/letsparty/read/{postNo}(postNo=${post.no})}" th:text="${post.title}"></a></td>
+						        <td class="ellipsis-party-name"><a th:href="@{/party/{partyNo}(partyNo=${post.party.no})}" th:text="${post.party.name}"></a></td>
+						        <td th:text="${#temporals.format(post.createdAt, 'yyyy년 M월 d일 HH:mm:ss')}"></td>
+						        <td th:text="${post.readCnt + '/' + post.commentCnt}"></td>
+						    </tr>
+						    <!-- 검색 결과가 없을 경우 -->
+						    <tr th:if="${#lists.isEmpty(result.posts)}">
+							    <td colspan="5" class="text-center">검색결과가 존재하지 않습니다.</td>
+							</tr>
+						</tbody>
                     </table>
                     
                    <div class="card-footer" style="background-color: white;">
-                       <!-- 페이지네이션 구간 -->
-                        <div class="">
-                            <ul class="pagination justify-content-center">
-                                <li class="page-item ${first ? 'disabled' : '' }">
-                                    <a href="list?page-${prePage }" class="page-link">이전</a>
-                                </li>
-                       
-                                <li class="page-item ${currentPage eq num ? 'active' :'' }">
-                                    <a href="" class="page-link">1</a>
-                                </li>
-                                <li class="page-item ${currentPage eq num ? 'active' :'' }">
-                                    <a href="" class="page-link">2</a>
-                                </li>
-                                <li class="page-item ${currentPage eq num ? 'active' :'' }">
-                                    <a href="" class="page-link">3</a>
-                                </li>
-                       
-                                <li class="page-item ${last ? 'disabled' : ''}">
-                                    <a href="list?page=${nextPage }" class="page-link">다음</a>
-                                </li>
-                            </ul>
-                        </div>
-                       
+						<div th:if="${result.pagination.totalRows > 0}">
+						    <div th:with="currentPage=${result.pagination.page},
+						                  first=${result.pagination.first},
+						                  last=${result.pagination.last},
+						                  prePage=${result.pagination.prePage},
+						                  nextPage=${result.pagination.nextPage},
+						                  beginPage=${result.pagination.beginPage},
+						                  endPage=${result.pagination.totalPages},
+						                  blockEndPage=${result.pagination.endPage}">
+						                  
+					            <ul class="pagination justify-content-center">
+					                <li class="page-item" th:classappend="${first} ? 'disabled' : ''">
+					                    <a href="#" class="page-link" th:onclick="'changePage(event, 1)'"><i class="fa-solid fa-angles-left"></i></a>
+					                </li>
+					                <li class="page-item" th:classappend="${first} ? 'disabled' : ''">
+					                    <a href="#" class="page-link" th:onclick="'changePage(event, ' + ${prePage} + ')'"><i class="fa-solid fa-chevron-left"></i></a>
+					                </li>
+					                <li class="page-item" th:each="num: ${#numbers.sequence(beginPage, blockEndPage)}"
+					                     th:classappend="${currentPage == num} ? 'active' : ''">
+					                    <a href="#" class="page-link" th:onclick="'changePage(event, ' + ${num} + ')'" th:text="${num}"></a>
+					                </li>
+					                <li class="page-item" th:classappend="${last} ? 'disabled' : ''">
+					                    <a href="#" class="page-link" th:onclick="'changePage(event, ' + ${nextPage} + ')'"><i class="fa-solid fa-chevron-right"></i></a>
+					                </li>
+					                <li class="page-item" th:classappend="${last} ? 'disabled' : ''">
+					                    <a href="#" class="page-link" th:onclick="'changePage(event, ' + ${endPage} + ')'"><i class="fa-solid fa-angles-right"></i></a>
+					                </li>
+					            </ul>
+						    </div>
+						</div>
                         <!-- 검색 구간 -->
                         <div class="d-flex justify-content-center">
-                            <form id="form-employee-search" class="row row-cols-md-auto g-3 align-items-center" method="get" action="list">
-                            <input type="hidden" name="sort" value="${param.sort }"/>
-                            <input type="hidden" name="rows" value="${param.rows }"/>
-                            <input type="hidden" name="page" value="${param.page }"/>
+                            <form id="form-letsparty-search" class="row row-cols-md-auto g-3 align-items-center" method="get" action="/letsparty/search">
+                            <input type="hidden" name="categoryNo" th:value="${param.categoryNo}"/>
+							<input type="hidden" name="sort" th:value="${param.sort}"/>
+							<input type="hidden" name="rows" th:value="${param.rows}"/>
+							<input type="hidden" name="page" th:value="${param.page}"/>
                                 <div class="col-12">
                                     <select class="form-select" name="opt">
-                                        <option value="">제목</option>
-                                        <option value="">내용</option>
-                                        <option value="">파티명</option>
+                                        <option value="title">제목</option>
+                                        <option value="content">내용</option>
+                                        <option value="party">파티명</option>
                                     </select>
                                 </div>
                                 <div class="col-12">
                                     <input type="text" class="form-control" name="keyword"/>
                                 </div>
                                 <div class="col-12">
-                                    <button id="outline-btn" type="button" class="btn btn-outline-primary btn-sm" onclick="searchEmployees()">검색</button>
+                                    <button id="outline-btn" type="button" class="btn btn-outline-primary btn-sm" onclick="searchLetsParty()">검색</button>
                                 </div>
                             </form>
                         </div>
                        
-                        <div class="text-end">
-                            <a id="btn"class="btn btn-primary btn-sm">게시글 등록</a>
+                        <div class="text-end" th:if=${isLeader}>
+                            <a id="btn"class="btn btn-primary btn-sm" th:href="@{/letsparty/post}">게시글 등록</a>
                         </div>
                    </div>
                 </div>
@@ -155,12 +145,10 @@
         </div>
     </div>
 </div>
-<!-- 모달 등 추가 div가 필요할 경우만 사용 -->
 <div layout:fragment="content-bottom">
 	<div class="modal">
 		<h1>modal영역</h1>
 	</div>
 </div>
-<!-- 고유 script -->
 <script layout:fragment="script" th:src="@{/js/page/letsparty/home.js}"></script>
 </html>

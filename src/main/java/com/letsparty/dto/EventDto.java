@@ -9,8 +9,8 @@ import lombok.ToString;
 @ToString
 public class EventDto {
 
-	private int startDay;
-	private int startMonth;
+	private String startDay;
+	private String startMonth;
 	private String startTime;
 	private String title;
 	private String description;

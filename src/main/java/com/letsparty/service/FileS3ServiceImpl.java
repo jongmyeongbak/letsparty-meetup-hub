@@ -1,6 +1,12 @@
 package com.letsparty.service;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -8,10 +14,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
+import com.amazonaws.HttpMethod;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.ResponseHeaderOverrides;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.services.s3.transfer.TransferManager;
@@ -33,6 +42,8 @@ public class FileS3ServiceImpl implements FileService {
 	private final AmazonS3 s3Client;
 	@Value("${cloud.aws.s3.bucket}")
 	private String bucketName;
+	@Value("${s3.path.files}")
+	private String filesPath;
 	
 	@Override
 	public UploadFileResponse upload(String path, MultipartFile file) throws IOException {
@@ -96,11 +107,32 @@ public class FileS3ServiceImpl implements FileService {
 		}
 		return content;
 	}
+	
+	public String getPreSignedURLForAttachedFile(String key, String OriginalName) {
+		ResponseHeaderOverrides responseHeaders = new ResponseHeaderOverrides()
+				.withContentDisposition("attachment; filename=\"" + urlEncode(OriginalName) + "\"");
+		GeneratePresignedUrlRequest generatePresignedUrlRequest =
+				new GeneratePresignedUrlRequest(bucketName, filesPath + key, HttpMethod.GET)
+				.withExpiration(Date.from(Instant.now().plus(Duration.ofMinutes(2))))
+				.withResponseHeaders(responseHeaders);
+		String presignedURL = s3Client.generatePresignedUrl(generatePresignedUrlRequest).toString();
+		log.info("presigned URL: {}", presignedURL);
+		
+		return presignedURL;
+	}
 
 	private ObjectMetadata getMetadataValue(MultipartFile file) {
 		ObjectMetadata objectMetadata = new ObjectMetadata();
 		objectMetadata.setContentType(file.getContentType());
 		objectMetadata.setContentLength(file.getSize());
 		return objectMetadata;
+	}
+	
+	private String urlEncode(String value) {
+	    try {
+	        return URLEncoder.encode(value, StandardCharsets.UTF_8.toString());
+	    } catch (UnsupportedEncodingException e) {
+	        throw new RuntimeException("UTF-8 encoding not supported", e);
+	    }
 	}
 }

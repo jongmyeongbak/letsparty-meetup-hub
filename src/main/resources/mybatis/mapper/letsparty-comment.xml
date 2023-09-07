@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.letsparty.mapper.LetsPartyCommentMapper">
+
+	<insert id="insertComment" parameterType="com.letsparty.vo.LetsPartyComment" useGeneratedKeys="true" keyProperty="no">
+		insert into letsparty_comment(post_no, party_no, user_id, comment_content)
+		values(#{post.no}, #{party.no}, #{user.id}, #{content});
+	</insert>
+	
+	<select id="getCommentByNo" parameterType="long" resultType="com.letsparty.dto.LetsPartyCommentDto">
+		select 
+			lc.comment_no			as no,
+			p.party_no				as "party.no",
+			p.party_name			as "party.name",
+			p.party_filename		as "party.filename",
+			upa.user_id				as "user.id",
+            up.profile_nickname     as "profile.nickname",
+        	lc.comment_content		as content,
+        	lc.comment_updated_at	as updatedAt,
+        	lc.comment_created_at 	as createdAt
+		from letsparty_comment lc
+		inner join party p on lc.party_no = p.party_no
+        inner join user_party_application upa on lc.party_no = upa.party_no and lc.user_id = upa.user_id
+        inner join user_profile up on upa.profile_no = up.profile_no
+		where lc.comment_no = #{value}
+	</select>
+	
+	<!-- 최근 댓글 2개 -->
+	<select id="getLatestTwoCommentsByPostNo" parameterType="long" resultType="com.letsparty.dto.LetsPartyCommentDto">
+    select 
+        lc.comment_no            as no,
+        p.party_no               as "party.no",
+        p.party_name             as "party.name",
+        p.party_filename         as "party.filename",
+        upa.user_id              as "user.id",
+        up.profile_nickname      as "profile.nickname",
+        lc.comment_content       as content,
+        lc.comment_updated_at    as updatedAt,
+        lc.comment_created_at    as createdAt
+	    from letsparty_comment lc
+	    inner join party p on lc.party_no = p.party_no
+	    inner join user_party_application upa on lc.party_no = upa.party_no and lc.user_id = upa.user_id
+	    inner join user_profile up on upa.profile_no = up.profile_no
+	    where lc.post_no = #{value}
+	    order by lc.comment_created_at desc
+	    limit 2
+	</select>
+
+	<!-- 모든 댓글 -->
+	<select id="getAllCommentsByPostNo" parameterType="long" resultType="com.letsparty.dto.LetsPartyCommentDto">
+		select 
+			lc.comment_no			as no,
+			p.party_no				as "party.no",
+			p.party_name			as "party.name",
+			p.party_filename		as "party.filename",
+			upa.user_id				as "user.id",
+            up.profile_nickname     as "profile.nickname",
+        	lc.comment_content		as content,
+        	lc.comment_updated_at	as updatedAt,
+        	lc.comment_created_at 	as createdAt
+		from letsparty_comment lc
+		inner join party p on lc.party_no = p.party_no
+        inner join user_party_application upa on lc.party_no = upa.party_no and lc.user_id = upa.user_id
+        inner join user_profile up on upa.profile_no = up.profile_no
+		where lc.post_no = #{value}
+		order by lc.comment_created_at asc
+	</select>
+</mapper>

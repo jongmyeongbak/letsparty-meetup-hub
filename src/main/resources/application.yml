@@ -22,7 +22,7 @@ mybatis:
   type-aliases-package: com.letsparty.vo
 #  type-aliases-package: com.letsparty.mapper
   configuration:
-#    call-setters-on-nulls: true
+    call-setters-on-nulls: true
     map-underscore-to-camel-case: true
     # NULL값이 허용되는 컬럼에 NULL값을 추가할 수 있도록 설정
     jdbc-type-for-null: 'NULL'

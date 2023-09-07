@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.letsparty.mapper.LetsPartyMapper">
+	<insert id="insertPost" parameterType="com.letsparty.vo.LetsPartyPost">
+		insert into letsparty_post (category_no, party_no, user_id, post_title, post_content)
+		values (#{category.no}, #{party.no}, #{user.id}, #{title}, #{content})
+	</insert>
+	
+	<select id="getPostDetailByNo" parameterType="long" resultType="com.letsparty.dto.LetsPartyPostDto">
+		select 
+			p.party_no			as "party.no",
+	        p.party_name        as "party.name",
+	        p.party_filename	as "party.filename",
+			lt.post_no          as no,
+			lt.user_id			as "user.id",
+	 		up.profile_nickname as "profile.nickname",
+	        lt.post_title       as title,
+	        lt.post_content     as content,
+	        lt.created_at       as createdAt,
+	        lt.updated_at		as updatedAt,
+	        lt.post_read_cnt    as readCnt,
+	        lt.post_comment_cnt as commentCnt,
+	        lt.post_like_cnt	as likeCnt
+		from letsparty_post lt
+		inner join party p on lt.party_no = p.party_no
+		inner join user_party_application upa on lt.user_id = upa.user_id and lt.party_no = upa.party_no
+    	inner join user_profile up on upa.profile_no = up.profile_no
+		where 
+		    post_no = #{no}
+		and 
+			is_deleted = 0
+	</select>
+	
+	<select id="getTotalRows" parameterType="map" resultType="int">
+		select
+			count(*)
+		from letsparty_post lt
+		inner join party p on lt.party_no = p.party_no
+		where lt.is_deleted = 0		
+		<if test="categoryNo != null and categoryNo != 0">
+		 	and p.category_no = #{categoryNo}
+		</if>
+		<choose>
+			<when test="opt == 'title'">
+				and lt.post_title like concat('%',#{keyword},'%')
+			</when>
+			<when test="opt == 'content'">
+				and lt.post_content like concat('%',#{keyword},'%')
+			</when>
+			<when test="opt == 'party'">
+				and p.party_name like concat('%',#{keyword},'%')
+			</when>
+		</choose>
+	</select>
+	
+	<select id="getPosts" parameterType="map" resultType="com.letsparty.vo.LetsPartyPost">
+		select 
+			p.party_no			as "party.no",
+	        p.party_name        as "party.name",
+	        p.category_no		as "category.no",
+			lt.post_no          as no,
+	        lt.post_title       as title,
+	        lt.created_at       as createdAt,
+	        lt.post_read_cnt    as readCnt,
+	        lt.post_comment_cnt as commentCnt,
+	        lt.post_like_cnt	as likeCnt
+		from letsparty_post lt
+		inner join party p on lt.party_no = p.party_no
+		where lt.is_deleted = 0
+		<if test="categoryNo != null and categoryNo != 0">
+		 	and p.category_no = #{categoryNo}
+		</if>
+		<choose>
+			<when test="opt == 'title'">
+				and lt.post_title like concat('%',#{keyword},'%')
+			</when>
+			<when test="opt == 'content'">
+				and lt.post_content like concat('%',#{keyword},'%')
+			</when>
+			<when test="opt == 'party'">
+				and p.party_name like concat('%',#{keyword},'%')
+			</when>
+		</choose>
+		<choose>
+			<when test="sort == 'latest'">
+				order by lt.post_no desc
+			</when>
+			<when test="sort == 'oldest'">
+				order by lt.post_no asc
+			</when>
+			<when test="sort == 'popular'">
+				order by lt.post_like_cnt desc
+			</when>
+		</choose>
+		limit #{begin}, #{rows}
+	</select>
+	
+	<select id="getPostsLimit5" resultType="com.letsparty.vo.LetsPartyPost">
+		SELECT 
+			p.party_no			as "party.no",
+	        p.party_name        as "party.name",
+	        p.category_no		as "category.no",
+			lp.post_no          as no,
+	        lp.post_title       as title,
+	        lp.created_at       as createdAt,
+	        lp.post_read_cnt    as readCnt,
+	        lp.post_comment_cnt as commentCnt,
+	        lp.post_like_cnt	as likeCnt
+		FROM letsparty_post lp
+		JOIN party p ON p.party_no = lp.party_no
+		WHERE lp.is_deleted = 0
+		ORDER BY lp.created_at DESC
+		LIMIT 5;
+	</select>
+	
+	<update id="updatePost" parameterType="com.letsparty.dto.LetsPartyPostDto">
+	    update letsparty_post
+	    set 
+	        post_title = #{title},
+	        post_content = #{content},
+	        post_read_cnt = #{readCnt},
+	        post_comment_cnt = #{commentCnt},
+	        is_deleted = #{deleted},
+	        updated_at = now()
+	    where 
+	        post_no = #{no}
+	</update>
+</mapper>

@@ -16,7 +16,7 @@ import com.letsparty.exception.DuplicateEmailException;
 import com.letsparty.exception.DuplicateUserIdException;
 import com.letsparty.security.user.CustomOAuth2User;
 import com.letsparty.service.AuthenticationService;
-import com.letsparty.service.MyService;
+import com.letsparty.service.UserProfileService;
 import com.letsparty.service.UserService;
 import com.letsparty.service.ValidationService;
 import com.letsparty.vo.UserProfile;
@@ -34,7 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 public class SignupController {
 	
 	private final UserService userService;
-	private final MyService myService;
+	private final UserProfileService myService;
 	private final AuthenticationService authenticationService;
 	private final ValidationService validationService;
 		
@@ -53,8 +53,6 @@ public class SignupController {
 		
 		boolean checkDuplicate = false;
 		
-		log.info("signupForm 정보 -> {}", signupForm.toString());
-		
 		checkDuplicate = validationService.checkstep1(signupForm, errors);
 		
 		if (checkDuplicate) {
@@ -69,8 +67,6 @@ public class SignupController {
 	public String signup2(@ModelAttribute("signupForm") SignupForm signupForm, BindingResult errors, SessionStatus sessionStatus, RedirectAttributes redirectAttributes) {
 		
 		boolean checkDuplicate = false;
-		
-		log.info("signupForm 정보 -> {}", signupForm.toString());
 		
 		checkDuplicate = validationService.checkstep2(signupForm, errors);
 	
@@ -93,6 +89,7 @@ public class SignupController {
 				.nickname(signupForm.getName())
 				.filename("/images/party/profile-default.png")
 				.isDefault(true)
+				.isUrl(true)
 				.build();
 		
 		int profileNo = myService.addProfile(userProfileForm);

@@ -4,7 +4,7 @@
 	        <div class="container">
 	            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 	                <li class="nav-item">
-	                    <a href="#" class="nav-link">렛츠 파티!!</a>
+	                    <a th:href="@{/letsparty}" class="nav-link">렛츠 파티!!</a>
 	                </li>
 	            </ul>
 	        </div>
@@ -13,7 +13,7 @@
 	                <h1 class="fs-1 text-center logo"><span id="home" class="align-middle"><a th:href="@{/}">로고</a></span></h1>
 	                <li class="nav-item ms-3">
 	                    <div class="form mt-3">
-	                        <form method="get" action="/party/search.jsp" name="searchParty">
+	                        <form method="get" action="/search" id="search-party">
 	                            <div class="inputbox">
 	                                <input type="text" placeholder="파티검색" name="value">
 	                                <div class="search" id="search">
@@ -225,7 +225,7 @@
 	                    <ul class="dropdown-menu dropdown-menu-end">
 	                    <li><span class="align-middle bolder ms-3"><strong class="text-black" sec:authentication="principal.realname"></strong> 님</span></li>
 	                        <li><hr class="dropdown-divider"></li>
-	                        <li><a href="/user/detail.jsp" class="dropdown-item">내정보보기</a></li>
+	                        <li><a href="/my" class="dropdown-item">내정보보기</a></li>
 	                        <li><a href="/party/manage-my-party.jsp" class="dropdown-item">내파티관리</a></li>
 	                    <li><hr class="dropdown-divider"></li>
 	                    <li><a th:href="@{/logout}" class="dropdown-item">로그아웃</a></li>
@@ -237,24 +237,24 @@
 	</nav>
 	<div class="blank mb-3">
 	</div>
-	<nav class="navbar fixed-top navbar-expand-sm">
+	<nav th:if="${party}" class="navbar fixed-top navbar-expand-sm">
 	    <div class="container justify-content-center">
 	        <ul class="navbar-nav nav2">
 	            <li class="nav-item">
-	                <a href="/party/1234" class="nav-link">게시판</a>
+	                <a th:href="@{/party/{partyNo}(partyNo=${partyNo})}" class="nav-link">게시판</a>
 	            </li>
 	            <li class="nav-item">
-	                <a th:href="@{/party/attachment}" class="nav-link">첨부</a>
+	                <a th:href="@{/party/{partyNo}/attachment(partyNo=${partyNo})}" class="nav-link">첨부</a>
 	            </li>
 	            <li class="nav-item">
-	                <a href="#" class="nav-link">일정</a>
+	                <a th:href="@{/party/{partyNo}/event(partyNo=${partyNo})}" class="nav-link">일정</a>
 	            </li>
 	            <li class="nav-item">
-	                <a href="#" class="nav-link">멤버</a>
+	                <a th:href="@{/party/{partyNo}/member(partyNo=${partyNo})}" class="nav-link">멤버</a>
 	            </li>
 	        </ul>
 	    </div>
 	</nav>
-	<div class="blank-1 mb-3">
+	<div  th:if="${party}" class="blank-1 mb-3">
 	</div>
 </th:block>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letsparty.mapper.ChatMessageMapper">
+	
+	<insert id="insertChatMessage" parameterType="ChatMessage" useGeneratedKeys="true" keyProperty="no">
+		INSERT INTO chat_message
+			(room_no, message_type, user_no, created_at, unread_cnt, message_text)
+		VALUES
+			(#{roomNo}, #{type}, #{userNo}, #{createdAt}, #{unreadCnt}, #{text})
+	</insert>
+	
+	<update id="decreaseUnreadCntByRoomNoAndLastReadMessageNo">
+		UPDATE chat_message
+		SET
+			unread_cnt = unread_cnt - 1
+		WHERE
+			room_no = #{roomNo} AND
+			message_no > #{lastReadMessageNo}
+	</update>
+	
+	<update id="decreaseUnreadCntByRoomIdAndLastReadMessageNo">
+		UPDATE chat_message cm
+		JOIN
+			chat_room cr ON cm.room_no = cr.room_no AND cr.room_id = #{roomId}
+		SET
+			cm.unread_cnt = cm.unread_cnt - 1
+		WHERE
+			cm.message_no > #{lastReadMessageNo}
+	</update>
+	
+</mapper>

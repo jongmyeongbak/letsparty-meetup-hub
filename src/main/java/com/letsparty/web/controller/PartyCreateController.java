@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.letsparty.security.user.LoginUser;
 import com.letsparty.service.CategoryService;
+import com.letsparty.service.ChatService;
 import com.letsparty.service.PartyService;
+import com.letsparty.service.UserPartyApplicationService;
 import com.letsparty.util.PartyDataUtils;
 import com.letsparty.web.form.PartyForm;
 
@@ -23,13 +26,17 @@ import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequiredArgsConstructor
+@PreAuthorize("isAuthenticated()")
 @Slf4j
 public class PartyCreateController {
 	
 	private final PartyService partyService;
 	private final CategoryService categoryService;
+	private final ChatService chatService;
+	private final UserPartyApplicationService userPartyApplicationService;
 
 	// 파티생성폼으로 이동
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/party-create")
 	public String partyCreate(@RequestParam(value = "catNo", required = false) Integer catNo, Model model) {
 		// catNo파라미터가 없거나 0보다 작을 경우 루트 페이지로 리다이렉트
@@ -51,6 +58,13 @@ public class PartyCreateController {
 	@PostMapping("/party-create")
 	public String partyCreate(@AuthenticationPrincipal LoginUser user, @Valid PartyForm partyForm,
 			BindingResult error, Model model) {
+		
+		// 동일 카테고리 내 파티명 중복 검증
+		String partyName = partyForm.getName().trim();
+		int categoryNo = partyForm.getCategoryNo();
+		if (partyService.isDuplicateParty(partyName, categoryNo)) {
+			error.rejectValue("name", null, "기존 파티명과 중복되었습니다. 변경해주세요.");
+		}
 		
 		// 최소나이(birthStart)와 최대나이(birthEnd) 검증
 		int birthStart = Integer.parseInt(partyForm.getBirthStart());
@@ -79,6 +93,9 @@ public class PartyCreateController {
 		
 		String leaderId = user.getId();
 		int partyNo = partyService.createParty(partyForm, leaderId);
+		userPartyApplicationService.addLeaderUserPartyApplication(partyNo, leaderId);
+		chatService.createInitRoomOfParty(partyNo);
+		
 		return "redirect:/party/" + partyNo;
 	}
 }

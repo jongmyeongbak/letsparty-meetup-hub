@@ -1,0 +1,85 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/common-base}">
+<!-- 고유 CSS -->
+<head>
+<link rel="stylesheet" th:href="@{/css/page/main/mypage.css}">
+</head>
+<!-- 고유 content -->
+<div layout:fragment="content-top" class="container">
+	<div class="row justify-content-md-center">
+		<div class="col-8">
+			<div class="card">
+				<h3 class="card-header">내정보 보기</h3>
+				<ul class="list-group list-group-flush">
+					<li class="list-group-item">
+						<div class="profile">
+							<h5> 사용중인 프로필 <span th:text="${#lists.size(profiles)}">7</span></h5>
+							<div class="profile-container">
+								<div th:each="profile : ${profiles}" class="profile-item">
+									<div class="pf-image">
+										<img th:src="${profile.filename}" alt="">
+									</div>
+									<div class="name">
+										<span th:text="${profile.nickname}">홍길동</span>
+									</div>
+								</div>
+							</div>
+							<div></div>
+							<div class="button"><a href="/my/profile">관리</a></div>
+						</div>
+					</li>
+					<li class="list-group-item">
+						<div class="personal">
+							<h5>개인 정보</h5>
+							<div class="personal-container">
+								<div class="my-birthday">
+									<h6>생일</h6>
+									<span th:text="${#dates.format(userInfo.birthday, 'yyyy년 M월 d일')}">1995년 5월 13일</span>
+								</div>
+								<div class="my-gender">
+									<h6>성별</h6>
+									<span th:text="${userInfo.gender == 'M' ? '남성' : '여성'}">남성</span>
+								</div>
+							</div>
+							<div></div>
+						</div>
+					</li>
+					<li class="list-group-item">
+						<div class="login">
+							<h5>로그인 계정</h5>
+							<div class="login-container">
+								<div class="my-tel">
+									<h6>휴대폰 번호</h6>
+									<span th:text="${userInfo.tel}">010-56**-89**</span>
+								</div>
+								<div class="my-email">
+									<h6>이메일</h6>
+									<span th:text="${userInfo.email}">skroy0513@naver.com</span>
+								</div>
+							</div>
+							<div></div>
+						</div>
+					</li>
+					<li class="list-group-item">
+						<div class="withdraw">
+							<h5></h5>
+							<div class="withdraw-text">서비스 탈퇴하기</div>
+							<div></div>
+							<div class="button">탈퇴</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 모달 등 추가 div가 필요할 경우만 사용 -->
+<div layout:fragment="content-bottom">
+	<div class="modal">
+		<h1>modal 영역</h1>
+	</div>
+</div>
+<!-- 고유 script -->
+<script layout:fragment="script" th:src="@{/js/page/main/home.js}"></script>
+</html>

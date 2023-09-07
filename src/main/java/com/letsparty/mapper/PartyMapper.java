@@ -1,6 +1,10 @@
 package com.letsparty.mapper;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.letsparty.vo.Party;
 
@@ -15,8 +19,15 @@ public interface PartyMapper {
 	
 	// 파티 조회
 	Party getPartyByNo(int partyNo);
+	Party getPartyByNameAndCategoryNo(@Param("partyName") String name, @Param("categoryNo") int categoryNo);
 	
 	// 파티 수정
 	void updateParty(Party party);
+
+	List<Party> getPartyByUserId(String id);
+
+	List<Party> getPartiesLimit5();
+
+	List<Party> getPartiesWithValue(Map<String, Object> param);
 	
 }

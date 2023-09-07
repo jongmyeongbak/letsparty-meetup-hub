@@ -21,158 +21,34 @@
       crossorigin="anonymous"
     ></script>
     <title>즐거운 만남 | 채팅</title>
-    <style>
-      * {
-        background-color: #e5ddd5;
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Malgun Gothic", "맑은 고딕", sans-serif;
-        color: #333;
-        letter-spacing: -0.03em;
-        scroll-behavior: smooth;
-      }
-      .material-symbols-rounded {
-        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
-      }
-      .submit-wrap .material-symbols-rounded {
-        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 48;
-      }
-      .chat-container {
-        padding-top: 5px;
-        width: 97%;
-        margin: auto;
-        overflow-x: hidden;
-        background-color: antiquewhite;
-      }
-      header * {
-        background-color: inherit;
-      }
-      .chat-head {
-        display: flex;
-        justify-content: space-between;
-        background-color: inherit;
-      }
-      .chat-head button {
-        font-size: 0.6em;
-      }
-      .chat-head h1 {
-        font-size: 0.95em;
-      }
-      .chat-head h2 {
-        font-size: 0.7em;
-      }
-      .chat-dialogue {
-        background-color: antiquewhite;
-        height: calc(100vh - 200px);
-        overflow-x: hidden;
-        overflow-y: scroll;
-      }
-      .chat-dialogue::-webkit-scrollbar {
-        background-color: inherit;
-      }
-      .chat-dialogue::-webkit-scrollbar-thumb {
-        background-color: rgb(255, 201, 130);
-        border-radius: 10px;
-      }
-      .chat-write {
-        width: 97%;
-        position: absolute;
-        bottom: 0;
-        padding: 10px;
-      }
-      .mentions-wrap {
-        display: flex;
-        justify-content: space-between;
-        gap: 10px;
-      }
-      .mentions-input {
-        width: 100%;
-      }
-      .mentions {
-        width: 100%;
-        font-size: 0.8em;
-      }
-      .submit-wrap {
-        position: relative;
-        right: 0;
-      }
-      textarea {
-        resize: none;
-        border: none;
-        padding: 10px;
-        outline: none;
-      }
-      /* .submit-wrap button {
-        
-      } */
-
-      .log-friend {
-        max-width: 60%; /* 채팅 메시지가 화면의 60% 너비를 넘지 않게 */
-        margin-bottom: 10px;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-      }
-
-      .pf-image {
-        width: 40px;
-        height: 40px;
-        background-color: #ddd; /* 프로필 이미지의 기본 배경. 실제 이미지로 대체하려면 background-image 사용 */
-        border-radius: 50%; /* 원형으로 보이게 */
-        margin-right: 10px; /* 이미지와 텍스트 사이의 간격 */
-      }
-
-      .log-content {
-        padding: 8px 12px; /* 채팅 버블 내부 패딩 */
-        background-color: #ffffff; /* 버블 배경색 */
-        border-radius: 10px; /* 모서리 둥글게 */
-        position: relative;
-      }
-
-      .nickname {
-        font-size: 12px;
-        color: #888;
-        margin-bottom: 5px;
-      }
-
-      .log-bubble {
-        font-size: 14px;
-      }
-
-      .log-aside {
-        font-size: 12px;
-        color: #aaa;
-        margin-left: 10px; /* 시간과 메시지 사이의 간격 */
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .read {
-        background-color: #ff8f00; /* 읽음 표시의 배경색 */
-        color: #fff; /* 읽음 표시의 글자색 */
-        padding: 2px 5px;
-        border-radius: 3px;
-        margin-bottom: 5px;
-      }
-
-      .time {
-        margin-top: 5px;
-      }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/page/chat/home.css}" />
   </head>
-  <body data-room-id="${session.roomId}">
+  <body th:data-my-no="${myNo}">
     <div class="chat-container">
       <header class="chat-head justify-content-between">
         <div class="align-self-center">
-          <button class="btn btn-go-party">
+          <button class="btn" id="btn-go-party">
             <span class="material-symbols-rounded"> exit_to_app </span>
           </button>
         </div>
         <div class="">
-          <h1 class="text-center">홍길동</h1>
-          <h2 class="text-center">렛츠파티</h2>
+          <h1 class="text-center">
+            <span
+              class="chat-head-left"
+              th:text="${chatRoom.isEssential} ? ${chatRoom.party.name} : (${chatRoom.isPublic} ? ${chatRoom.title} : '')"
+            ></span
+            >(<span
+              class="chat-head-right"
+              th:text="${chatRoom.chattersCnt}"
+            ></span
+            >)
+          </h1>
+          <h2
+            class="text-center"
+            th:text="${chatRoom.isEssential} ? '' : ${chatRoom.party.name}"
+          >
+            렛츠파티
+          </h2>
         </div>
         <div class="align-self-center text-end">
           <button class="btn btn-setting">
@@ -180,33 +56,7 @@
           </button>
         </div>
       </header>
-      <div class="chat-dialogue mb-0">
-        <div class="log-data">
-          <div class="log-date text-center">
-            <time>2023년 8월 11일 금요일</time>
-          </div>
-          <div class="log-friend">
-            <div class="pf-image"></div>
-            <div class="log-content">
-              <div class="nickname"></div>
-              <div class="log-bubble"></div>
-            </div>
-            <div class="log-aside">
-              <div class="read"></div>
-              <div class="time"></div>
-            </div>
-          </div>
-          <div class="log-my">
-            <div class="log-aside">
-              <div class="read"></div>
-              <div class="time"></div>
-            </div>
-            <div class="log-content">
-              <div class="log-bubble"></div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div class="chat-dialogue mb-0"></div>
       <section class="chat-write">
         <div class="mentions-wrap">
           <div class="mentions-input">
@@ -233,6 +83,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/webstomp-client@1.2.6/dist/webstomp.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script th:src="@{/js/page/chat/home.js}" defer></script>
   </body>
 </html>

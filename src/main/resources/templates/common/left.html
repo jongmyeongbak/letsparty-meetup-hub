@@ -1,22 +1,24 @@
 <aside th:fragment="left-fragment" id="info" class="left">
 	<div class="img">
-		<img src="/img/sample.png" alt="">
+		<img th:src="${party.filename}" alt="">
 	</div>
 	<div class="info-box">
 		<div class="info">
 			<div class="name">
-				<span>파티명</span>
+				<span th:text="${party.name}">파티명</span>
 			</div>
 			<div class="mem">
-				<p>멤버수 &#183 <span>10</span>명 &nbsp; 리더 &#183 <span>홍길동</span></p>
+				<p>멤버수 &#183 <span th:text="${party.curCnt}">10</span>명 &nbsp; 리더 &#183 <span th:text="${leader.userProfile.nickname}">홍길동</span></p>
 			</div>
 		</div>
 		<div class="button">
-			<a href=""><div class="text">글쓰기 / 파티가입하기</div></a>
+			<a th:href="@{/party/{partyNo}/join(partyNo=${partyNo})}">
+				<div th:text="${member != null ? '글쓰기' : '파티 가입하기'}" class="text">글쓰기 / 파티가입하기</div>
+			</a>
 		</div>
-		<div class="setting">
+		<div th:if="${member}" class="setting">
 			<div class="setting-box">
-				<a href=""><img src="/img/settings.png" alt="">파티 설정하기</a>
+				<a th:href="@{/party/{partyNo}/setting(partyNo=${partyNo})}"><img src="/images/party/settings.png" alt="">파티 설정하기</a>
 			</div>
 		</div>
 	</div>

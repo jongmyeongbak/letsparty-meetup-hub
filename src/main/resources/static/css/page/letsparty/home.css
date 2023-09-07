@@ -1,5 +1,6 @@
 @charset "UTF-8";
 #btn {
+	color: #ffffff;
     border-color: #6DA1FF;
     background-color: #6DA1FF;
 }
@@ -8,6 +9,7 @@
     border-color: #578ae7;;
     background-color: #578ae7;
 }
+
 #outline-btn{
     border-color: #6DA1FF;
 }
@@ -20,4 +22,27 @@
 .card-line {
 border: solid 3px; 
 color: rgb(194, 225, 255);
+}
+
+.card-header {
+	background-color: rgb(237, 246, 255);
+}
+
+.ellipsis-party-name {
+  max-width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;  
+}
+
+.ellipsis-post-title {
+  max-width: 500px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;  
+}
+
+
+.postNo-td {
+	width: 100px;
 }

@@ -1,196 +1,49 @@
 <aside th:fragment="right-fragment" class="right">
-	<div class="chat-container">
-	    <div class="title">
-	        채팅
-	    </div>
-	    <hr>
-	    <div class="chat-list">
-	        <ul>
-	            <li class="chat-item">
-	                <a href="">
-	                    <div class="img-container">
-	                        <img src="/img/sample.png" alt="">
-	                    </div>
-	                    <div class="chat-info">
-	                        <div class="name">웰시코기</div>
-	                        <div class="message">월월!!</div>
-	                    </div>
-	                </a>
-	            </li>
-	            <li class="chat-item">
-	                <a href="">
-	                    <div class="img-container"><img src="/img/sooyeong1.jpeg" alt=""></div>
-	                    <div class="chat-info">
-	                        <div class="name">수영</div>
-	                        <div class="message">오늘은 자유영</div>
-	                    </div>
-	                </a>
-	            </li>
-	            <li class="chat-item">
-	                <a href="">
-	                    <div class="img-container"><img src="/img/sooyeong3.jpeg" alt=""></div>
-	                    <div class="chat-info">
-	                        <div class="name">수영2</div>
-	                        <div class="message">내일은 배영</div>
-	                    </div>
-	                </a>
-	            </li>
-	            <li class="chat-item">
-	                <a href="">
-	                    <div class="img-container"><img src="/img/sooyeong1.jpeg" alt=""></div>
-	                    <div class="chat-info">
-	                        <div class="name">수영3</div>
-	                        <div class="message">어제는 평영</div>
-	                    </div>
-	                </a>
-	            </li>
-	            <li class="chat-item">
-	                <a href="">
-	                    <div class="img-container"><img src="/img/sooyeong3.jpeg" alt=""></div>
-	                    <div class="chat-info">
-	                        <div class="name">수영4</div>
-	                        <div class="message">저는 말이 많습니다. 말줄임표가 적용되나요?
-	                        </div>
-	                    </div>
-	                </a>
-	            </li>
-	            <li class="chat-item">
-	                <a href="">
-	                    <div class="img-container"><img src="/img/sooyeong3.jpeg" alt=""></div>
-	                    <div class="chat-info">
-	                        <div class="name">수영4</div>
-	                        <div class="message">저는 말이 많습니다. 말줄임표가 적용되나요?
-	                        </div>
-	                    </div>
-	                </a>
-	            </li>
-	            <li class="chat-item">
-	                <a href="">
-	                    <div class="img-container"><img src="/img/sooyeong3.jpeg" alt=""></div>
-	                    <div class="chat-info">
-	                        <div class="name">수영4</div>
-	                        <div class="message">저는 말이 많습니다. 말줄임표가 적용되나요?
-	                        </div>
-	                    </div>
-	                </a>
-	            </li>
-	        </ul>
-	    </div>
+	<div th:if=${chatRooms} class="chat-container">
+		<div class="title">채팅</div>
+		<hr>
+		<div class="chat-list">
+			<ul>
+				<li th:each="chatRoom, iterStat : ${chatRooms}" class="chat-item">
+					<a th:href="@{/chat/{roomId}(roomId=${chatRoom.id})}"
+					onclick="window.open(this.href, '_blank', 'width=400, height=644'); return false;">
+						<div class="img-container">
+							<img th:src="${iterStat.first ? party.filename : (#lists.size(chatRoom.chatUsers) == 1 ? chatRoom.chatUsers[0].filename : '/images/party/profile-default.png')}" alt="">
+						</div>
+						<div class="chat-info">
+							<th:block th:if="${chatRoom.isPublic}">
+								<div th:text="${chatRoom.title == null ? party.name : chatRoom.title}" class="name">웰시코기</div>
+								<div th:text="${chatRoom.description}" class="message">월월!!</div>
+							</th:block>
+							<div th:unless="${chatRoom.isPublic}">
+								<div th:text="${chatRoom.chatUsersText}" class="name"></div>
+							</div>
+						</div>
+					</a>
+				</li>
+			</ul>
+		</div>
 	</div>
-	<div class="calender-container">
-	    <div class="title">
-	        다가오는 일정
-	        <a href="">더보기</a>
-	    </div>
-	    <hr>
-	    <div class="calender-list">
-	        <ul>
-	            <li class="calender-item">
-	                <div class="schedule">
-	                    <div class="month">
-	                        8
-	                    </div>
-	                    <hr>
-	                    <div class="day">
-	                        10
-	                    </div>
-	                </div>
-	                <a href="">
-	                    <div class="info">
-	                        <div class="time">
-	                            오전 9:57
-	                        </div>
-	                        <div class="title">
-	                            마감입니다.
-	                        </div>
-	                    </div>
-	                </a>
-	            </li>
-	            <li class="calender-item">
-	                <div class="schedule">
-	                    <div class="month">
-	                        8
-	                    </div>
-	                    <hr>
-	                    <div class="day">
-	                        10
-	                    </div>
-	                </div>
-	                <a href="">
-	                    <div class="info">
-	                        <div class="time">
-	                            오전 9:57
-	                        </div>
-	                        <div class="title">
-	                            마감입니다.
-	                        </div>
-	                    </div>
-	                </a>
-	            </li>
-	            <li class="calender-item">
-	                <div class="schedule">
-	                    <div class="month">
-	                        8
-	                    </div>
-	                    <hr>
-	                    <div class="day">
-	                        10
-	                    </div>
-	                </div>
-	                <a href="">
-	                    <div class="info">
-	                        <div class="time">
-	                            오전 9:57
-	                        </div>
-	                        <div class="title">
-	                            마감입니다.
-	                        </div>
-	                    </div>
-	                </a>
-	            </li>
-	            <li class="calender-item">
-	                <div class="schedule">
-	                    <div class="month">
-	                        8
-	                    </div>
-	                    <hr>
-	                    <div class="day">
-	                        10
-	                    </div>
-	                </div>
-	                <a href="">
-	                    <div class="info">
-	                        <div class="time">
-	                            오전 9:57
-	                        </div>
-	                        <div class="title">
-	                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Hic, eveniet minus. Veniam, non officiis dolorum labore architecto et sequi, consectetur voluptatum quaerat odit nihil laboriosam nam corporis quae optio illo?
-	                        </div>
-	                    </div>
-	                </a>
-	            </li>
-	            <li class="calender-item">
-	                <div class="schedule">
-	                    <div class="month">
-	                        8
-	                    </div>
-	                    <hr>
-	                    <div class="day">
-	                        10
-	                    </div>
-	                </div>
-	                <a href="">
-	                    <div class="info">
-	                        <div class="time">
-	                            오전 9:57
-	                        </div>
-	                        <div class="title">
-	                            마감입니다.
-	                        </div>
-	                    </div>
-	                </a>
-	            </li>
-	        </ul>
-	    </div>
+	<div th:if="${events}" class="calender-container">
+		<div class="title">
+			다가오는 일정 <a href="">더보기</a>
+		</div>
+		<hr>
+		<div class="calender-list">
+			<ul>
+				<li th:each="event : ${events}" class="calender-item">
+					<div class="schedule">
+						<div th:text="${event.startMonth}" class="month">8</div>
+						<hr>
+						<div th:text="${event.startDay}" class="day">10</div>
+					</div> <a href="">
+						<div class="info">
+							<div th:text="${event.startTime}" class="time">오전 9:57</div>
+							<div th:text="${event.title}" class="title">마감입니다.</div>
+						</div>
+				</a>
+				</li>
+			</ul>
+		</div>
 	</div>
 </aside>

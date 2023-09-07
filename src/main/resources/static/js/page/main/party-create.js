@@ -42,11 +42,22 @@ $(function() {
 	$input.on('change', function (e) {
 		var files = e.target.files;
 		let size = input.files[0].size / 1024 / 1024;
+		let reg = /(.*?)\.(jpg|png)$/;
+		
+		// 확장자 검증
+	  	if(!files[0].name.match(reg)) {
+			alert("JPG, PNG 확장자 파일만 업로드 가능합니다.");
+			$input.value = ""
+			return;
+		}
+		
+		// 파일 크기 검증
         if(size > 30) {
                alert("이미지 파일 크기가 너무 큽니다. 30MB 이하의 파일을 업로드 해주세요.");
                $input.value = ""
                return;
 		}
+		
 		var done = function (url) {
         
 		$input.val("");

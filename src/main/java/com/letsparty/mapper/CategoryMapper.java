@@ -14,5 +14,5 @@ public interface CategoryMapper {
 	
 	// 카테고리 모두 조회
 	List<Category> getAllCategories();
-
+	
 }

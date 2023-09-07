@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,14 +14,25 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.letsparty.dto.PartyReqDto;
+import com.letsparty.mapper.PartyMapper;
 import com.letsparty.security.user.LoginUser;
 import com.letsparty.service.CategoryService;
 import com.letsparty.service.PartyService;
+import com.letsparty.service.UserPartyApplicationService;
+import com.letsparty.service.UserProfileService;
+import com.letsparty.service.UserService;
 import com.letsparty.util.PartyDataUtils;
 import com.letsparty.vo.Party;
 import com.letsparty.vo.PartyReq;
+import com.letsparty.vo.Post;
+import com.letsparty.vo.User;
+import com.letsparty.vo.UserPartyApplication;
+import com.letsparty.vo.UserProfile;
 import com.letsparty.web.form.PartyForm;
+import com.letsparty.web.form.PostForm;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,23 +45,59 @@ public class PartyController {
 	
 	private final PartyService partyService;
 	private final CategoryService categoryService;
+	private final UserProfileService userProfileService;
+	private final UserPartyApplicationService userPartyApplicationService;
 	@Value("${s3.path.covers}")
 	private String coversPath;
-
+	@Value("${s3.path.profiles}")
+	private String profilesPath;
 	
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/{partyNo}/join")
+	public String joinParty(@PathVariable int partyNo, @AuthenticationPrincipal LoginUser loginUser, Model model) {
+		List<UserProfile> userProfiles = userProfileService.getAllProfileByUserId(loginUser.getId());
+		PartyReqDto partyReqs = partyService.getPartyReqsByNo(partyNo);
+		
+		model.addAttribute("userProfiles", userProfiles);
+		model.addAttribute("partyReqs", partyReqs);
+		
+		return "/page/party/join-party";
+	}
+	
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping("/{partyNo}/join")
+	public String joinParty(@PathVariable int partyNo, @AuthenticationPrincipal LoginUser loginUser, @RequestParam("profileNo") int profileNo) {
+		// 파티 가입 조건과 일치하면 가입을 승인한다.
+		UserProfile profile = new UserProfile();
+		profile.setNo(profileNo);
+		if (!userPartyApplicationService.addUserPartyApplicationIfReqMet(partyNo, loginUser.getId(), profile)) {
+			// TODO 가입조건과 맞지 않다는 오류메세지를 담아서 redirect 하기
+			return "redirect:/party/{partyNo}?req=fail";
+		};
+		return "redirect:/party/{partyNo}";
+	}
+	
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/{partyNo}/member")
-	public String member(@PathVariable int partyNo) {
-		// partyNo를 사용하여 파티 멤버를 조회하고 작업을 수행합니다.
+	public String member(@PathVariable int partyNo, @AuthenticationPrincipal LoginUser loginUser, Model model) {
+		if (!partyService.isPartyMember(loginUser.getId(), partyNo)) {
+			return "redirect:/party/{partyNo}";
+		}
+		List<UserPartyApplication> userPartyApplications = partyService.getUserPartyApplications(partyNo, loginUser.getNo());
+		model.addAttribute("users", userPartyApplications);
+		model.addAttribute("partyNo", partyNo);
+		model.addAttribute("profilesPath", profilesPath);
 		return "page/party/member";
 	}
 	
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/{partyNo}/setting/modify")
 	public String modify(@PathVariable int partyNo, Model model, @AuthenticationPrincipal LoginUser user) {
 		// 저장된 파티 기본 정보 조회
 		Party savedParty = partyService.getPartyByNo(partyNo);
 		
 		// 수정을 시도한 유저가 파티의 리더가 아니라면 설정화면으로 리다이렉트
-		if(!user.getId().equals(savedParty.getLeader().getId())) {
+		if(!savedParty.getLeader().getId().equals(user.getId())) {
 			return "redirect:/party/{partyNo}/setting";
 		}
 		
@@ -67,19 +115,21 @@ public class PartyController {
 		}
 		
 		// 저장된 파티 조건 조회
-		List<PartyReq> savedPartyReqs = partyService.getPartyReqsByNo(partyNo);
-		for (PartyReq req : savedPartyReqs) {
-			switch (req.getName()) {
-			case "생년1":
-				partyForm.setBirthStart(req.getValue());
-				break;
-			case "생년2":
-				partyForm.setBirthEnd(req.getValue());
-				break;
-			case "성별":
-				partyForm.setGender(req.getValue());
-				break;
-			}
+		PartyReqDto partyReqs = partyService.getPartyReqsByNo(partyNo);
+		partyForm.setBirthStart(partyReqs.getBirthStart());
+		partyForm.setBirthEnd(partyReqs.getBirthEnd());
+		partyForm.setGender(partyReqs.getGender());
+		
+		switch (partyReqs.getGender()) {
+		case "모두":
+			partyForm.setGender("A");
+			break;
+		case "남성":
+			partyForm.setGender("M");
+			break;
+		case "여성":
+			partyForm.setGender("F");
+			break;
 		}
 		
 		// 커버 조회
@@ -93,6 +143,7 @@ public class PartyController {
 	}
 	
 	// 파티 정보 수정
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/{partyNo}/setting/modify") 
 	public String modify(@PathVariable int partyNo, @Valid PartyForm partyForm, BindingResult error, Model model) {
 		// 최소나이(birthStart)와 최대나이(birthEnd) 검증
@@ -126,7 +177,30 @@ public class PartyController {
 		
 		partyService.modifyParty(partyForm, partyNo);
 		
-		return "redirect:/party/" + partyNo + "/setting" ;
+		return "redirect:/party/{partyNo}/setting" ;
+	}
+	
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/{partyNo}/post")
+	public String addPost(@PathVariable int partyNo) {
+		return "/page/party/post";
+	}
+	
+	// 게시물 제출
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping("/{partyNo}/post")
+	public String addPost(@PathVariable int partyNo, @AuthenticationPrincipal LoginUser loginUser, PostForm postForm) {
+		Post post = new Post();
+		User user = new User();
+		Party party = partyService.getPartyByNo(partyNo);
+		
+		user.setId(loginUser.getId());
+		post.setParty(party);
+		post.setUser(user);
+		postForm.setPost(post);
+		
+		partyService.insertPost(postForm);
+		return "redirect:/party/{partyNo}";
 	}
 	
 	@GetMapping("/{partyNo}")
@@ -135,20 +209,49 @@ public class PartyController {
 		return "page/party/home";
 	}
 	
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/{partyNo}/setting")
-	public String setting() {
-		return "page/party/psetting";
+	public String setting(@PathVariable int partyNo, @AuthenticationPrincipal LoginUser loginUser, Model model) {
+		UserPartyApplication upa = userPartyApplicationService.findByPartyNoAndUserId(partyNo, loginUser.getId());
+		System.out.println(upa.getUserProfile().getFilename());
+		model.addAttribute("upa", upa);
+		return "page/party/setting";
 	}
 	
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/{partyNo}/attachment")
 	public String attachment(@PathVariable int partyNo){
 		// partyNo를 사용해서 파티첨부파일을 조회하고 작업을 수행합니다.
 		return"page/party/attachment";
 	}
 	
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/{partyNo}/album")
+	public String album(@PathVariable int partyNo){
+		// partyNo를 사용해서 파티첨부파일을 조회하고 작업을 수행합니다.
+		return"page/party/album";
+	}
+	
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/{partyNo}/file")
+	public String file(@PathVariable int partyNo){
+		// partyNo를 사용해서 파티첨부파일을 조회하고 작업을 수행합니다.
+		return"page/party/file";
+	}
+	
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/{partyNo}/poll")
+	public String poll(@PathVariable int partyNo){
+		// partyNo를 사용해서 파티첨부파일을 조회하고 작업을 수행합니다.
+		return"page/party/poll";
+	}
+	
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/{partyNo}/event")
 	public String event(@PathVariable int partyNo) {
 		// partyNo를 사용하여 파티 정보를 조회하고 작업을 수행합니다.
 		return "page/party/event";
   }
+
 }
+

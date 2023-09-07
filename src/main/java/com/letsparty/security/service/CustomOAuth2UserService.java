@@ -10,7 +10,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import com.letsparty.mapper.MyMapper;
+import com.letsparty.mapper.UserProfileMapper;
 import com.letsparty.mapper.UserMapper;
 import com.letsparty.mapper.UserRoleMapper;
 import com.letsparty.security.oauth.exception.OAuthProviderMissMatchException;
@@ -30,7 +30,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 	
 	private final UserMapper userMapper;
 	private final UserRoleMapper userRoleMapper;
-	private final MyMapper myMapper;
+	private final UserProfileMapper myMapper;
 
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -56,6 +56,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 					.nickname(userInfo.getName())
 					.filename(userInfo.getImage())
 					.isDefault(true)
+					.isUrl(true)
 					.build();
 			myMapper.addProfile(userProfile);
 		}

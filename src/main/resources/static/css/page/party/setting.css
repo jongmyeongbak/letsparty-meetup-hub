@@ -1,0 +1,71 @@
+@charset "UTF-8";
+.bg {
+    background-color: #fff;
+    padding: 10px 0;
+    margin-bottom: 20px;
+}
+.party-setting {
+    background-color: #edf6ff;
+    padding: 15px 50px;
+    /* background-color: aquamarine; */
+}
+.party-setting h4 {
+    font-size: 20px;
+    padding: 5px 0 4px 0;
+}
+.user-setting-item, .leader-setting-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.my-profile {
+    display: flex;
+    margin-left: 10px;
+}
+.pf-image {
+    margin-left: 10px;
+    width: 50px;
+    height: 50px;
+}
+.pf-image img {
+    border-radius: 25px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.my-profile .name {
+    margin-left: 10px;
+}
+.my-profile .name span {
+    font-size: 17px;
+    font-weight: 600;
+}
+.user-setting .button, .leader-setting .button {
+    cursor: pointer;
+    font-weight: 600;
+    width: 50px;
+    height: 25px;
+    text-align: center;
+    border: 1px solid #333;
+    background-color: #d6f0ff;
+    margin-top: 10px;
+    margin-right: 15px;
+}
+.user-setting .danger, .leader-setting .danger {
+    background-color: #ffbbbb;
+}
+.user-setting .button:hover, .leader-setting .button:hover {
+    transition: .3s;
+    background-color: #bce6ff;
+}
+.user-setting .danger:hover, .leader-setting .danger:hover {
+    transition: .3s;
+    background-color: #ff7c7c;
+}
+.user-setting-item .withdraw, .leader-setting-item .text {
+    margin-top: 15px;
+    margin-left: 20px;
+    font-size: 17px;
+    font-weight: 600;
+}
+

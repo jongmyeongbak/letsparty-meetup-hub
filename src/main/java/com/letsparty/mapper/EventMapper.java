@@ -1,6 +1,5 @@
 package com.letsparty.mapper;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -13,9 +12,6 @@ public interface EventMapper {
 	// 신규 일정 등록하기
 	void insertEvent(Event event);
 	
-	// 등록된 일정 수정하기
-	void updateEvent(int eventNo);
-	
 	// 등록한 일정 상세정보 조회하기
 	Event getEventDetailByNo(int EventNo);
 	
@@ -23,13 +19,11 @@ public interface EventMapper {
 	Event getEventByNo(int EnvetNo);
 	
 	// 일정목록 가져오기
-	List<Event> getEvents(LocalDateTime startDate, LocalDateTime endDate);
+	List<Event> getAllEvents();
 	
 	// 등록한 일정 삭제하기
 	void deleteEvent(int eventNo);
-	
-	void updateEvent(Event existingEvent);
-	
+
 	// 파티번호로 5개 일정 가져오기
-	List<Event> getEventsByPartyNo(int partyNo);
+	List<Event> getEventByPartyNo(int partyNo);
 }

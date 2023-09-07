@@ -5,41 +5,31 @@
 	<insert id="insertEvent" parameterType="com.letsparty.vo.Event" useGeneratedKeys="true" keyProperty="no">
 		
 		insert into event
-			(event_title, event_description, is_all_day, event_start, 
-			 event_end, event_status, user_id,
+			(event_title, event_description, is_all_day, event_start_date, 
+			 event_start_time, event_end_date, event_end_time, event_status, user_id,
 			 place_no, post_id, party_no)
 		values
 			(#{title}, #{description}, #{allDay}, 
-			#{start}, #{end},
+			#{startDate}, #{startTime}, #{endDate}, #{endTime},
 			#{status}, #{user.id}, null, null, 1)
 	</insert>
 	
-	<update id="updateEvent" parameterType="com.letsparty.vo.Event">
-		update events
-		set 
-			event_title = #{title},
-			event_description = #{description},
-			event_start = #{start},
-			event_end = #{end},
-			is_all_day = #{allDay}
-		where 
-			event_no = #{no}
-	</update>
-	
-	<select id="getEvents" parameterType="map" resultType="com.letsparty.vo.Event">
+	<select id="getAllEvents" resultType="com.letsparty.vo.Event">
 		select
 			event_no 			as no,
 			event_title			as title,
 			event_description 	as description,
 			is_all_day			as allDay,
-			event_start			as start,
-			event_end			as end,
+			event_start_date	as startDate,
+			event_start_time	as startTime,
+			event_end_date		as endDate,
+			event_end_time		as endTime,
 			event_status		as status
 		from 
 			event
-		where
-			event_end >= #{startDate} or
-			event_start &lt; #{endDate}
+		order by 
+			event_no asc
+	
 	</select>
 	
 	<select id="getEventByNo" parameterType="int" resultType="com.letsparty.vo.Event">
@@ -48,8 +38,10 @@
 			event_title			as title,
 			event_description 	as description,
 			is_all_day			as allDay,
-			event_start			as start,
-			event_end			as end,
+			event_start_date	as startDate,
+			event_start_time	as startTime,
+			event_end_date		as endDate,
+			event_end_time		as endTime,
 			event_status		as status
 		from 
 			event
@@ -57,21 +49,23 @@
 			event_no = #{value}
 	</select>
 	
-	<select id="getEventsByPartyNo" parameterType="int" resultType="com.letsparty.vo.Event">
+	<select id="getEventByPartyNo" parameterType="int" resultType="com.letsparty.vo.Event">
 		SELECT
 			event_no 			as no,
 			event_title			as title,
 			event_description 	as description,
 			is_all_day			as allDay,
-			event_start			as start,
-			event_end			as end,
+			event_start_date	as startDate,
+			event_start_time	as startTime,
+			event_end_date		as endDate,
+			event_end_time		as endTime,
 			event_status		as status
 		FROM event
 		WHERE
 			party_no = #{value} AND 
-			event_start > CURDATE() AND
-			event_start &lt;= DATE_ADD(CURDATE(), INTERVAL 15 DAY)
-		ORDER BY event_start
+			(event_start_date > CURDATE() OR event_start_date = CURDATE() AND COALESCE(event_start_time, '24:00') >= CURTIME()) AND 
+			event_start_date &lt; DATE_ADD(CURDATE(), INTERVAL 15 DAY)
+		ORDER BY event_start_date, event_start_time
 		LIMIT 5;
 	</select>
 	

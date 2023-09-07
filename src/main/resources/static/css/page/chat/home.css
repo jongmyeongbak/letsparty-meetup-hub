@@ -1,0 +1,260 @@
+@charset "UTF-8";
+
+html {
+  font-family: "Malgun Gothic", "맑은 고딕", sans-serif;
+  background-color: #c0c4ff;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  /* min-height: 100vh;/ */
+}
+
+.chat-container {
+  margin: auto;
+
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.material-symbols-rounded {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+.chat-head {
+  display: flex;
+  justify-content: space-between;
+  background-color: #b3b9ff;
+
+  padding: 10px;
+  align-items: center;
+}
+
+.chat-head h1 {
+  margin: 0;
+  font-size: 0.95em;
+  font-weight: bolder;
+}
+
+.chat-head h2 {
+  margin: 0;
+  font-size: 0.7em;
+}
+
+.chat-dialogue {
+  background-color: #c0c4ff;
+  height: calc(100vh - 151.56px);
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.chat-dialogue::-webkit-scrollbar {
+  width: 10px;
+}
+
+.chat-dialogue::-webkit-scrollbar-thumb {
+  background-color: #a8a8a8;
+  border-radius: 10px;
+  min-height: 50px;
+}
+
+.chat-dialogue::-webkit-scrollbar-thumb:hover {
+  background-color: #a0a0a8;
+}
+
+.chat-dialogue::-webkit-scrollbar-thumb:active {
+  background-color: #7f7f8f;
+}
+
+.log-data {
+  padding: 0px 8px 8px 15px;
+}
+
+.log-date,
+.log-move {
+  margin: 8px 0;
+}
+
+.log-date time,
+.log-move p {
+  margin: 7px 0px;
+  padding: 4px 10px 5px;
+  border-radius: 10px;
+  font-size: 11px;
+  color: #333;
+  background-color: #d9dcff;
+}
+
+.log-move {
+  width: 100%;
+  text-align: center;
+}
+
+.log-move p {
+  display: inline;
+}
+
+.log-friend,
+.log-my {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.log-friend {
+  flex-direction: row;
+  margin-bottom: 5px;
+}
+
+.log-my {
+  flex-direction: row-reverse;
+  margin: 5px 0;
+}
+
+.pf-image {
+  width: 40px;
+  height: 40px;
+  margin-right: 5px;
+  /* 프로필 이미지의 기본 배경. 실제 이미지로 대체하려면 background-image 사용 */
+  background-color: #ccc;
+  /* 원형으로 보이게 */
+  border-radius: 40%;
+  /* 이미지와 텍스트 사이의 간격 */
+  align-self: flex-start;
+}
+
+.log-content {
+  display: flex;
+  flex-direction: column;
+  /* flex-wrap: nowrap; */
+  max-width: calc(100% - 55px);
+  margin: 0 1px;
+  /* position: relative; */
+}
+
+.nickname {
+  padding: 0 3px 2px;
+  width: max-content;
+  font-size: 11px;
+  color: #333;
+}
+
+.log-section {
+  display: flex;
+  align-items: end;
+}
+
+.log-bubble {
+  position: relative;
+  margin: 2px 2px;
+  padding: 5px 8px 7px;
+  /* flex-grow: 1; */
+  /* width: max-content; */
+  font-size: 12px;
+  line-height: 1.35;
+  border-radius: 5px;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.log-friend .log-bubble::before {
+  position: absolute;
+  top: -2px;
+  left: -5px;
+  content: "◥";
+  color: #f2f9ff;
+}
+
+.log-my .log-bubble::before {
+  position: absolute;
+  top: -2px;
+  right: -4px;
+  content: "◤";
+  color: #ffeb33;
+}
+
+.log-friend .log-bubble {
+  margin-top: 0;
+  background-color: #f2f9ff;
+}
+.log-my .log-bubble {
+  background-color: #ffeb33;
+}
+
+.log-aside {
+  display: flex;
+  /* 시간과 메시지 사이의 간격 */
+  margin: 0px 2px;
+  flex-direction: column;
+  align-self: flex-end;
+  font-size: 10px;
+}
+
+.log-aside .read {
+  color: #ffeb00;
+}
+
+.log-friend .read {
+  text-align: left;
+}
+
+.log-my .read {
+  text-align: right;
+}
+
+.log-aside .time {
+  width: max-content;
+  margin: -2px 0;
+  color: #555;
+}
+
+.chat-write {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  padding: 8px;
+  background-color: #f2f9ff;
+}
+
+.mentions-wrap {
+  display: flex;
+  align-items: center;
+}
+
+.mentions-input {
+  flex-grow: 1;
+}
+
+textarea.mentions {
+  width: 100%;
+  padding: 2px 0 6px 6px;
+  resize: none;
+  border: none;
+  outline: none;
+  font-size: 0.8em;
+  background-color: inherit;
+}
+
+.submit-wrap {
+  /* position: relative; */
+  right: 0;
+}
+
+.submit-wrap button {
+  padding: 6px;
+}
+
+.submit-wrap .material-symbols-rounded {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 48;
+}
+
+.swal2-popup {
+  max-width: 70%;
+  max-height: 70%;
+  font-size: 0.7em;
+}
+.swal2-actions {
+  margin: 0.5em 0;
+}

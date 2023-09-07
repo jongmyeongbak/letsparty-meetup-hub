@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.letsparty.mapper.MyMapper">
+<mapper namespace="com.letsparty.mapper.UserProfileMapper">
 	
 	<insert id="addProfile" parameterType="com.letsparty.vo.UserProfile" useGeneratedKeys="true" keyProperty="no">
 		insert into user_profile
-		(user_id, profile_nickname, image_filename, is_default)
+		(user_id, profile_nickname, image_filename, is_default, is_url)
 		value
-		(#{id}, #{nickname}, #{filename}, #{isDefault})
+		(#{id}, #{nickname}, #{filename}, #{isDefault}, #{isUrl})
 	</insert>
 	
 	<select id="getDefaultProfileById" parameterType="string" resultType="com.letsparty.vo.UserProfile">
@@ -15,7 +15,8 @@
 			user_id as id,
 			profile_nickname nickname, 
 			image_filename as filename,
-			is_default
+			is_default,
+			is_url
 		from
 			user_profile
 		where 
@@ -24,13 +25,49 @@
 			is_default = 1
 	</select>
 	
+	<select id="getProfileByNo" parameterType="int" resultType="com.letsparty.vo.UserProfile">
+		select 
+			profile_no as no,
+			user_id as id,
+			profile_nickname nickname, 
+			image_filename as filename,
+			is_default,
+			is_url
+		from
+			user_profile
+		where 
+			profile_no = #{no}
+	</select>
+	
+	<select id="getProfileByUserId" parameterType="string" resultType="com.letsparty.vo.UserProfile">
+		SELECT 
+			profile_no as no,
+			user_id as id,
+			profile_nickname nickname, 
+			image_filename as filename,
+			is_default,
+			is_url
+		FROM
+			user_profile
+		WHERE 
+			user_id = #{value}
+		ORDER BY is_default DESC
+	</select>
+	
 	<update id="updateProfile" parameterType="com.letsparty.vo.UserProfile">
 		update user_profile
 		set
 			profile_nickname = #{nickname},
-			image_filename = #{filename}
+			image_filename = #{filename},
+			is_url = #{isUrl},
+			is_default = #{isDefault}
 		where
 			profile_no = #{no}
 	</update>
+	
+	<delete id="deleteProfileByProfileNo" parameterType="int">
+		DELETE FROM user_profile
+		WHERE profile_no = #{value};
+	</delete>
 	
 </mapper>
