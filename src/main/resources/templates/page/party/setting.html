@@ -14,10 +14,10 @@
                         <div class="user-setting-item">
                             <div class="my-profile">    
                                 <div class="pf-image">
-                                    <img src="/img/hong.jpeg" alt="">
+                                    <img th:src="${upa.userProfile.filename}" alt="">
                                 </div>
                                 <div class="name">
-                                    <span>홍길동</span>
+                                    <span th:text="${upa.userProfile.nickname}">홍길동</span>
                                 </div>
                             </div>
                             <a href="">
@@ -36,7 +36,7 @@
                         </div>
                     </div>
                     <hr>
-                    <div class="leader-setting">
+                    <div th:if="${upa.roleNo != 8}" class="leader-setting">
                         <div class="leader-setting-item">
                             <div class="party-info-setting text">
                                 파티정보관리

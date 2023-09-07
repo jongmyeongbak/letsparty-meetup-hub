@@ -44,7 +44,7 @@
 			up.profile_nickname as "userProfile.nickname",
 			up.image_filename as "userProfile.filename",
 			up.is_default as "userProfile.isDefault",
-			up.is_default as "userProfile.isUrl"
+			up.is_url as "userProfile.isUrl"
 		FROM user_party_application upa
 		INNER JOIN user_profile up ON upa.profile_no = up.profile_no
 		WHERE upa.party_no = #{partyNo}
@@ -157,5 +157,12 @@
 		WHERE
 			application_no = #{no}
 	</update>
+	
+	<delete id="withdrawParty" parameterType="long">
+		DELETE FROM 
+			user_party_application
+		WHERE 
+			application_no = #{value};
+	</delete>
 
 </mapper>

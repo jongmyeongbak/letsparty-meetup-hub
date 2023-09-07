@@ -30,6 +30,8 @@ public class UserPartyApplicationService {
 	private final PartyReqMapper partyReqMapper;
 	@Value("${s3.path.covers}")
 	private String coversPath;
+	@Value("${s3.path.profiles}")
+	private String profilePath;
 	
 	public void addLeaderUserPartyApplication(int partyNo, String leaderId) {
 		addUserPartyApplicationWithApproved(partyNo, leaderId, 6, userProfileMapper.getDefaultProfileById(leaderId));
@@ -73,7 +75,11 @@ public class UserPartyApplicationService {
 	}
 	
 	public UserPartyApplication findByPartyNoAndUserId(int partyNo, String userId) {
-		return userPartyApplicationMapper.findByPartyNoAndUserId(partyNo, userId);
+		UserPartyApplication upa = userPartyApplicationMapper.findByPartyNoAndUserId(partyNo, userId);
+		if (!upa.getUserProfile().getIsUrl()) {
+			upa.getUserProfile().setFilename(profilePath + upa.getUserProfile().getFilename());
+		}
+		return upa;
 	}
 	
 	public int countPartyMemberWithStatus(int partyNo, String status) {

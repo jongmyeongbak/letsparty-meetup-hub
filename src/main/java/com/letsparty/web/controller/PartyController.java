@@ -207,7 +207,10 @@ public class PartyController {
 	
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/{partyNo}/setting")
-	public String setting() {
+	public String setting(@PathVariable int partyNo, @AuthenticationPrincipal LoginUser loginUser, Model model) {
+		UserPartyApplication upa = userPartyApplicationService.findByPartyNoAndUserId(partyNo, loginUser.getId());
+		System.out.println(upa.getUserProfile().getFilename());
+		model.addAttribute("upa", upa);
 		return "page/party/setting";
 	}
 	
