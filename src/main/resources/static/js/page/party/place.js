@@ -2,10 +2,21 @@ $(function(){
 	// 모달이 완전히 띄워졌을 때 지도 객체를 다시 초기화하여 전체적인 지도 이미지를 렌더링
 	$("#place-modal").on('shown.bs.modal', function() {
 		map.relayout();
-		// 초기에 설정해둔 키워드로 검색 함수를 실행시켜 중심좌표를 중앙으로 맞춘다.
-		searchPlaces();
-		console.log("임시저장소:" + tempSelectedPlace.name);
-  		console.log("실제저장소:" + selectedPlace.name);
+		// 이미지 렌더링 종료 후 현재 위치를 받아와 센터 이동
+		if (navigator.geolocation) {
+		    // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+		    navigator.geolocation.getCurrentPosition(function(position) {
+		        var lat = position.coords.latitude, // 위도
+		            lon = position.coords.longitude; // 경도
+		        var locPosition = new kakao.maps.LatLng(lat, lon) // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+		        // 지도의 중심을 이동합니다.
+		        map.setCenter(locPosition);
+		      });
+		} else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
+		    var locPosition = new kakao.maps.LatLng(33.450701, 126.570667)
+		    // 지도의 중심을 이동합니다.
+		    map.setCenter(locPosition);
+		} 
 	})
 })		
 
@@ -33,9 +44,6 @@ var infowindow = new kakao.maps.InfoWindow({zIndex:1});
 let tempSelectedPlace = {};
 // 실제 전송될  장소 데이터를 담는 객체
 let selectedPlace = {};
-
-// 키워드로 장소를 검색합니다
-searchPlaces();
 
 // 키워드 검색을 요청하는 함수입니다
 function searchPlaces(address_name, place_name) {
@@ -301,6 +309,3 @@ $("#add-post-btn").on("click", function(e){
 })
 
 });
-
-
-
