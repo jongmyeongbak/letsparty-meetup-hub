@@ -62,7 +62,6 @@ public class UserProfileService {
 		UserProfile userProfile = new UserProfile();
 		
 		BeanUtils.copyProperties(userProfileForm, userProfile);
-		System.out.println(userProfileForm.toString());
 		
 		UserProfile savedUserProfile = userProfileMapper.getProfileByNo(userProfile.getNo());
 		

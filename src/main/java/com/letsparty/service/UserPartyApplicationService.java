@@ -95,7 +95,7 @@ public class UserPartyApplicationService {
 	}
 	
 	public boolean isLeader(LoginUser loginUser) {
-		if (loginUser != null && !userPartyApplicationMapper.findAllThatNotMemberByUserId(loginUser.getId()).isEmpty()) {
+		if (loginUser != null && !userPartyApplicationMapper.findAllThatExceptMemberByUserId(loginUser.getId()).isEmpty()) {
 			return true;
 		}
 		return false;
