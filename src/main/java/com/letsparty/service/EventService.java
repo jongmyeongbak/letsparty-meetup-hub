@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.letsparty.mapper.EventMapper;
 import com.letsparty.vo.Event;
+import com.letsparty.vo.Party;
 import com.letsparty.vo.User;
 import com.letsparty.web.form.RegisterEventForm;
 
@@ -23,9 +24,15 @@ public class EventService {
 	private final EventMapper eventMapper;
 	
 	// 일정 정보 등록하기
-	public Event insertEvent(User user, RegisterEventForm registerEventForm) {
+	public Event insertEvent(RegisterEventForm registerEventForm, String userId) {
+		// TODO 파티권한 확인
 		Event event = new Event();
 		BeanUtils.copyProperties(registerEventForm, event);
+		Party party = new Party();
+		party.setNo(registerEventForm.getPartyNo());
+		event.setParty(party);
+		User user = new User();
+		user.setId(userId);
 		event.setUser(user);
 		
 		eventMapper.insertEvent(event);
@@ -33,31 +40,34 @@ public class EventService {
 		return event;
 	}    
 	
-	public void updateEvent(User user, RegisterEventForm updateEventForm, int eventNo) {
-		Event existingEvent = eventMapper.getEventByNo(eventNo);
-		
+	public boolean updateEvent(int id, RegisterEventForm updateEventForm, String userId) {
+		// TODO 파티권한 확인
+		Event existingEvent = eventMapper.getEventByNo(id);
 		if (existingEvent != null) {
 			// 업데이트 내용을 updateEventForm에서 가져와 existingEvent 적용
 			existingEvent.setTitle(updateEventForm.getTitle());
 			existingEvent.setDescription(updateEventForm.getDescription());
+			existingEvent.setAllDay(updateEventForm.isAllDay());
 			existingEvent.setStart(updateEventForm.getStart());
 			existingEvent.setEnd(updateEventForm.getEnd());
+			eventMapper.updateEvent(existingEvent);
+			return true;
 		}
-		eventMapper.updateEvent(existingEvent);
+		return false;
 	}
 	
 	// 일정 목록 조회하기
-	public List<Event> getEvents(Date startDate, Date endDate) {
-		return eventMapper.getEvents(convertDateToLocalDateTime(startDate), convertDateToLocalDateTime(endDate));
+	public List<Event> getEvents(int partyNo, Date startDate, Date endDate) {
+		return eventMapper.getEvents(partyNo, convertDateToLocalDateTime(startDate), convertDateToLocalDateTime(endDate));
 	}
 	
 	// 일정 상세정보 조회하기
-	public Event getEventDetail(int eventNo) {
-		return eventMapper.getEventDetailByNo(eventNo);
+	public Event getEventDetail(int id) {
+		return eventMapper.getEventDetailByNo(id);
 	}
 	
-	public Event getEventByNo(int eventNo) {
-		return eventMapper.getEventByNo(eventNo);
+	public Event getEventById(int id) {
+		return eventMapper.getEventByNo(id);
 	}
 	
 	private LocalDateTime convertDateToLocalDateTime(Date date) {

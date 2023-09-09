@@ -2,6 +2,8 @@ package com.letsparty.vo;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -11,16 +13,17 @@ import lombok.ToString;
 @ToString
 public class Event {
 
-	private int no;
+	private int id;
+	@JsonIgnore
+	private Party party;
+	private User user;
 	private String title;
 	private String description;
 	private int status;
-	private int allDay;
+	private boolean allDay;
 	private LocalDateTime start;
 	private LocalDateTime end;
-	private Party party;
-//	private Place place;
-	private User user;
-//	private Post post;
+	private Post post;
+	private Place place;
 	
 }

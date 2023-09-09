@@ -3,7 +3,7 @@
    layout:decorate="~{layout/party-base}">
 <head>
 	<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
-	 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 	<script th:src="@{/js/page/party/ko.global.min.js}"></script>
 	<link rel="stylesheet" th:href="@{/css/page/party/event.css}" >
 </head>
@@ -55,7 +55,7 @@
 		                </div>
 		                <div class="modal-footer">
 		                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-		                    <button type="button" class="btn btn-primary" id="save-event" onclick="addSave">등록</button>
+		                    <button type="button" class="btn btn-primary" id="save-event">등록</button>
 		                </div>
 		            </div>
 		        </div>
@@ -74,7 +74,7 @@
 		          		<form th:value="10" id="modify-event-form">
 		          		-->
 			          		<div class="modal-body">
-			          			<input type="hidden" name="no">
+			          			<input type="hidden" name="id">
 			          			<div class="form-group">
 			                        <label for="taskId" class="col-form-label">일정 제목</label>
 			                        <input type="text" class="form-control" id="title" name="title">
@@ -89,7 +89,7 @@
 			                        <label for="taskId" class="col-form-label">종료 시간</label>
 			                        <input type="time" class="form-control" id="endTime" name="endTime">
 			                        <label for="taskId" class="col-form-label">하루 종일</label>
-			                        <input class="form-check-input" type="checkbox" name="allDay" role="switch" value="Y" ><br/>
+			                        <input class="form-check-input" type="checkbox" name="allDay" role="switch"><br/>
 			                    </div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">닫기</button>

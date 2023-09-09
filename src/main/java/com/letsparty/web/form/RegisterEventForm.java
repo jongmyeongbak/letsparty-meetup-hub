@@ -11,12 +11,12 @@ import lombok.Setter;
 @Setter
 public class RegisterEventForm {
 
+	private int partyNo;
 	private String title;
 	private String description;
+	private boolean allDay;
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private LocalDateTime start;
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private LocalDateTime end;
-	private int allDay;
-	private int partyNo;
 }

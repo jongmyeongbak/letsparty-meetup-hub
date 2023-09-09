@@ -2,55 +2,74 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.letsparty.mapper.EventMapper">
 	
-	<insert id="insertEvent" parameterType="com.letsparty.vo.Event" useGeneratedKeys="true" keyProperty="no">
-		
+	<insert id="insertEvent" parameterType="com.letsparty.vo.Event" useGeneratedKeys="true" keyProperty="id">
 		insert into event
-			(event_title, event_description, is_all_day, event_start, 
-			 event_end, event_status, user_id,
-			 place_no, post_id, party_no)
+			(party_no, user_id, event_title, event_description, event_status, is_all_day, event_start, event_end,
+			post_id, place_no)
 		values
-			(#{title}, #{description}, #{allDay}, 
-			#{start}, #{end},
-			#{status}, #{user.id}, null, null, 1)
+			(#{party.no}, #{user.id}, #{title}, #{description}, #{status}, #{allDay}, #{start}, #{end},
+			<choose>
+				<when test="post != null">
+					#{post.id}
+				</when>
+				<otherwise>
+					null
+				</otherwise>
+			</choose>,
+			<choose>
+				<when test="place != null">
+					#{place.no}
+				</when>
+				<otherwise>
+					null
+				</otherwise>
+			</choose>)
 	</insert>
 	
 	<update id="updateEvent" parameterType="com.letsparty.vo.Event">
-		update events
+		update event
 		set 
 			event_title = #{title},
 			event_description = #{description},
+			is_all_day = #{allDay},
 			event_start = #{start},
-			event_end = #{end},
-			is_all_day = #{allDay}
+			event_end = #{end}
 		where 
-			event_no = #{no}
+			event_no = #{id}
 	</update>
 	
 	<select id="getEvents" parameterType="map" resultType="com.letsparty.vo.Event">
 		select
-			event_no 			as no,
+			event_no 			as id,
+			user_id				as "user.id",
 			event_title			as title,
 			event_description 	as description,
+			event_status		as status,
 			is_all_day			as allDay,
 			event_start			as start,
 			event_end			as end,
-			event_status		as status
+			post_id				as "post.id",
+			place_no			as "place.no"
 		from 
 			event
 		where
+			party_no = #{partyNo} AND
 			event_end >= #{startDate} or
 			event_start &lt; #{endDate}
 	</select>
 	
 	<select id="getEventByNo" parameterType="int" resultType="com.letsparty.vo.Event">
 		select
-			event_no 			as no,
+			event_no 			as id,
+			user_id				as "user.id",
 			event_title			as title,
 			event_description 	as description,
+			event_status		as status,
 			is_all_day			as allDay,
 			event_start			as start,
 			event_end			as end,
-			event_status		as status
+			post_id				as "post_id",
+			place_no			as "place.no"
 		from 
 			event
 		where 
@@ -59,7 +78,7 @@
 	
 	<select id="getEventsByPartyNo" parameterType="int" resultType="com.letsparty.vo.Event">
 		SELECT
-			event_no 			as no,
+			event_no 			as id,
 			event_title			as title,
 			event_description 	as description,
 			is_all_day			as allDay,
