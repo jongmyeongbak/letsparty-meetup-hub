@@ -26,5 +26,6 @@ public interface UserPartyApplicationMapper {
 	List<UserPartyApplication> findAllExceptMemberByUserId(String userId);
 	List<UserPartyApplication> findAllByUserId(String userId);
 	void withdraw(int upaNo);
+	int countApprovedMembersExceptLeader(int partyNo, String userId);
 
 }

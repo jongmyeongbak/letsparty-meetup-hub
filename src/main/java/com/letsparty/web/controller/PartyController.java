@@ -1,6 +1,5 @@
 package com.letsparty.web.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.letsparty.dto.PartyReqDto;
 import com.letsparty.security.user.LoginUser;
@@ -29,8 +29,6 @@ import com.letsparty.service.UserProfileService;
 import com.letsparty.service.ValidationService;
 import com.letsparty.util.PartyDataUtils;
 import com.letsparty.vo.Party;
-import com.letsparty.vo.Post;
-import com.letsparty.vo.User;
 import com.letsparty.vo.UserPartyApplication;
 import com.letsparty.vo.UserProfile;
 import com.letsparty.web.form.PartyForm;
@@ -181,6 +179,23 @@ public class PartyController {
 		partyService.modifyParty(partyForm, partyNo);
 		
 		return "redirect:/party/{partyNo}/setting" ;
+	}
+	
+	@PostMapping("/{partyNo}/delete")
+	public String deleteParty(@AuthenticationPrincipal LoginUser loginUser, @PathVariable int partyNo, RedirectAttributes attributes) {
+		Party savedParty = partyService.getPartyByNo(partyNo);
+	    if (!savedParty.getLeader().getId().equals(loginUser.getId())) {
+	        return "redirect:/party/{partyNo}";
+	    }
+	    int partyMemberCntExceptLeader = userPartyApplicationService.countApprovedMembersExceptLeader(partyNo, loginUser.getId());
+	    UserPartyApplication savedUpa = userPartyApplicationService.findByPartyNoAndUserId(partyNo, loginUser.getId());
+	    if (partyMemberCntExceptLeader != 0) {
+	    	attributes.addFlashAttribute("errorMessage", "파티에 멤버가 남아있으므로 파티를 삭제할 수 없습니다.");
+	    	return "redirect:/party/{partyNo}/setting";
+	    } else {
+	    	partyService.deleteParty(savedParty, savedUpa);
+	    	return "redirect:/";
+	    }
 	}
 	
 	@PreAuthorize("isAuthenticated()")

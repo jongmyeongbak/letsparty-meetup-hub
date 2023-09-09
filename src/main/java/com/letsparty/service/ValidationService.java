@@ -114,7 +114,7 @@ public class ValidationService {
             response.put("message", "리더는 자기 자신을 탈퇴 시킬 수 없습니다.");
             return response;
         }
-        userPartyApplicationService.update(savedUserPartyApplication);
+        userPartyApplicationService.kick(savedUserPartyApplication, savedParty);
         response.put("status", "success");
         response.put("message", "퇴장 처리가 완료되었습니다.");
         return response;

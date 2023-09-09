@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -22,7 +21,6 @@ import com.letsparty.mapper.PollMapper;
 import com.letsparty.mapper.PostMapper;
 import com.letsparty.mapper.UserMapper;
 import com.letsparty.mapper.UserPartyApplicationMapper;
-import com.letsparty.security.user.LoginUser;
 import com.letsparty.vo.Category;
 import com.letsparty.vo.Media;
 import com.letsparty.vo.Party;
@@ -161,6 +159,16 @@ public class PartyService {
 		if (tagsFromForm != null && !tagsFromForm.isEmpty()) {
 			insertTags(tagsFromForm, party);
 		}
+	}
+	
+	// 파티 삭제
+	public void deleteParty(Party savedParty, UserPartyApplication savedUpa) {
+		// 파티의 상태 변경
+		savedParty.setStatus("폐쇄");
+		// 리더의 상태 변경
+		savedUpa.setStatus("탈퇴");
+		userPartyApplicationMapper.update(savedUpa);
+		partyMapper.updateParty(savedParty);
 	}
 
 	// 파티 번호로 파티 조회
@@ -369,5 +377,9 @@ public class PartyService {
 		}
 
 		return partyList;
+	}
+	
+	public int countApprovedMembersExceptLeader(int partyNo, String userId) {
+		return userPartyApplicationMapper.countApprovedMembersExceptLeader(partyNo, userId);
 	}
 }

@@ -130,6 +130,15 @@
 		and application_status = '승인';
 	</select>
 	
+	<!-- 리더를 제외한 현재 파티 멤버의 수 -->
+	<select id="countApprovedMembersExceptLeader" resultType="int">
+		select count(*) 
+		from user_party_application 
+		where party_no = #{partyNo} 
+		and user_id != #{userId} 
+		and application_status = '승인';
+	</select>
+	
 	<select id="findAllByUserId" parameterType="string" resultType="UserPartyApplication">
 		SELECT 
 			upa.application_no	as no,
@@ -147,6 +156,7 @@
 		WHERE upa.user_id = #{value}
 		AND application_status = '승인';
 	</select>
+	
 
 	<update id="update" parameterType="UserPartyApplication">
 		UPDATE user_party_application
@@ -158,6 +168,7 @@
 		WHERE
 			application_no = #{no}
 	</update>
+	
 	
 	<delete id="withdraw" parameterType="int">
 		DELETE FROM 

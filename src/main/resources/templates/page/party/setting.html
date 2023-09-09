@@ -7,6 +7,9 @@
 </head>
 <!-- 고유 content -->
 <div layout:fragment="content-top" class="content">
+	<div th:if="${errorMessage}" class="alert alert-danger">
+		<span th:text="${errorMessage}"></span>
+	</div>
 	<div class="party-setting">
 		<div class="col">
 			<h5>파티 설정</h5>
@@ -62,9 +65,9 @@
 				</div>
 				<div class="leader-setting-item">
 					<div class="text">파티 삭제</div>
-					<a href="">
-						<div class="button party-delete-btn danger">삭제</div>
-					</a>
+					<form id="deletePartyForm" th:action="@{/party/{partyNo}/delete(partyNo=${upa.party.no})}" method="post">
+						<button id="delete-btn" type="submit" class="button party-delete-btn danger">삭제</button>
+					</form>
 				</div>
 			</div>
 		</div>

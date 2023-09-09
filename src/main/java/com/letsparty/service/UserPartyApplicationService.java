@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.letsparty.mapper.PartyMapper;
 import com.letsparty.mapper.PartyReqMapper;
 import com.letsparty.mapper.UserMapper;
 import com.letsparty.mapper.UserPartyApplicationMapper;
@@ -19,15 +20,18 @@ import com.letsparty.vo.UserProfile;
 import com.letsparty.web.form.PartyProfileForm;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserPartyApplicationService {
 
 	private final UserPartyApplicationMapper userPartyApplicationMapper;
 	private final UserProfileMapper userProfileMapper;
 	private final UserMapper userMapper;
 	private final PartyReqMapper partyReqMapper;
+	private final PartyMapper partyMapper;
 	@Value("${s3.path.covers}")
 	private String coversPath;
 	@Value("${s3.path.profiles}")
@@ -99,9 +103,11 @@ public class UserPartyApplicationService {
 		return upaList;
 	}
 	
-	public void update(UserPartyApplication savedUserPartyApplication) {
+	public void kick(UserPartyApplication savedUserPartyApplication, Party savedParty) {
 		savedUserPartyApplication.setStatus("강퇴");
+		savedParty.setCurCnt(savedParty.getCurCnt() -1);
 		userPartyApplicationMapper.update(savedUserPartyApplication);
+		partyMapper.updateParty(savedParty);
 	}
 	
 	public boolean isLeader(LoginUser loginUser) {
@@ -123,5 +129,9 @@ public class UserPartyApplicationService {
 
 	public void withdraw(int upaNo) {
 		userPartyApplicationMapper.withdraw(upaNo);
+	}
+
+	public int countApprovedMembersExceptLeader(int partyNo, String userId) {
+		return userPartyApplicationMapper.countApprovedMembersExceptLeader(partyNo, userId);
 	}
 }

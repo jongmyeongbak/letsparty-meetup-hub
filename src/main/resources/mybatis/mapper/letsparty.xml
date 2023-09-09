@@ -36,7 +36,8 @@
 			count(*)
 		from letsparty_post lt
 		inner join party p on lt.party_no = p.party_no
-		where lt.is_deleted = 0		
+		where lt.is_deleted = 0	
+		and p.party_status = '활성'	
 		<if test="categoryNo != null and categoryNo != 0">
 		 	and p.category_no = #{categoryNo}
 		</if>
@@ -67,6 +68,7 @@
 		from letsparty_post lt
 		inner join party p on lt.party_no = p.party_no
 		where lt.is_deleted = 0
+		and p.party_status = '활성'
 		<if test="categoryNo != null and categoryNo != 0">
 		 	and p.category_no = #{categoryNo}
 		</if>
