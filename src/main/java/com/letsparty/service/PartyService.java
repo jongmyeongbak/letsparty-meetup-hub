@@ -177,7 +177,6 @@ public class PartyService {
 	// 파티 번호로 파티 조회
 	public Party getPartyByNo(int partyNo) {
 		Party party = partyMapper.getPartyByNo(partyNo);
-		party.setFilename(coversPath + party.getFilename());
 		return party;
 	}
 

@@ -136,7 +136,7 @@ public class PartyController {
 		// 커버 조회
 		// 클라우드 프론트 도메인과 DB에 저장된 파일이름 결합
 		String savedFileName = savedParty.getFilename();
-		partyForm.setSavedName(savedFileName);
+		partyForm.setSavedName(coversPath + savedFileName);
 
 		model.addAttribute("partyForm", partyForm );
 		
@@ -188,7 +188,7 @@ public class PartyController {
 	        return "redirect:/party/{partyNo}";
 	    }
 	    UserPartyApplication savedUpa = userPartyApplicationService.findByPartyNoAndUserId(partyNo, loginUser.getId());
-	    if (!userPartyApplicationService.isDeletable(partyNo, loginUser.getId())) {
+	    if (!userPartyApplicationService.isPartyDeletable (partyNo)) {
 	    	attributes.addFlashAttribute("errorMessage", "파티에 멤버가 남아있으므로 파티를 삭제할 수 없습니다.");
 	    	return "redirect:/party/{partyNo}/setting";
 	    } else {

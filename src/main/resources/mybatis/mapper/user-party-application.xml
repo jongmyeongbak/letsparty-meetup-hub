@@ -131,11 +131,10 @@
 	</select>
 	
 	<!-- 리더를 제외한 현재 파티 멤버의 수 -->
-	<select id="countApprovedMembersExceptLeader" resultType="int">
+	<select id="countApprovedMember" resultType="int">
 		select count(*) 
 		from user_party_application 
 		where party_no = #{partyNo} 
-		and user_id != #{userId} 
 		and application_status = '승인';
 	</select>
 	

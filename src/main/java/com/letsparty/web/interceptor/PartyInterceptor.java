@@ -58,6 +58,7 @@ public class PartyInterceptor implements HandlerInterceptor {
 		int partyNo = Integer.parseInt(uri.split("/")[2]);
 		
 		Party party = partyService.getPartyByNo(partyNo);
+		party.setFilename(coversPath + party.getFilename());
 		
 		// 로그인을 하고 해당 파티에 가입된 경우엔 right.html과 채팅방 정보와 일정을 가져온다.
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

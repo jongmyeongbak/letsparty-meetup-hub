@@ -105,7 +105,7 @@ public class UserPartyApplicationService {
 	
 	public void kick(UserPartyApplication savedUserPartyApplication, Party savedParty) {
 		savedUserPartyApplication.setStatus("강퇴");
-		savedParty.setCurCnt(savedParty.getCurCnt() -1);
+		savedParty.setCurCnt(savedParty.getCurCnt() - 1);
 		userPartyApplicationMapper.update(savedUserPartyApplication);
 		partyMapper.updateParty(savedParty);
 	}
@@ -131,9 +131,9 @@ public class UserPartyApplicationService {
 		userPartyApplicationMapper.withdraw(upaNo);
 	}
 
-	public boolean isDeletable(int partyNo, String leaderId) {
-	    int memberCount = userPartyApplicationMapper.countApprovedMembersExceptLeader(partyNo, leaderId);
-	    return memberCount == 0;
+	public boolean isPartyDeletable (int partyNo) {
+	    int memberCount = userPartyApplicationMapper.countApprovedMember(partyNo);
+	    return memberCount == 1;
 	}
 
 }
