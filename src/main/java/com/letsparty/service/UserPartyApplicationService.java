@@ -131,7 +131,9 @@ public class UserPartyApplicationService {
 		userPartyApplicationMapper.withdraw(upaNo);
 	}
 
-	public int countApprovedMembersExceptLeader(int partyNo, String userId) {
-		return userPartyApplicationMapper.countApprovedMembersExceptLeader(partyNo, userId);
+	public boolean isDeletable(int partyNo, String leaderId) {
+	    int memberCount = userPartyApplicationMapper.countApprovedMembersExceptLeader(partyNo, leaderId);
+	    return memberCount == 0;
 	}
+
 }

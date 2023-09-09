@@ -187,9 +187,8 @@ public class PartyController {
 	    if (!savedParty.getLeader().getId().equals(loginUser.getId())) {
 	        return "redirect:/party/{partyNo}";
 	    }
-	    int partyMemberCntExceptLeader = userPartyApplicationService.countApprovedMembersExceptLeader(partyNo, loginUser.getId());
 	    UserPartyApplication savedUpa = userPartyApplicationService.findByPartyNoAndUserId(partyNo, loginUser.getId());
-	    if (partyMemberCntExceptLeader != 0) {
+	    if (!userPartyApplicationService.isDeletable(partyNo, loginUser.getId())) {
 	    	attributes.addFlashAttribute("errorMessage", "파티에 멤버가 남아있으므로 파티를 삭제할 수 없습니다.");
 	    	return "redirect:/party/{partyNo}/setting";
 	    } else {

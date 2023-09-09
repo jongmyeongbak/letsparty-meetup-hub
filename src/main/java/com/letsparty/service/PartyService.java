@@ -165,6 +165,9 @@ public class PartyService {
 	public void deleteParty(Party savedParty, UserPartyApplication savedUpa) {
 		// 파티의 상태 변경
 		savedParty.setStatus("폐쇄");
+		String fullCoverPath = savedParty.getFilename();
+		String filename = fullCoverPath.replace(coversPath, "");
+		savedParty.setFilename(filename);
 		// 리더의 상태 변경
 		savedUpa.setStatus("탈퇴");
 		userPartyApplicationMapper.update(savedUpa);
@@ -377,9 +380,5 @@ public class PartyService {
 		}
 
 		return partyList;
-	}
-	
-	public int countApprovedMembersExceptLeader(int partyNo, String userId) {
-		return userPartyApplicationMapper.countApprovedMembersExceptLeader(partyNo, userId);
 	}
 }
