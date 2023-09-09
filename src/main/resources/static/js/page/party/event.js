@@ -233,14 +233,14 @@ $(function() {
 				url: `/event/update/${eventId}`,
 				type: 'POST',
 				data: eventData,
-				success: function(response) {
+				success: function() {
 					let eventToUpdate = calendar.getEventById(eventId);
 					eventToUpdate.setProp('title', eventData.title);
 					let start = new Date(eventData.start);
 					start.setHours(start.getHours() - 9);
 					let end = new Date(eventData.end);
 					end.setHours(end.getHours() - 9);
-					eventToUpdate.setDates(start, end, {allDay: eventData.allDay});
+					eventToUpdate.setDates(start, end, { allDay: eventData.allDay });
 					calendar.getEventById(eventId).setExtendedProp('description', eventData.description);
 					$("#eventDetailModal").modal("hide");
 				},
