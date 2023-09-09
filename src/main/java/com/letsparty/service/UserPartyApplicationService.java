@@ -84,11 +84,7 @@ public class UserPartyApplicationService {
 			upa.getUserProfile().setFilename(profilePath + upa.getUserProfile().getFilename());
 		}
 		return upa;
-	}
-	
-	public int countPartyMemberWithStatus(int partyNo, String status) {
-		return userPartyApplicationMapper.countPartyMemberByPartyNoAndStatus(partyNo, status);
-	}
+	}	
 
 	public List<UserPartyApplication> findAllByUserId(String userId) {
 		List<UserPartyApplication> upaList = userPartyApplicationMapper.findAllByUserId(userId);

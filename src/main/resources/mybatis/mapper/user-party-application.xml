@@ -103,14 +103,6 @@
 			</choose>
 			role_no, "userProfile.nickname"
 	</select>
-	
-
-	<select id="countPartyMemberByPartyNoAndStatus" resultType="int">
-		SELECT COUNT(*)
-		FROM user_party_application
-		WHERE party_no = #{partyNo}
-		AND application_status = #{status};
-  	</select>
     
 	<!-- 사용자가 리더인 파티들 조회 -->
 	<select id="findAllExceptMemberByUserId" parameterType="string" resultType="UserPartyApplication">
