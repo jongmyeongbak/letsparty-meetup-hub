@@ -136,7 +136,7 @@ public class PartyController {
 		// 커버 조회
 		// 클라우드 프론트 도메인과 DB에 저장된 파일이름 결합
 		String savedFileName = savedParty.getFilename();
-		partyForm.setSavedName(coversPath + savedFileName);
+		partyForm.setSavedName(savedFileName);
 
 		model.addAttribute("partyForm", partyForm );
 		
