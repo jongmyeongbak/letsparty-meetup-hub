@@ -6,7 +6,6 @@ import com.letsparty.vo.Place;
 import com.letsparty.vo.Poll;
 import com.letsparty.vo.PollAnswer;
 import com.letsparty.vo.PollOption;
-import com.letsparty.vo.PollOptionForm;
 import com.letsparty.vo.Post;
 
 import lombok.Getter;

@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.letsparty.dto.PartyCommentDto;
 import com.letsparty.dto.PartyReqDto;
 import com.letsparty.mapper.PartyMapper;
 import com.letsparty.security.user.LoginUser;
@@ -29,8 +31,10 @@ import com.letsparty.vo.Party;
 import com.letsparty.vo.PartyReq;
 import com.letsparty.vo.Post;
 import com.letsparty.vo.User;
+import com.letsparty.vo.Comment;
 import com.letsparty.vo.UserPartyApplication;
 import com.letsparty.vo.UserProfile;
+import com.letsparty.web.form.CommentForm;
 import com.letsparty.web.form.PartyForm;
 import com.letsparty.web.form.PostForm;
 
@@ -207,6 +211,37 @@ public class PartyController {
 	public String home(@PathVariable int partyNo, Model model) {
 		// partyNo를 사용하여 파티 게시물을 조회합니다.
 		return "page/party/home";
+	}
+	
+	// 댓글 제출
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping("/{partyNo}/comment")
+	public String Comment(@PathVariable int partyNo, @AuthenticationPrincipal LoginUser loginUser, CommentForm commentForm) {
+		
+		User user = new User();
+		user.setId(loginUser.getId());
+		
+		commentForm.setUser(user);
+		commentForm.setUserId(loginUser.getId());
+		
+		partyService.insertComment(commentForm);
+		return "redirect:/party/{partyNo}";
+	}
+	
+	@GetMapping("/{partyNo}/post/{postId}")
+	@ResponseBody
+	public List<PartyCommentDto> getAllComments(@PathVariable long partyNo, @PathVariable long postId, @AuthenticationPrincipal LoginUser loginUser, Model model) {
+	    // 이후 로직 수행
+	    List<PartyCommentDto> allComments = partyService.getAllCommentsByPostNo(postId); // postNo 전달
+	    for (PartyCommentDto comment : allComments) {
+	        comment.getPost().getParty().setFilename(coversPath + comment.getPost().getParty().getFilename());
+	    }
+	    
+	    // partyNo와 postNo를 모델에 추가
+	    model.addAttribute("partyNo", partyNo);
+	    model.addAttribute("postNo", postId);
+	    
+	    return allComments;
 	}
 	
 	@PreAuthorize("isAuthenticated()")
