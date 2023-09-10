@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 import com.letsparty.dto.ChatRoomWithUsers;
 import com.letsparty.dto.ChatUserResponse;
+import com.letsparty.dto.UserChatSummaryDto;
 import com.letsparty.mapper.ChatMessageMapper;
 import com.letsparty.mapper.ChatRoomMapper;
 import com.letsparty.mapper.ChatUserMapper;
@@ -220,5 +221,9 @@ public class ChatService {
 	
 	public ChatRoom getChatRoom(String roomId) {
 		return chatRoomMapper.findById(roomId);
+	}
+
+	public List<UserChatSummaryDto> getUserChatSummary(int userNo) {
+		return chatUserMapper.getUserChatSummary(userNo);
 	}
 }

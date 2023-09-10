@@ -97,6 +97,83 @@
 		JOIN
 			user_profile up ON upa.profile_no = up.profile_no
 	</select>
+
+	<select id="getUserChatSummary" resultType="com.letsparty.dto.UserChatSummaryDto">
+		WITH NicknameAgg AS (
+			SELECT
+				cu2.room_id,
+				SUBSTRING_INDEX(
+					GROUP_CONCAT(up2.profile_nickname ORDER BY up2.profile_nickname), ', ', 5
+				) AS nicknames
+			FROM
+				chat_user cu2
+			JOIN
+				chat_room cr2 ON cu2.room_id = cr2.room_id AND is_public = false
+			JOIN
+				user u2 ON cu2.user_no = u2.user_no
+			JOIN
+				user_party_application upa2 ON upa2.user_id = u2.user_id AND upa2.party_no = cr2.party_no
+			JOIN
+				user_profile up2 ON up2.profile_no = upa2.profile_no
+			WHERE
+				cu2.user_no != #{value}
+			GROUP BY
+				cu2.room_id
+		),
+		LatestMessage AS (
+			SELECT
+				cm1.room_no,
+				cm1.message_type,
+				cm1.message_text,
+				cm1.message_no AS latest_msg_no,
+				cm1.user_no AS latest_msg_user_no,
+				ROW_NUMBER() OVER(PARTITION BY cm1.room_no ORDER BY cm1.message_no DESC) AS rn
+			FROM chat_message cm1
+			JOIN (
+				SELECT cr.room_no, cu.join_message_no
+				FROM chat_user cu
+				JOIN chat_room cr ON cu.room_id = cr.room_id
+				WHERE cu.user_no = 4
+			) AS cu_sub ON cm1.room_no = cu_sub.room_no AND cm1.message_no > cu_sub.join_message_no
+		)
+		SELECT
+			cu.room_id,
+			cr.chatters_cnt,
+			p.party_name,
+			CASE
+				WHEN cr.is_public = false THEN COALESCE(na.nicknames, p.party_name)
+				ELSE p.party_name
+			END AS display_name,
+			p.party_filename,
+			SUM(CASE WHEN cm.message_no > cu.last_read_message_no THEN 1 ELSE 0 END) AS message_count,
+			lm.message_type,
+			lm.message_text,
+			up_latest.profile_nickname AS latest_message_nickname
+		FROM
+			chat_user cu
+		JOIN
+			chat_room cr ON cu.room_id = cr.room_id
+		JOIN
+			chat_message cm ON cr.room_no = cm.room_no
+		LEFT JOIN
+			LatestMessage lm ON lm.room_no = cr.room_no AND lm.rn = 1
+		LEFT JOIN
+			user u_latest ON u_latest.user_no = lm.latest_msg_user_no
+		LEFT JOIN
+			user_party_application upa_latest ON upa_latest.party_no = cr.party_no AND upa_latest.user_id = u_latest.user_id
+		LEFT JOIN
+			user_profile up_latest ON up_latest.profile_no = upa_latest.profile_no
+		JOIN
+			party p ON p.party_no = cr.party_no
+		LEFT JOIN
+			NicknameAgg na ON na.room_id = cu.room_id
+		WHERE
+			cu.user_no = 4
+		GROUP BY
+			cu.room_id, na.nicknames, p.party_name, p.party_filename, lm.message_type, lm.message_text, up_latest.profile_nickname
+		ORDER BY
+			lm.latest_msg_no DESC;
+	</select>
 	
 	<update id="updateLastReadMessageNoById">
 		UPDATE chat_user cu

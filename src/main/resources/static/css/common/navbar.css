@@ -65,7 +65,20 @@ nav:nth-of-type(2) {
 .nav-item i {
     color: #999;
 }
-.news-container .arrow {
+.noti-container {
+    background-color: #f6fbff;
+    position: absolute;
+    border-radius: 8px;
+    top: 45px;
+    right: -70px;
+    width: 320px;
+    height: 450px;
+    border: 1px solid #ccc;
+    padding: 0;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    overflow-x: hidden;
+}
+.noti-container .arrow {
     position: absolute;
     top: -20px;
     right: 74px;
@@ -76,28 +89,14 @@ nav:nth-of-type(2) {
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
 }
-.news-container {
-    display: none;
-    background-color: #f6fbff;
-    position: absolute;
-    border-radius: 8px;
-    top: 45px;
-    right: -70px;
-    width: 320px;
-    height: 450px;
-    padding: 0;
-}
 /* .news-container::-webkit-scrollbar {
     border-radius: 8px;
 } */
-.news-container .title {
+.noti-container .title {
     padding-left: 10px;
     padding-top: 10px;
     font-size: 20px;
     font-weight: 700;
-}
-.news-container hr {
-    margin-top: 5px;
 }
 .news-items {
     max-height: 400px;
@@ -154,42 +153,14 @@ nav:nth-of-type(2) {
 }
 
 /* 메세지 창 */
-.message-container .arrow {
-    position: absolute;
-    top: -20px;
-    right: 74px;
-    width: 0;
-    height: 0;
-    border-bottom: 10px solid #d1eafa;
-    border-top: 10px solid transparent;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-}
-.message-container {
-    background-color: #f6fbff;
-    position: absolute;
-    border-radius: 8px;
-    top: 45px;
-    right: -70px;
-    width: 320px;
-    height: 450px;
-    padding: 0;
-}
-.message-container .title {
-    padding-left: 10px;
-    padding-top: 10px;
-    font-size: 20px;
-    font-weight: 700;
-}
-.message-container hr {
-    margin-top: 5px;
-}
 .message-items {
     max-height: 400px;
+    overflow-x: hidden;
     overflow-y: scroll;
 }
 .message-item {
     margin-top: 20px;
+    max-width: 98%;
 }
 .message-item a {
     display: flex;
@@ -211,29 +182,38 @@ nav:nth-of-type(2) {
 .message-info {
     width: 180px;
 }
-.message-info .name {
+.message-info .display-name {
     font-size: 13px;
     font-weight: 700;
 }
 .message-info .content {
     width: 100%;
     font-size: 13px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* 표시하려는 최대 줄 수 */
+    -webkit-box-orient: vertical;
     overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    white-space: normal;
+    text-overflow: ellipsis; /* 긴 텍스트를 잘라낼 때 ...으로 표시 */
+    line-height: 1.2; /* 줄 간격을 조절. 필요에 따라 값을 변경 */
+    max-height: 2.4em; /* line-height * 2 줄 */
 }
-.message-info .time span {
+.message-info .party-name span {
     font-size: 11px;
     color: #888;
 }
 .message-noread {
-    width: 30px;
-    height: 30px;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: #4699ff;
     position: relative;
     top: 20px;
     left: 5px;
-    border-radius: 10px;
+    border-radius: 8px;
+    font-size: 13px;
 }
 .message-noread span {
     display: block;
@@ -245,9 +225,12 @@ nav:nth-of-type(2) {
     position: absolute;
     top: -5px;
     left: 20px ;
-    width: 23px;
-    height: 23px;
-    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 40%;
     background-color: red;
     line-height: 1.3em;
     text-align: center;

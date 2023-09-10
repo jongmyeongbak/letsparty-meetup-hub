@@ -42,7 +42,7 @@
 	                            <span>50</span>
 	                        </div>
 	                    </a>
-	                    <div class="news-container none">
+	                    <div class="noti-container news-container none">
 	                        <div class="arrow"></div>
 	                        <div class="title">새소식</div>
 	                        <div class="news-items">
@@ -50,7 +50,7 @@
 	                                <li class="news-item">
 	                                    <a href="">
 	                                        <div class="img-container">
-	                                            <img src="/img/sooyeong1.jpeg" alt="">
+	                                            <img th:src="@{|${coversPath}cover-default7.png|}" alt="">
 	                                        </div>
 	                                        <div class="news-info">
 	                                            <div class="type">공지</div>
@@ -62,7 +62,7 @@
 	                                <li class="news-item">
 	                                    <a href="">
 	                                        <div class="img-container">
-	                                            <img src="/img/sample.png" alt="">
+	                                            <img th:src="@{|${coversPath}cover-default1.png|}" alt="">
 	                                        </div>
 	                                        <div class="news-info">
 	                                            <div class="type">댓글</div>
@@ -74,7 +74,7 @@
 	                                <li class="news-item">
 	                                    <a href="">
 	                                        <div class="img-container">
-	                                            <img src="/img/sooyeong1.jpeg" alt="">
+	                                            <img th:src="@{|${coversPath}cover-default7.png|}" alt="">
 	                                        </div>
 	                                        <div class="news-info">
 	                                            <div class="type">가입</div>
@@ -86,7 +86,7 @@
 	                                <li class="news-item">
 	                                    <a href="">
 	                                        <div class="img-container">
-	                                            <img src="/img/sooyeong2.jpeg" alt="">
+	                                            <img th:src="@{|${coversPath}cover-default2.png|}" alt="">
 	                                        </div>
 	                                        <div class="news-info">
 	                                            <div class="type">강퇴</div>
@@ -98,7 +98,7 @@
 	                                <li class="news-item">
 	                                    <a href="">
 	                                        <div class="img-container">
-	                                            <img src="/img/sooyeong1.jpeg" alt="">
+	                                            <img th:src="@{|${coversPath}cover-default7.png|}" alt="">
 	                                        </div>
 	                                        <div class="news-info">
 	                                            <div class="type">일정</div>
@@ -114,102 +114,30 @@
 	                <li class="nav-item me-3">
 	                    <a href="#" class="nav-link noti noti-outside">
 	                        <i class="fa-solid fa-message noti" id="message"></i>
-	                        <div class="message-no-read">
-	                            <span>20</span>
+	                        <div class="message-no-read" th:if="${allChatCount}">
+	                            <span th:text="${allChatCount}">20</span>
 	                        </div>
 	                    </a>
-	                    <div class="message-container none">
+	                    <div class="noti-container message-container none">
 	                        <div class="arrow"></div>
-	                        <div class="title">메세지</div>
+	                        <div class="title">채팅</div>
 	                        <div class="message-items">
 	                            <ul>
-	                                <li class="message-item">
-	                                    <a href="">
+	                                <li class="message-item" th:each="chat : ${chatSummaryDtos}">
+	                                    <a th:href="@{/chat/{roomId}(roomId=${chat.roomId})}"
+	                                    onclick="window.open(this.href, '_blank', 'width=400, height=644'); return false;">
 	                                        <div class="img-container">
-	                                            <img src="/img/sooyeong1.jpeg" alt="">
+	                                            <img th:src="@{|${coversPath}${chat.partyFilename}|}" alt="">
 	                                        </div>
-	                                        <div class="message-info">
-	                                            <div class="name">수영</div>
-	                                            <div class="content">언제와??</div>
-	                                            <div class="time"><span>홍길동파티</span></div>
+	                                        <div class="message-info" th:switch="${chat.messageType}">
+	                                            <div class="display-name" th:text="|${chat.displayName} (${chat.chattersCnt})|">수영</div>
+	                                            <div class="content" th:case="0" th:text="|${chat.latestMessageNickname}: ${chat.messageText}|">언제와??</div>
+	                                            <div class="content" th:case="1" th:text="|${chat.latestMessageNickname}님이 들어왔습니다.|">홍길동님이 들어왔습니다.</div>
+	                                            <div class="content" th:case="2" th:text="|${chat.latestMessageNickname}님이 나갔습니다.|">이동무님이 나갔습니다.</div>
+	                                            <div class="party-name"><span th:text="${chat.partyName}">홍길동파티</span></div>
 	                                        </div>
-	                                        <div class="message-noread">
-	                                            <span>8</span>
-	                                        </div>
-	                                    </a>
-	                                </li>
-	                                <li class="message-item">
-	                                    <a href="">
-	                                        <div class="img-container">
-	                                            <img src="/img/sooyeong3.jpeg" alt="">
-	                                        </div>
-	                                        <div class="message-info">
-	                                            <div class="name">감찬</div>
-	                                            <div class="content">내일 잊지 않았지?</div>
-	                                            <div class="time"><span>강감찬파티</span></div>
-	                                        </div>
-	                                        <div class="message-noread">
-	                                            <span>14</span>
-	                                        </div>
-	                                    </a>
-	                                </li>
-	                                <li class="message-item">
-	                                    <a href="">
-	                                        <div class="img-container">
-	                                            <img src="/img/sooyeong3.jpeg" alt="">
-	                                        </div>
-	                                        <div class="message-info">
-	                                            <div class="name">김도박</div>
-	                                            <div class="content">총알 몇 발 가지고 와?</div>
-	                                            <div class="time"><span>김도박의 재태크</span></div>
-	                                        </div>
-	                                        <!-- <div class="message-noread">
-	                                            <span>1</span>
-	                                        </div> -->
-	                                    </a>
-	                                </li>
-	                                <li class="message-item">
-	                                    <a href="">
-	                                        <div class="img-container">
-	                                            <img src="/img/sooyeong2.jpeg" alt="">
-	                                        </div>
-	                                        <div class="message-info">
-	                                            <div class="name">관순</div>
-	                                            <div class="content">축구화 챙기세요</div>
-	                                            <div class="time"><span>유관순파티</span></div>
-	                                        </div>
-	                                        <div class="message-noread">
-	                                            <span>30</span>
-	                                        </div>
-	                                    </a>
-	                                </li>
-	                                <li class="message-item">
-	                                    <a href="">
-	                                        <div class="img-container">
-	                                            <img src="/img/sample.png" alt="">
-	                                        </div>
-	                                        <div class="message-info">
-	                                            <div class="name">웰시코기</div>
-	                                            <div class="content">멍멍멍</div>
-	                                            <div class="time"><span>강감찬파티</span></div>
-	                                        </div>
-	                                        <div class="message-noread">
-	                                            <span>30</span>
-	                                        </div>
-	                                    </a>
-	                                </li>
-	                                <li class="message-item">
-	                                    <a href="">
-	                                        <div class="img-container">
-	                                            <img src="/img/sooyeong3.jpeg" alt="">
-	                                        </div>
-	                                        <div class="message-info">
-	                                            <div class="name">박찬호</div>
-	                                            <div class="content">메세지 하니까 제가 LA에 있을 때 생각나는데요, 당시에 메세지는</div>
-	                                            <div class="time"><span>TMI파티</span></div>
-	                                        </div>
-	                                        <div class="message-noread">
-	                                            <span>172</span>
+	                                        <div class="message-noread" th:if="${chat.messageCount}">
+	                                            <span th:th:text="${chat.messageCount}">8</span>
 	                                        </div>
 	                                    </a>
 	                                </li>

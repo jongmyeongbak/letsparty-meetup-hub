@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.letsparty.dto.ChatUserResponse;
+import com.letsparty.dto.UserChatSummaryDto;
 import com.letsparty.vo.ChatUser;
 
 @Mapper
@@ -18,6 +19,7 @@ public interface ChatUserMapper {
 	List<ChatUserResponse> findByRoomId(String roomId);
 	List<ChatUserResponse> findWithoutMeByRoomId(@Param("roomId") String roomId, @Param("myNo") int myNo);
 	ChatUserResponse findByRoomIdAndUserNo(@Param("roomId") String roomId, @Param("userNo") int userNo);
+	List<UserChatSummaryDto> getUserChatSummary(int userNo);
 	
 	void updateLastReadMessageNoById(@Param("roomId") String roomId, @Param("userNo") int userNo);
 	
