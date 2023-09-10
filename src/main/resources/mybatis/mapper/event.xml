@@ -39,7 +39,7 @@
 	</update>
 	
 	<select id="getEvents" parameterType="map" resultType="com.letsparty.vo.Event">
-		select
+		SELECT
 			event_no 			as id,
 			user_id				as "user.id",
 			event_title			as title,
@@ -50,12 +50,12 @@
 			event_end			as end,
 			post_id				as "post.id",
 			place_no			as "place.no"
-		from 
+		FROM
 			event
-		where
+		WHERE
 			party_no = #{partyNo} AND
-			event_end >= #{startDate} or
-			event_start &lt; #{endDate}
+			(event_end >= #{startDate} OR
+			event_start &lt; #{endDate})
 	</select>
 	
 	<select id="getEventByNo" parameterType="int" resultType="com.letsparty.vo.Event">
