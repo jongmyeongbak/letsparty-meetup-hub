@@ -47,7 +47,6 @@ public class PartyController {
 	private final CategoryService categoryService;
 	private final UserProfileService userProfileService;
 	private final UserPartyApplicationService userPartyApplicationService;
-	private final ValidationService validationService;
 	@Value("${s3.path.covers}")
 	private String coversPath;
 	@Value("${s3.path.profiles}")
@@ -262,7 +261,7 @@ public class PartyController {
 	@PostMapping("/{partyNo}/setting/kick")
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> kickOut(@PathVariable int partyNo, @RequestParam String userId, @AuthenticationPrincipal LoginUser loginUser) {
-		Map<String, Object> response = validationService.kickOutUser(partyNo, userId, loginUser.getId());
+		Map<String, Object> response = userPartyApplicationService.kickOutUser(partyNo, userId, loginUser.getId());
 	    if ("error".equals(response.get("status"))) {
 	        return ResponseEntity.badRequest().body(response);
 	    }

@@ -122,7 +122,7 @@
 		and application_status = '승인';
 	</select>
 	
-	<!-- 리더를 제외한 현재 파티 멤버의 수 -->
+	<!-- 현재 파티 멤버의 수 -->
 	<select id="countApprovedMember" resultType="int">
 		select count(*) 
 		from user_party_application 

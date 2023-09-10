@@ -17,6 +17,7 @@ $(document).ready(function() {
         }).done(function(response) {
             if (response.status === "success") {
                 userItem.remove();
+                $("h5 span").text(response.currentMemberCount);
 				// 성공시에도 알림참을 띄울 수 있지만 지금은 실패시에만 창 띄움.            
                 /*alert(response.message);*/
             } else if (response.status === "error") {
