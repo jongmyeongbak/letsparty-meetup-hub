@@ -1,7 +1,6 @@
 package com.letsparty.web.controller;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,8 +26,6 @@ import com.letsparty.dto.BeginEndPostNo;
 import com.letsparty.dto.PartyReqDto;
 import com.letsparty.dto.PostAttachment;
 import com.letsparty.dto.SimplePostDto;
-import com.letsparty.mapper.PartyMapper;
-import com.letsparty.security.user.CustomUserDetails;
 import com.letsparty.security.user.LoginUser;
 import com.letsparty.service.CategoryService;
 import com.letsparty.service.MediaService;
@@ -36,10 +33,7 @@ import com.letsparty.service.PartyService;
 import com.letsparty.service.PostService;
 import com.letsparty.service.UserPartyApplicationService;
 import com.letsparty.service.UserProfileService;
-import com.letsparty.service.UserService;
-import com.letsparty.service.ValidationService;
 import com.letsparty.util.PartyDataUtils;
-import com.letsparty.vo.Media;
 import com.letsparty.vo.Party;
 import com.letsparty.vo.Post;
 import com.letsparty.vo.UserPartyApplication;
@@ -62,7 +56,6 @@ public class PartyController {
 	private final CategoryService categoryService;
 	private final UserProfileService userProfileService;
 	private final UserPartyApplicationService userPartyApplicationService;
-	private final UserService userService;
 	@Value("${s3.path.covers}")
 	private String coversPath;
 	@Value("${s3.path.profiles}")

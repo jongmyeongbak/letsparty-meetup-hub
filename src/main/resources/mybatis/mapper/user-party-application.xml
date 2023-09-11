@@ -159,13 +159,5 @@
 		WHERE
 			application_no = #{no}
 	</update>
-	
-	
-	<delete id="withdraw" parameterType="int">
-		DELETE FROM 
-			user_party_application
-		WHERE 
-			application_no = #{value};
-	</delete>
 
 </mapper>

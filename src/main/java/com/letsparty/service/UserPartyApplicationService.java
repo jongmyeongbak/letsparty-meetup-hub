@@ -75,8 +75,14 @@ public class UserPartyApplicationService {
 			return false;
 		}
 		
-		addUserPartyApplicationWithApproved(partyNo, userId, 8, userProfile);
-		//TODO 파티 가입후 해당 파티의 인원 증가 메소드 필요...
+		UserPartyApplication upa = userPartyApplicationMapper.findByPartyNoAndUserId(partyNo, userId);
+		if (null == upa) {
+			addUserPartyApplicationWithApproved(partyNo, userId, 8, userProfile);
+		} else if (upa.getStatus().equals("탈퇴")) {
+			upa.setStatus("승인");
+			userPartyApplicationMapper.update(upa);
+		}
+		
 		Party party = partyMapper.getPartyByNo(partyNo);
 		party.setCurCnt(party.getCurCnt() + 1);
 		partyMapper.updateParty(party);
@@ -161,7 +167,8 @@ public class UserPartyApplicationService {
 		if (upa.getRoleNo() == 6) {
 			return false;
 		}
-		userPartyApplicationMapper.withdraw(upaNo);
+		upa.setStatus("탈퇴");
+		userPartyApplicationMapper.update(upa);
 		return true;
 	}
 
