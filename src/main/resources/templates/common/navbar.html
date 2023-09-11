@@ -1,187 +1,197 @@
 <th:block th:fragment="navbar-fragment">
 	<nav class="navbar fixed-top navbar-expand-sm">
-	    <div class="container fixed">
-	        <div class="container">
-	            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-	                <li class="nav-item">
-	                    <a th:href="@{/letsparty}" class="nav-link">렛츠 파티!!</a>
-	                </li>
-	            </ul>
-	        </div>
-	        <div class="container">
-	            <ul class="navbar-nav me-auto justify-content-center">
-	                <h1 class="fs-1 text-center logo"><span id="home" class="align-middle"><a th:href="@{/}">로고</a></span></h1>
-	                <li class="nav-item ms-3">
-	                    <div class="form mt-3">
-	                        <form method="get" action="/search" id="search-party">
-	                            <div class="inputbox">
-	                                <input type="text" placeholder="파티검색" name="value">
-	                                <div class="search" id="search">
-	                                    <i class="fa-solid fa-magnifying-glass"></i>
-	                                </div>
-	                            </div>
-	                           </form>
-	                    </div>
-	                    </li>
-	            </ul>
-	        </div>
-	        <div class="container">
-	            <ul class="navbar-nav justify-content-end" sec:authorize="isAnonymous()">
-	                <li class="nav-item">
-	                    <a th:href="@{/login}" class="nav-link">로그인</a>
-	                </li>
-	                <li class="nav-item">
-	                    <a th:href="@{/signup}" class="nav-link">회원가입</a>
-	                </li>
-	            </ul>
-	            <ul class="navbar-nav justify-content-end" sec:authorize="isAuthenticated()">
-	                <li class="nav-item me-3">
-	                    <a href="#" class="nav-link noti noti-outside">
-	                        <i class="fa-solid fa-bell noti" id="bell"></i>
-	                        <div class="noti-no-read">
-	                            <span>50</span>
-	                        </div>
-	                    </a>
-	                    <div class="noti-container news-container none">
-	                        <div class="arrow"></div>
-	                        <div class="title">새소식</div>
-	                        <div class="news-items">
-	                            <ul>
-	                                <li class="news-item">
-	                                    <a href="">
-	                                        <div class="img-container">
-	                                            <img th:src="@{|${coversPath}cover-default7.png|}" alt="">
-	                                        </div>
-	                                        <div class="news-info">
-	                                            <div class="type">공지</div>
-	                                            <div class="content">새 공지가 등록되었습니다</div>
-	                                            <div class="time"><span>홍길동파티</span> &#183 <span>21시간전</span></div>
-	                                        </div>
-	                                    </a>
-	                                </li>
-	                                <li class="news-item">
-	                                    <a href="">
-	                                        <div class="img-container">
-	                                            <img th:src="@{|${coversPath}cover-default1.png|}" alt="">
-	                                        </div>
-	                                        <div class="news-info">
-	                                            <div class="type">댓글</div>
-	                                            <div class="content">내 게시글에 댓글이 달렸습니다.</div>
-	                                            <div class="time"><span>강감찬파티</span> &#183 <span>21시간전</span></div>
-	                                        </div>
-	                                    </a>
-	                                </li>
-	                                <li class="news-item">
-	                                    <a href="">
-	                                        <div class="img-container">
-	                                            <img th:src="@{|${coversPath}cover-default7.png|}" alt="">
-	                                        </div>
-	                                        <div class="news-info">
-	                                            <div class="type">가입</div>
-	                                            <div class="content"><span>홍길동파티</span>파티에 가입되었습니다.</div>
-	                                            <div class="time"><span>홍길동파티</span> &#183 <span>21시간전</span></div>
-	                                        </div>
-	                                    </a>
-	                                </li>
-	                                <li class="news-item">
-	                                    <a href="">
-	                                        <div class="img-container">
-	                                            <img th:src="@{|${coversPath}cover-default2.png|}" alt="">
-	                                        </div>
-	                                        <div class="news-info">
-	                                            <div class="type">강퇴</div>
-	                                            <div class="content">강퇴당하셨습니다.</div>
-	                                            <div class="time"><span>이승규파티</span> &#183 <span>21시간전</span></div>
-	                                        </div>
-	                                    </a>
-	                                </li>
-	                                <li class="news-item">
-	                                    <a href="">
-	                                        <div class="img-container">
-	                                            <img th:src="@{|${coversPath}cover-default7.png|}" alt="">
-	                                        </div>
-	                                        <div class="news-info">
-	                                            <div class="type">일정</div>
-	                                            <div class="content">일정이 등록되었습니다.</div>
-	                                            <div class="time"><span>홍길동파티</span> &#183 <span>21시간전</span></div>
-	                                        </div>
-	                                    </a>
-	                                </li>
-	                            </ul>
-	                        </div>
-	                    </div>
-	                </li>
-	                <li class="nav-item me-3">
-	                    <a href="#" class="nav-link noti noti-outside">
-	                        <i class="fa-solid fa-message noti" id="message"></i>
-	                        <div class="message-no-read" th:if="${allChatCount}">
-	                            <span th:text="${allChatCount}">20</span>
-	                        </div>
-	                    </a>
-	                    <div class="noti-container message-container none">
-	                        <div class="arrow"></div>
-	                        <div class="title">채팅</div>
-	                        <div class="message-items">
-	                            <ul>
-	                                <li class="message-item" th:each="chat : ${chatSummaryDtos}">
-	                                    <a th:href="@{/chat/{roomId}(roomId=${chat.roomId})}"
-	                                    onclick="window.open(this.href, '_blank', 'width=400, height=644'); return false;">
-	                                        <div class="img-container">
-	                                            <img th:src="@{|${coversPath}${chat.partyFilename}|}" alt="">
-	                                        </div>
-	                                        <div class="message-info" th:switch="${chat.messageType}">
-	                                            <div class="display-name"><span class="display-name-left" th:text="${chat.displayName}"></span> (<span th:text="${chat.chattersCnt}">123</span>)</div>
-	                                            <div class="content" th:case="0" th:text="|${chat.latestMessageNickname}: ${chat.messageText}|">언제와??</div>
-	                                            <div class="content" th:case="1" th:text="|${chat.latestMessageNickname}님이 들어왔습니다.|">홍길동님이 들어왔습니다.</div>
-	                                            <div class="content" th:case="2" th:text="|${chat.latestMessageNickname}님이 나갔습니다.|">이동무님이 나갔습니다.</div>
-	                                            <div class="party-name"><span th:text="${chat.partyName}">홍길동파티</span></div>
-	                                        </div>
-	                                        <div class="message-noread" th:if="${chat.messageCount}">
-	                                            <span th:th:text="${chat.messageCount}">8</span>
-	                                        </div>
-	                                    </a>
-	                                </li>
-	                            </ul>
-	                        </div>
-	                    </div>
-	                </li>
-	                <li class="nav-item dropdown">
-	                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-	                    MY
-	                    </a>
-	                    <ul class="dropdown-menu dropdown-menu-end">
-	                    <li><span class="align-middle bolder ms-3"><strong class="text-black" sec:authentication="principal.realname"></strong> 님</span></li>
-	                        <li><hr class="dropdown-divider"></li>
-	                        <li><a href="/my" class="dropdown-item">내정보보기</a></li>
-	                        <li><a href="/my/profile" class="dropdown-item">내파티관리</a></li>
-	                    <li><hr class="dropdown-divider"></li>
-	                    <li><a th:href="@{/logout}" class="dropdown-item">로그아웃</a></li>
-	                    </ul>
-	                </li>
-	            </ul>
-	        </div>
-	    </div>
+		<div class="container m-nav fixed">
+			<div class="container m-lp">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					<li class="nav-item"><a th:href="@{/letsparty}"
+						class="nav-link">렛츠 파티!!</a></li>
+				</ul>
+			</div>
+			<div class="container m-search">
+				<ul class="navbar-nav me-auto justify-content-center">
+					<h1 class="fs-1 text-center logo">
+						<span id="home" class="align-middle"><a th:href="@{/}">로고</a></span>
+					</h1>
+					<li class="nav-item">
+						<div class="form mt-3">
+							<form method="get" action="/search" id="search-party">
+								<div class="inputbox">
+									<input type="text" placeholder="파티검색" name="value">
+									<div class="search" id="search">
+										<i class="fa-solid fa-magnifying-glass"></i>
+									</div>
+								</div>
+							</form>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="container m-login">
+				<ul class="navbar-nav justify-content-end"
+					sec:authorize="isAnonymous()">
+					<li class="nav-item"><a th:href="@{/login}" class="nav-link">로그인</a>
+					</li>
+					<li class="nav-item"><a th:href="@{/signup}" class="nav-link">회원가입</a>
+					</li>
+				</ul>
+				<ul class="navbar-nav justify-content-end"
+					sec:authorize="isAuthenticated()">
+					<li class="nav-item me-3"><a href="#"
+						class="nav-link noti noti-outside"> <i
+							class="fa-solid fa-bell noti" id="bell"></i>
+							<div class="noti-no-read">
+								<span>50</span>
+							</div>
+					</a>
+						<div class="noti-container news-container none">
+							<div class="arrow"></div>
+							<div class="title">새소식</div>
+							<div class="news-items">
+								<ul>
+									<li class="news-item"><a href="">
+											<div class="img-container">
+												<img th:src="@{|${coversPath}cover-default7.png|}" alt="">
+											</div>
+											<div class="news-info">
+												<div class="type">공지</div>
+												<div class="content">새 공지가 등록되었습니다</div>
+												<div class="time">
+													<span>홍길동파티</span> &#183 <span>21시간전</span>
+												</div>
+											</div>
+									</a></li>
+									<li class="news-item"><a href="">
+											<div class="img-container">
+												<img th:src="@{|${coversPath}cover-default1.png|}" alt="">
+											</div>
+											<div class="news-info">
+												<div class="type">댓글</div>
+												<div class="content">내 게시글에 댓글이 달렸습니다.</div>
+												<div class="time">
+													<span>강감찬파티</span> &#183 <span>21시간전</span>
+												</div>
+											</div>
+									</a></li>
+									<li class="news-item"><a href="">
+											<div class="img-container">
+												<img th:src="@{|${coversPath}cover-default7.png|}" alt="">
+											</div>
+											<div class="news-info">
+												<div class="type">가입</div>
+												<div class="content">
+													<span>홍길동파티</span>파티에 가입되었습니다.
+												</div>
+												<div class="time">
+													<span>홍길동파티</span> &#183 <span>21시간전</span>
+												</div>
+											</div>
+									</a></li>
+									<li class="news-item"><a href="">
+											<div class="img-container">
+												<img th:src="@{|${coversPath}cover-default2.png|}" alt="">
+											</div>
+											<div class="news-info">
+												<div class="type">강퇴</div>
+												<div class="content">강퇴당하셨습니다.</div>
+												<div class="time">
+													<span>이승규파티</span> &#183 <span>21시간전</span>
+												</div>
+											</div>
+									</a></li>
+									<li class="news-item"><a href="">
+											<div class="img-container">
+												<img th:src="@{|${coversPath}cover-default7.png|}" alt="">
+											</div>
+											<div class="news-info">
+												<div class="type">일정</div>
+												<div class="content">일정이 등록되었습니다.</div>
+												<div class="time">
+													<span>홍길동파티</span> &#183 <span>21시간전</span>
+												</div>
+											</div>
+									</a></li>
+								</ul>
+							</div>
+						</div></li>
+					<li class="nav-item me-3"><a href="#"
+						class="nav-link noti noti-outside"> <i
+							class="fa-solid fa-message noti" id="message"></i>
+							<div class="message-no-read" th:if="${allChatCount}">
+								<span th:text="${allChatCount}">20</span>
+							</div>
+					</a>
+						<div class="noti-container message-container none">
+							<div class="arrow"></div>
+							<div class="title">채팅</div>
+							<div class="message-items">
+								<ul>
+									<li class="message-item" th:each="chat : ${chatSummaryDtos}">
+										<a th:href="@{/chat/{roomId}(roomId=${chat.roomId})}"
+										onclick="window.open(this.href, '_blank', 'width=400, height=644'); return false;">
+											<div class="img-container">
+												<img th:src="@{|${coversPath}${chat.partyFilename}|}" alt="">
+											</div>
+											<div class="message-info" th:switch="${chat.messageType}">
+												<div class="display-name">
+													<span class="display-name-left"
+														th:text="${chat.displayName}"></span> (<span
+														th:text="${chat.chattersCnt}">123</span>)
+												</div>
+												<div class="content" th:case="0"
+													th:text="|${chat.latestMessageNickname}: ${chat.messageText}|">언제와??</div>
+												<div class="content" th:case="1"
+													th:text="|${chat.latestMessageNickname}님이 들어왔습니다.|">홍길동님이
+													들어왔습니다.</div>
+												<div class="content" th:case="2"
+													th:text="|${chat.latestMessageNickname}님이 나갔습니다.|">이동무님이
+													나갔습니다.</div>
+												<div class="party-name">
+													<span th:text="${chat.partyName}">홍길동파티</span>
+												</div>
+											</div>
+											<div class="message-noread" th:if="${chat.messageCount}">
+												<span th:th:text="${chat.messageCount}">8</span>
+											</div>
+									</a>
+									</li>
+								</ul>
+							</div>
+						</div></li>
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle" href="#" role="button"
+						data-bs-toggle="dropdown" aria-expanded="false"> MY </a>
+						<ul class="dropdown-menu dropdown-menu-end">
+							<li><span class="align-middle bolder ms-3"><strong
+									class="text-black" sec:authentication="principal.realname"></strong>
+									님</span></li>
+							<li><hr class="dropdown-divider"></li>
+							<li><a href="/my" class="dropdown-item">내정보보기</a></li>
+							<li><a href="/my/profile" class="dropdown-item">내파티관리</a></li>
+							<li><hr class="dropdown-divider"></li>
+							<li><a th:href="@{/logout}" class="dropdown-item">로그아웃</a></li>
+						</ul></li>
+				</ul>
+			</div>
+		</div>
 	</nav>
-	<div class="blank mb-3">
-	</div>
+	<div class="blank mb-3"></div>
 	<nav th:if="${member}" class="navbar fixed-top navbar-expand-sm">
-	    <div class="container justify-content-center">
-	        <ul class="navbar-nav nav2">
-	            <li class="nav-item">
-	                <a th:href="@{/party/{partyNo}(partyNo=${partyNo})}" class="nav-link">게시판</a>
-	            </li>
-	            <li class="nav-item">
-	                <a th:href="@{/party/{partyNo}/attachment(partyNo=${partyNo})}" class="nav-link">첨부</a>
-	            </li>
-	            <li class="nav-item">
-	                <a th:href="@{/party/{partyNo}/event(partyNo=${partyNo})}" class="nav-link">일정</a>
-	            </li>
-	            <li class="nav-item">
-	                <a th:href="@{/party/{partyNo}/member(partyNo=${partyNo})}" class="nav-link">멤버</a>
-	            </li>
-	        </ul>
-	    </div>
+		<div class="container justify-content-center">
+			<ul class="navbar-nav nav2">
+				<li class="nav-item"><a
+					th:href="@{/party/{partyNo}(partyNo=${partyNo})}" class="nav-link">게시판</a>
+				</li>
+				<li class="nav-item"><a
+					th:href="@{/party/{partyNo}/attachment(partyNo=${partyNo})}"
+					class="nav-link">첨부</a></li>
+				<li class="nav-item"><a
+					th:href="@{/party/{partyNo}/event(partyNo=${partyNo})}"
+					class="nav-link">일정</a></li>
+				<li class="nav-item"><a
+					th:href="@{/party/{partyNo}/member(partyNo=${partyNo})}"
+					class="nav-link">멤버</a></li>
+			</ul>
+		</div>
 	</nav>
-	<div  th:if="${party}" class="blank-1 mb-3">
-	</div>
+	<div th:if="${party}" class="blank-1 mb-3"></div>
 </th:block>

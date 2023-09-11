@@ -23,3 +23,23 @@
 .content {
 	width: 54%;
 }
+
+
+@media screen and (max-width: 570px) {
+	.layout {
+		flex-direction: column;
+	}
+	.left {
+		width: 100%;
+	}
+	.layout .content {
+		margin-top: 10px;
+		width: 100%;
+	}
+	.read-cnt {
+		display: none;
+	}
+	.right {
+		width: 100%;
+	}
+}

@@ -13,6 +13,7 @@
     position: relative;
    }
 .inputbox {
+	margin-left: 15px;
     padding-left: 10px;
     border: 1px solid #333;
     border-radius: 20px;
@@ -245,4 +246,51 @@ nav:nth-of-type(2) {
     font-weight: 600;
     font-size: 13px;
     color: #fff;
+}
+
+@media screen and (max-width: 570px) {
+    .m-nav {
+        display: flex;
+    }
+    .m-lp {
+        width: 30%;
+        margin: 0;
+    }
+    .m-lp a{
+		font-size: 0.9em;
+	}
+    .container .m-search {
+        width: 40%;
+    }
+    .m-search input {
+		width: 100%;
+	}
+	.inputbox {
+		margin-left: 0;
+	}
+	.inputbox, .inputbox i {
+		font-size: 0.8em;
+	}
+	.m-search li.nav-item li.ms-3{
+		margin: 0;
+	}
+    .container .m-login {
+        width: 30%;
+    }
+    .m-search h1 {
+		margin-bottom: -20px
+	}
+	.m-login li {
+		padding-left: 10%;
+		display: block;
+		height: 30px;
+		font-size: 0.9em;
+		text-align: right;
+	}
+	.m-login .nav-item:nth-child(1), .m-login .nav-item:nth-child(2){
+		display: none;
+	}
+	.container .nav2 {
+		flex-direction: row;
+	}
 }

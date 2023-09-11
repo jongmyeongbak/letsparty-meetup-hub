@@ -23,3 +23,50 @@
     object-fit: cover;
     border-radius: 5px;
 }
+
+@media screen and (max-width: 570px) {
+	.loginBtnList {
+		padding: 0;
+		display: flex;
+		gap: 5%;
+		justify-content: center;
+	}
+	.loginBtnList .login {
+		width: 90%;
+	}
+	.loginBtnList .login img{
+		position: relative;
+		border-radius: 25px;
+		width: 50px;
+		height: 50px;
+		object-fit: cover;
+		opacity: 0;
+	}
+	.loginBtnList .login.-kakao {
+		position: relative;
+		border-radius: 25px;
+		width: 50px;
+		height: 50px;
+		object-fit: cover;
+		background-image: url(/images/login/kakao_login.png);
+		background-position: 2px center;
+	}
+	.loginBtnList .login.-google {
+		position: relative;
+		border-radius: 25px;
+		width: 50px;
+		height: 50px;
+		object-fit: cover;
+		background-image: url(/images/login/google_login.png);
+		background-position: -20px center;
+	}
+	.loginBtnList .login.-naver {
+		position: relative;
+		border-radius: 25px;
+		width: 50px;
+		height: 50px;
+		background-image: url(/images/login/naver_login.png);
+	    background-size: 316px 91px;
+    	background-position: -42px 71px;
+	}
+}

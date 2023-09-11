@@ -73,6 +73,8 @@
 			upa.user_id = #{value}
 		AND
 			upa.application_status = '승인'
+		AND
+			p.party_status = '활성'
 		ORDER BY
 			upa.created_at desc
 		LIMIT 5;
