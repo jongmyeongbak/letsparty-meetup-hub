@@ -260,6 +260,7 @@ public class PartyController {
 			UserPartyApplication upa = userPartyApplicationService.findByPartyNoAndUserId(partyNo, post.getUser().getId());
 			model.addAttribute("post", post);
 			model.addAttribute("upa", upa);
+			System.out.println(upa.toString());
 			
 			// 게시글의 각종 첨부 파일 내용들(이미지, 동영상, 지도, 투표)
 			PostAttachment pa = mediaService.getMediaByPostId(post.getId());

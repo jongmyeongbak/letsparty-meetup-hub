@@ -79,7 +79,7 @@
 									<i class="bi bi-three-dots-vertical text-muted"></i>
 								</a>
 								<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-									<li th:if="${#strings.equals(post.user.id, loginUser)}">
+									<li th:if="${#strings.equals(post.user.id, loginUser)} and ${member != null}">
 										<a class="dropdown-item" href="">글 수정</a>
 									</li>
 									<li th:if="${loginUpa} and ${loginUpa.roleNo != 8}">
@@ -88,7 +88,7 @@
 									<li th:if="${loginUser}">
 										<a class="dropdown-item" href="">공유</a>
 									</li>
-									<li th:if="${loginUpa} and ${(loginUpa.roleNo != 8 or #strings.equals(post.user.id, loginUser))}">
+									<li th:if="${loginUpa} and ${(loginUpa.roleNo != 8 or #strings.equals(post.user.id, loginUser))} and ${member != null}">
 										<a class="dropdown-item" href="">삭제</a>
 									</li>
 									<li th:if="${loginUpa} and ${!#strings.equals(post.user.id, loginUser)}">

@@ -49,7 +49,6 @@
 		INNER JOIN user_profile up ON upa.profile_no = up.profile_no
 		WHERE upa.party_no = #{partyNo}
 		AND upa.user_id = #{userId}
-		AND upa.application_status = '승인'
 	</select>
 
 	<select id="findAllByPartyNo" parameterType="int" resultType="UserPartyApplication">

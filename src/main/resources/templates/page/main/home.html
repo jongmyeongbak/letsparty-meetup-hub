@@ -86,7 +86,7 @@
                                         <td>
                                         	<a th:href="@{/party/{partyNo}(partyNo=${party.no})}" th:text="${party.name}" class="party-name">파티이름</a>
                                         </td>
-                                        <td><span th:text="${party.quota}">10</span> / <span th:text="${party.curCnt}">5</span></td>
+                                        <td><span th:text="${party.curCnt}">5</span> / <span th:text="${party.quota}">10</span></td>
                                         <td>
                                         	<span class ="party-description" th:text="${party.description}">파티설명</span>
                                         </td>      
