@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.letsparty.dto.BeginEndPostNo;
+import com.letsparty.dto.PartyCommentDto;
 import com.letsparty.dto.PartyReqDto;
 import com.letsparty.dto.PostAttachment;
 import com.letsparty.dto.SimplePostDto;
@@ -36,8 +37,10 @@ import com.letsparty.service.UserProfileService;
 import com.letsparty.util.PartyDataUtils;
 import com.letsparty.vo.Party;
 import com.letsparty.vo.Post;
+import com.letsparty.vo.User;
 import com.letsparty.vo.UserPartyApplication;
 import com.letsparty.vo.UserProfile;
+import com.letsparty.web.form.CommentForm;
 import com.letsparty.web.form.PartyForm;
 import com.letsparty.web.form.PostForm;
 
@@ -296,6 +299,41 @@ public class PartyController {
 	public String pollAnswer(@AuthenticationPrincipal LoginUser loginUser, @PathVariable int partyNo, @PathVariable int postNo, @RequestParam int optionPk) {
 		partyService.answerPollOption(loginUser.getId(), optionPk);
 		return "redirect:/party/{partyNo}/post/{postNo}";
+	}
+	
+	// 댓글 제출
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping("/{partyNo}/post/{postNo}/comment/create")
+	public String createComment(@PathVariable int partyNo, @PathVariable int postNo, @AuthenticationPrincipal LoginUser loginUser, CommentForm commentForm, BindingResult error, Model model) {
+		UserPartyApplication upa = userPartyApplicationService.findByPartyNoAndUserId(partyNo, loginUser.getId());
+		if(upa == null || !"승인".equals(upa.getStatus())) {
+			return "redirect:/party/{partyNo}/post/{postNo}";
+		}
+		Post post = postService.getPostByPostNoAndPartyNo(partyNo, postNo);
+		User user = new User();
+		user.setId(loginUser.getId());
+		
+		commentForm.setUser(user);
+		commentForm.setUserId(loginUser.getId());
+		commentForm.setPost(post);
+		
+		partyService.insertComment(commentForm);
+		return "redirect:/party/{partyNo}/post/{postNo}";
+	}
+	
+	// 댓글 가져오기
+	@GetMapping("/{partyNo}/post/{postNo}/comment")
+	@ResponseBody
+	public List<PartyCommentDto> getAllComments(@PathVariable int partyNo, @PathVariable int postNo, @AuthenticationPrincipal LoginUser loginUser) {
+		Post post = postService.getPostByPostNoAndPartyNo(partyNo, postNo);
+	    List<PartyCommentDto> allComments = partyService.getAllCommentsByPostId(post.getId()); // postNo 전달
+	    for (PartyCommentDto comment : allComments) {
+	    	UserProfile profile = comment.getProfile();
+	    	if (!profile.getIsUrl()) {
+	    		profile.setFilename(coversPath + profile.getFilename());
+			}
+	    }
+	    return allComments;
 	}
 	
 	@PreAuthorize("isAuthenticated()")

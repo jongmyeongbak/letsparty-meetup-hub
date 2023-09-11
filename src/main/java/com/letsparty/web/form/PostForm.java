@@ -6,9 +6,6 @@ import javax.validation.constraints.NotBlank;
 
 import com.letsparty.vo.Place;
 import com.letsparty.vo.Poll;
-import com.letsparty.vo.PollAnswer;
-import com.letsparty.vo.PollOption;
-import com.letsparty.vo.PollOptionForm;
 
 import lombok.Getter;
 import lombok.Setter;

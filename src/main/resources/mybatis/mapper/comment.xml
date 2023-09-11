@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letsparty.mapper.CommentMapper">
+
+ 	<insert id="insertComment" parameterType="Comment" useGeneratedKeys="true" keyProperty="no">
+	    insert into comment (post_id, user_id, comment_content, comment_updated_at, comment_created_at)
+	    values (#{post.id}, #{user.id}, #{content}, NOW(), NOW())
+	</insert> 
+	
+	<!-- 댓글 조회 쿼리 -->
+	<select id="getAllCommentsByPostId" parameterType="long" resultType="com.letsparty.dto.PartyCommentDto">
+	       select
+           c.comment_no as no,
+           c.comment_content as content,
+           c.comment_updated_at as updatedAt,
+           c.comment_created_at as createdAt,
+           up.image_filename as "profile.filename",
+           up.profile_nickname as "profile.nickname",
+           up.is_url as "profile.isUrl"
+	       from comment c
+	       join post p on c.post_id = p.post_id
+	       join user_party_application upa on upa.party_no = p.party_no and upa.user_id = c.user_id
+	       join user_profile up on upa.profile_no = up.profile_no
+	       where c.post_id = #{value}
+	       order by c.comment_created_at desc
+	</select>
+	
+	<update id="updateCommentCnt" parameterType="Comment">
+	    update post
+	    set post_comment_cnt = #{post.commentCnt}
+	    where post_id = #{post.id}
+	</update>
+</mapper>

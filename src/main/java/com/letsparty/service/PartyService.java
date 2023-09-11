@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.letsparty.dto.PartyCommentDto;
 import com.letsparty.dto.PartyReqDto;
 import com.letsparty.mapper.CategoryMapper;
+import com.letsparty.mapper.CommentMapper;
 import com.letsparty.mapper.MediaMapper;
 import com.letsparty.mapper.PartyMapper;
 import com.letsparty.mapper.PartyReqMapper;
@@ -22,6 +24,7 @@ import com.letsparty.mapper.PostMapper;
 import com.letsparty.mapper.UserMapper;
 import com.letsparty.mapper.UserPartyApplicationMapper;
 import com.letsparty.vo.Category;
+import com.letsparty.vo.Comment;
 import com.letsparty.vo.Media;
 import com.letsparty.vo.Party;
 import com.letsparty.vo.PartyReq;
@@ -33,6 +36,7 @@ import com.letsparty.vo.PollOption;
 import com.letsparty.vo.Post;
 import com.letsparty.vo.User;
 import com.letsparty.vo.UserPartyApplication;
+import com.letsparty.web.form.CommentForm;
 import com.letsparty.web.form.PartyForm;
 import com.letsparty.web.form.PostForm;
 
@@ -49,6 +53,7 @@ public class PartyService {
 	private final CategoryMapper categoryMapper;
 	private final PartyReqMapper partyReqMapper;
 	private final PartyTagMapper partyTagMapper;
+	private final CommentMapper commentMapper;
 	private final PlaceMapper placeMapper;
 	private final PollMapper pollMapper;
 	private final MediaMapper mediaMapper;
@@ -286,6 +291,23 @@ public class PartyService {
 	
 	// 투표 응답 추가 메서드
 	
+	// 게시글 댓글 추가 메서드
+	public void insertComment(CommentForm commentForm) {
+		
+		Comment comment = new Comment();
+		comment.setUser(commentForm.getUser());
+		comment.setContent(commentForm.getContent());
+		Post post = commentForm.getPost();
+		post.setCommentCnt(post.getCommentCnt() + 1);
+		comment.setPost(post);
+		commentMapper.insertComment(comment);
+		commentMapper.updateCommentCnt(comment);
+	}
+	
+	// 댓글불러오기
+	 public List<PartyCommentDto> getAllCommentsByPostId(long postId) {
+	       return commentMapper.getAllCommentsByPostId(postId);
+	   }
 
 	// Tag를 추가해주는 메서드
 	private void insertTags(List<String> tagsFromForm, Party party) {

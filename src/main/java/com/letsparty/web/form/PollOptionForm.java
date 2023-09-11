@@ -1,4 +1,4 @@
-package com.letsparty.vo;
+package com.letsparty.web.form;
 
 import java.util.List;
 

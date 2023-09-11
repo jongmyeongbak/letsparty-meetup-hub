@@ -261,3 +261,7 @@ color: rgb(194, 225, 255);
     border-color: #578ae7;;
     background-color: #578ae7;
 }
+.text-decoration-none{
+	border:none;
+	background-color:#fafafa;
+}
