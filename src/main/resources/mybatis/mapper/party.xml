@@ -71,6 +71,8 @@
 		JOIN user_party_application upa ON upa.party_no = p.party_no
 		WHERE 
 			upa.user_id = #{value}
+		AND
+			upa.application_status = '승인'
 		ORDER BY
 			upa.created_at desc
 		LIMIT 5;
