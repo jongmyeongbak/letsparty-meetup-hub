@@ -31,6 +31,13 @@ public class NavbarInterceptor implements HandlerInterceptor {
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			@Nullable ModelAndView modelAndView) throws Exception {
+		if (!"GET".equals(request.getMethod())) {
+			return;
+		}
+		
+		String[] paths = request.getRequestURI().split("/");
+		modelAndView.addObject("paths", paths);
+		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		boolean hasRegularRole = auth != null && !(auth instanceof AnonymousAuthenticationToken) && auth.getAuthorities().stream().noneMatch(authority -> authority.getAuthority().equals("ROLE_USER_PENDING"));
 		if (hasRegularRole) {

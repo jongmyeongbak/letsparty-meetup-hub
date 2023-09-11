@@ -25,7 +25,6 @@ import com.letsparty.service.ChatService;
 import com.letsparty.service.EventService;
 import com.letsparty.service.PartyService;
 import com.letsparty.service.UserPartyApplicationService;
-import com.letsparty.util.TimeConverter;
 import com.letsparty.vo.Event;
 import com.letsparty.vo.Party;
 import com.letsparty.vo.UserPartyApplication;
@@ -53,6 +52,9 @@ public class PartyInterceptor implements HandlerInterceptor {
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
+		if (!"GET".equals(request.getMethod())) {
+			return;
+		}
 		
 		String uri = request.getRequestURI();
 		int partyNo = Integer.parseInt(uri.split("/")[2]);
