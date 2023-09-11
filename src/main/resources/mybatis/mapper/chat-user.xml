@@ -133,7 +133,7 @@
 				SELECT cr.room_no, cu.join_message_no
 				FROM chat_user cu
 				JOIN chat_room cr ON cu.room_id = cr.room_id
-				WHERE cu.user_no = 4
+				WHERE cu.user_no = #{value}
 			) AS cu_sub ON cm1.room_no = cu_sub.room_no AND cm1.message_no > cu_sub.join_message_no
 		)
 		SELECT
@@ -168,7 +168,7 @@
 		LEFT JOIN
 			NicknameAgg na ON na.room_id = cu.room_id
 		WHERE
-			cu.user_no = 4
+			cu.user_no = #{value}
 		GROUP BY
 			cu.room_id, na.nicknames, p.party_name, p.party_filename, lm.message_type, lm.message_text, up_latest.profile_nickname
 		ORDER BY

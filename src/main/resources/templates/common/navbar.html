@@ -130,7 +130,7 @@
 	                                            <img th:src="@{|${coversPath}${chat.partyFilename}|}" alt="">
 	                                        </div>
 	                                        <div class="message-info" th:switch="${chat.messageType}">
-	                                            <div class="display-name" th:text="|${chat.displayName} (${chat.chattersCnt})|">수영</div>
+	                                            <div class="display-name"><span class="display-name-left" th:text="${chat.displayName}"></span> (<span th:text="${chat.chattersCnt}">123</span>)</div>
 	                                            <div class="content" th:case="0" th:text="|${chat.latestMessageNickname}: ${chat.messageText}|">언제와??</div>
 	                                            <div class="content" th:case="1" th:text="|${chat.latestMessageNickname}님이 들어왔습니다.|">홍길동님이 들어왔습니다.</div>
 	                                            <div class="content" th:case="2" th:text="|${chat.latestMessageNickname}님이 나갔습니다.|">이동무님이 나갔습니다.</div>
@@ -142,7 +142,6 @@
 	                                    </a>
 	                                </li>
 	                            </ul>
-	                            
 	                        </div>
 	                    </div>
 	                </li>

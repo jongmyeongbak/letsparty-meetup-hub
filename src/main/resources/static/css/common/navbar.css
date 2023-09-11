@@ -164,6 +164,7 @@ nav:nth-of-type(2) {
 }
 .message-item a {
     display: flex;
+    align-items: center;
 }
 .message-item .img-container {
     position: relative;
@@ -186,6 +187,15 @@ nav:nth-of-type(2) {
     font-size: 13px;
     font-weight: 700;
 }
+.message-info .display-name-left {
+    max-width: 82%;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    line-height: 1.2; /* 줄 간격을 조절. 필요에 따라 값을 변경 */
+}
 .message-info .content {
     width: 100%;
     font-size: 13px;
@@ -205,11 +215,7 @@ nav:nth-of-type(2) {
 .message-noread {
     width: 22px;
     height: 22px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     background-color: #4699ff;
-    position: relative;
     top: 20px;
     left: 5px;
     border-radius: 8px;
