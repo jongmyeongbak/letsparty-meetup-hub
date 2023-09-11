@@ -36,10 +36,12 @@ import com.letsparty.service.PartyService;
 import com.letsparty.service.PostService;
 import com.letsparty.service.UserPartyApplicationService;
 import com.letsparty.service.UserProfileService;
+import com.letsparty.service.UserService;
 import com.letsparty.service.ValidationService;
 import com.letsparty.util.PartyDataUtils;
 import com.letsparty.vo.Media;
 import com.letsparty.vo.Party;
+import com.letsparty.vo.Post;
 import com.letsparty.vo.UserPartyApplication;
 import com.letsparty.vo.UserProfile;
 import com.letsparty.web.form.PartyForm;
@@ -85,8 +87,7 @@ public class PartyController {
 		UserProfile profile = new UserProfile();
 		profile.setNo(profileNo);
 		if (!userPartyApplicationService.addUserPartyApplicationIfReqMet(partyNo, loginUser.getId(), profile)) {
-			// TODO 가입조건과 맞지 않다는 오류메세지를 담아서 redirect 하기
-			return "redirect:/party/{partyNo}?req=fail";
+			return "redirect:/party/{partyNo}/join?req=fail";
 		};
 		return "redirect:/party/{partyNo}";
 	}
@@ -314,7 +315,9 @@ public class PartyController {
 	
 	@GetMapping("/{partyNo}/withdraw/{upaNo}")
 	public String withdraw(@PathVariable("partyNo") int partyNo, @PathVariable("upaNo") int upaNo) {
-		userPartyApplicationService.withdraw(upaNo);
+		if (!userPartyApplicationService.withdraw(upaNo)) {
+			return "redirect:/party/{partyNo}/setting?req=fail";
+		};
 		return "redirect:/party/{partyNo}";
 	}
 	

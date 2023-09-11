@@ -4,6 +4,9 @@
 <!-- 고유 CSS -->
 <head>
 <link rel="stylesheet" th:href="@{/css/page/party/join.css}">
+<script th:if="${#strings.equals(param.req, 'fail')}">
+	alert("가입조건과 맞지 않습니다.");
+</script>
 </head>
 <!-- 고유 content -->
 <div layout:fragment="content-top" class="content">

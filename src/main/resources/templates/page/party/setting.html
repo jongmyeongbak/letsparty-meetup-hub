@@ -4,6 +4,9 @@
 <!-- 고유 CSS -->
 <head>
 <link rel="stylesheet" th:href="@{/css/page/party/setting.css}">
+<script th:if="${#strings.equals(param.req, 'fail')}">
+	alert("리더는 탈퇴할 수 없습니다.");
+</script>
 </head>
 <!-- 고유 content -->
 <div layout:fragment="content-top" class="content">

@@ -10,7 +10,7 @@ import lombok.ToString;
 @ToString
 public class UserProfile {
 
-	private int no;
+	private Integer no;
 	private String id;
 	private String nickname;
 	private String filename;
@@ -21,7 +21,7 @@ public class UserProfile {
 	}
 	
 	@Builder
-	public UserProfile(int no, String id, String nickname, String filename, Boolean isDefault, Boolean isUrl) {
+	public UserProfile(Integer no, String id, String nickname, String filename, Boolean isDefault, Boolean isUrl) {
 		this.no = no;
 		this.id = id;
 		this.nickname = nickname;

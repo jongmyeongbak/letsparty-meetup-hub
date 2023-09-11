@@ -156,8 +156,13 @@ public class UserPartyApplicationService {
 		}
 	}
 
-	public void withdraw(int upaNo) {
+	public boolean withdraw(int upaNo) {
+		UserPartyApplication upa = userPartyApplicationMapper.findByNo(upaNo);
+		if (upa.getRoleNo() == 6) {
+			return false;
+		}
 		userPartyApplicationMapper.withdraw(upaNo);
+		return true;
 	}
 
 	public boolean isPartyDeletable (int partyNo) {

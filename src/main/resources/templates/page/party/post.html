@@ -4,9 +4,6 @@
 <head>
 	<link rel="stylesheet" th:href="@{/css/page/party/post.css}">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-	<script th:if="${#strings.equals(param.req, 'fail')}">
-		alert("가입조건과 맞지 않습니다.");
-	</script>
 </head>
 <div layout:fragment="content-top" class="content">
 	<div th:if="${postNo == 0}" class="row mb-3">
