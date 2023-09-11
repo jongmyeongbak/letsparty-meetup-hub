@@ -19,6 +19,15 @@
 			AND user_no = #{userNo}
 	</select>
 
+	<select id="findByRoomNoAndUserNo" parameterType="ChatUser" resultType="ChatUser">
+		SELECT *
+		FROM
+			chat_user
+		WHERE
+			room_id = #{roomId}
+			AND user_no = #{userNo}
+	</select>
+
 	<select id="findLastReadMessageNoByRoomNoAndUserNo" parameterType="ChatUser" resultType="long">
 		SELECT
 			last_read_message_no
@@ -92,6 +101,22 @@
 			user_party_application upa
 		JOIN
 			user u ON u.user_no = #{userNo} AND upa.user_id = u.user_id
+		JOIN
+			chat_room cr ON cr.room_id = #{roomId} AND upa.party_no = cr.party_no
+		JOIN
+			user_profile up ON upa.profile_no = up.profile_no
+	</select>
+	
+	<select id="findByRoomIdRegardlessOfLeft" resultType="com.letsparty.dto.ChatUserResponse">
+		SELECT
+			u.user_no,
+			up.profile_nickname as nickname,
+			up.image_filename as filename,
+			up.is_url
+		FROM
+			user_party_application upa
+		JOIN
+			user u ON upa.user_id = u.user_id
 		JOIN
 			chat_room cr ON cr.room_id = #{roomId} AND upa.party_no = cr.party_no
 		JOIN

@@ -9,6 +9,43 @@
 			(#{roomNo}, #{type}, #{userNo}, #{createdAt}, #{unreadCnt}, #{text})
 	</insert>
 	
+	<select id="getLatestMessagesForChatUser" parameterType="ChatUser" resultType="ChatMessage">
+		(
+			SELECT
+				message_no as no,
+				cm.room_no,
+				message_type as type,
+				user_no,
+				created_at,
+				unread_cnt,
+				message_text as text
+			FROM chat_message cm
+			JOIN chat_room cr ON cm.room_no = cr.room_no
+			WHERE cr.room_id = #{roomId} AND cm.message_no > #{lastReadMessageNo}
+			ORDER BY cm.message_no ASC
+		)
+		UNION ALL
+		(
+			SELECT *
+			FROM (
+				SELECT
+					message_no as no,
+					cm.room_no,
+					message_type as type,
+					user_no,
+					created_at,
+					unread_cnt,
+					message_text as text
+				FROM chat_message cm
+				JOIN chat_room cr ON cm.room_no = cr.room_no
+				WHERE cr.room_id = #{roomId} AND cm.message_no &lt;= #{lastReadMessageNo} AND cm.message_no >= #{joinMessageNo}
+				ORDER BY cm.message_no DESC
+				LIMIT 30
+			) AS t
+		)
+		ORDER BY no ASC;
+	</select>
+	
 	<update id="decreaseUnreadCntByRoomNoAndLastReadMessageNo">
 		UPDATE chat_message
 		SET

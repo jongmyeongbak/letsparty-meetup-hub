@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -25,6 +26,7 @@ import com.letsparty.vo.ChatRoom;
 import com.letsparty.vo.ChatUser;
 import com.letsparty.vo.Party;
 import com.letsparty.vo.UserPartyApplication;
+import com.letsparty.web.websocket.dto.ChatMessageCon;
 import com.letsparty.web.websocket.dto.ChatMessageJoin;
 import com.letsparty.web.websocket.service.SessionInfoMapper;
 import com.letsparty.web.websocket.service.SessionStore;
@@ -211,12 +213,36 @@ public class ChatService {
 		return dtos;
 	}
 
-	public List<ChatUserResponse> getUsersByRoomId(String roomId, int userNo) {
-		return chatUserMapper.findWithoutMeByRoomId(roomId, userNo);
+	public Object[] getInitInfoByRoomId(String roomId, int userNo) {
+		ChatUser chatUser = ChatUser.builder().roomId(roomId).userNo(userNo).build();
+		chatUser = chatUserMapper.findByRoomNoAndUserNo(chatUser);
+		// 참가한 room이 아니면 연결 거부
+		if (chatUser == null) {
+			return null;
+		}
+		List<ChatUserResponse> chatUserResponses = chatUserMapper.findWithoutMeByRoomId(roomId, userNo);
+		
+		// 방에 접속하면 안읽은수 감소
+		long lastReadMessageNo = chatUser.getLastReadMessageNo();
+		if (!sessionInfoMapper.isUserInRoom(userNo, roomId)) {
+			ChatMessageCon chatMessageCon = new ChatMessageCon(3, lastReadMessageNo);
+			messagingTemplate.convertAndSend(String.format("/topic/chat/%s", roomId), chatMessageCon);
+			chatMessageMapper.decreaseUnreadCntByRoomIdAndLastReadMessageNo(roomId, lastReadMessageNo);
+		}
+		List<ChatMessage> chatMessages = chatMessageMapper.getLatestMessagesForChatUser(chatUser);
+		
+		return new Object[]{chatUserResponses, chatMessages, lastReadMessageNo};
 	}
 
 	public ChatUserResponse getUserByRoomIdAndUserNo(String roomId, int userNo) {
 		return chatUserMapper.findByRoomIdAndUserNo(roomId, userNo);
+	}
+	
+	public List<ChatUserResponse> getUsersByRoomIdRegardlessOfLeft(String roomId, Set<Integer> userNos) {
+		List<ChatUserResponse> chatUserResponses = chatUserMapper.findByRoomIdRegardlessOfLeft(roomId);
+	    return chatUserResponses.stream()
+	            .filter(userResponse -> userNos.contains(userResponse.getUserNo()))
+	            .collect(Collectors.toList());
 	}
 	
 	public ChatRoom getChatRoom(String roomId) {

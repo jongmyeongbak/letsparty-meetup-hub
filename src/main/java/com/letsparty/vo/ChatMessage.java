@@ -27,8 +27,9 @@ public class ChatMessage {
 	private String text;
 	
 	@Builder
-	public ChatMessage(long roomNo, int type, int userNo, LocalDateTime createdAt, Long unreadCnt, String text) {
+	public ChatMessage(long no, long roomNo, int type, int userNo, LocalDateTime createdAt, Long unreadCnt, String text) {
 		super();
+		this.no = no;
 		this.roomNo = roomNo;
 		this.type = type;
 		this.userNo = userNo;
