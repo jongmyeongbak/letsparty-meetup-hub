@@ -23,7 +23,6 @@ public class PostService {
 		if (null == lastPostNo) {
 			lastPostNo = 0;
 		}
-		System.out.println(lastPostNo);
 		return lastPostNo;
 	}
 
