@@ -25,6 +25,9 @@ public class WebConfig implements WebMvcConfigurer {
 						"/party/{partyNo}/read/{postNo}",
 						"/party/{partyNo}/post/{postId}/comment",
 						"/party/{partyNo}/withdraw/{upaNo}",
+						"/letsparty/read/{postNo}",
+						"/letsparty/post/{postNo}/latest-two-comments",
+						"/letsparty/post/{postNo}/all-comments",
 						"/my/profile/{profileNo}");
 		registry.addInterceptor(partyInterceptor)
 				.addPathPatterns("/party/{partyNo}/**")

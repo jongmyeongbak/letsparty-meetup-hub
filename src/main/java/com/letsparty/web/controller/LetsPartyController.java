@@ -194,7 +194,7 @@ public class LetsPartyController {
 	    	return "redirect:/letsparty/post/{postNo}";
 	    } catch (PostNotFoundException e) {
 	    	attributes.addFlashAttribute("errorMessage", e.getMessage());
-	    	return"redirect:/letsparty";
+	    	return "redirect:/letsparty";
 		}
 	}
 	
