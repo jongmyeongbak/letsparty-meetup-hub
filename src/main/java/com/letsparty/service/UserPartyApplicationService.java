@@ -169,6 +169,9 @@ public class UserPartyApplicationService {
 		}
 		upa.setStatus("탈퇴");
 		userPartyApplicationMapper.update(upa);
+		Party party = partyMapper.getPartyByNo(upa.getParty().getNo());
+		party.setCurCnt(party.getCurCnt() - 1);
+		partyMapper.updateParty(party);
 		return true;
 	}
 
