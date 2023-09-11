@@ -92,3 +92,27 @@ h6 {
 	transition: .3s;
 	background-color: #ff7c7c;
 }
+@media screen and (max-width: 570px) {
+	.col-8 {
+		width: 100%;
+	}
+	h5 {
+		font-size: 15px;
+		font-weight: 700;
+		width: 105px;
+	}
+	.profile-container {
+		display: block;
+		width: 100%;
+	}
+	.profile-item {
+		display: flex;
+	}
+	.pf-image {
+		margin: 0 0 20px 10px;
+	}
+	.profile-item .name {
+		margin-top: 22px;
+		margin-left: 10px;
+	}
+}

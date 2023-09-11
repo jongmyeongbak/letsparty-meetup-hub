@@ -130,3 +130,16 @@ ul .list-group-item {
     float: right;
     margin: 15px 10px;
 }
+@media screen and (max-width: 570px) {
+	.col-8 {
+		width: 100%;
+	}
+	.party-container ul {
+		padding: 10px 0;
+	}
+	.party-item {
+		width: 100%;
+		margin-left: 0;
+	}
+	
+}

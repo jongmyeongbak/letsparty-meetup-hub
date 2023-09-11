@@ -95,6 +95,8 @@
 	        party_filename		as filename,
 	       	visibility_status	as visibilityStatus
 	    FROM party
+	   	WHERE
+	   		party_status = '활성'
 	    ORDER BY created_at DESC
 	    LIMIT 5
 	</select>

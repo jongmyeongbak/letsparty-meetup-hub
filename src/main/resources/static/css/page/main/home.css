@@ -201,3 +201,9 @@ td .party-description {
     color: #888;
     font-size: 14px;
 } */
+
+@media screen and (max-width: 570px) {
+	.board-list{
+		display: block;
+	}
+}

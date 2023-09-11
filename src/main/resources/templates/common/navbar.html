@@ -36,7 +36,7 @@
 				</ul>
 				<ul class="navbar-nav justify-content-end"
 					sec:authorize="isAuthenticated()">
-					<li class="nav-item me-3"><a href="#"
+					<li class="nav-item me-3 news"><a href="#"
 						class="nav-link noti noti-outside"> <i
 							class="fa-solid fa-bell noti" id="bell"></i>
 							<div class="noti-no-read">
@@ -113,7 +113,7 @@
 								</ul>
 							</div>
 						</div></li>
-					<li class="nav-item me-3"><a href="#"
+					<li class="nav-item me-3 bell"><a href="#"
 						class="nav-link noti noti-outside"> <i
 							class="fa-solid fa-message noti" id="message"></i>
 							<div class="message-no-read" th:if="${allChatCount}">

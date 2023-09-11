@@ -287,10 +287,14 @@ nav:nth-of-type(2) {
 		font-size: 0.9em;
 		text-align: right;
 	}
-	.m-login .nav-item:nth-child(1), .m-login .nav-item:nth-child(2){
+	.m-login .news, .m-login .bell{
 		display: none;
 	}
 	.container .nav2 {
 		flex-direction: row;
+	}
+	.dropdown-menu.show li {
+		width: 120px;
+		text-align: left;
 	}
 }
