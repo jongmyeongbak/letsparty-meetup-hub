@@ -1,29 +1,16 @@
 package com.letsparty.web.websocket.interceptor;
 
-import java.util.Map;
-
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-import org.springframework.web.socket.messaging.SessionSubscribeEvent;
 
-import com.letsparty.mapper.ChatMessageMapper;
 import com.letsparty.mapper.ChatUserMapper;
-import com.letsparty.security.user.LoginUser;
-import com.letsparty.vo.ChatUser;
-import com.letsparty.web.websocket.dto.ChatMessageCon;
 import com.letsparty.web.websocket.service.SessionInfoMapper;
 import com.letsparty.web.websocket.service.SessionInfoMapper.SessionDetail;
 import com.letsparty.web.websocket.util.WebSocketUtils;
