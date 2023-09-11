@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.letsparty.mapper.UserProfileMapper;
-import com.letsparty.vo.UserPartyApplication;
 import com.letsparty.vo.UserProfile;
-import com.letsparty.web.form.PartyProfileForm;
 import com.letsparty.web.form.UserProfileForm;
 
 import lombok.RequiredArgsConstructor;
@@ -25,7 +23,7 @@ public class UserProfileService {
 	public int addProfile(UserProfileForm userProfileForm) {
 		UserProfile userProfile = new UserProfile();
 		
-		BeanUtils.copyProperties(userProfileForm, userProfile);
+		BeanUtils.copyProperties(userProfileForm, userProfile, "no");
 		
 		userProfileMapper.addProfile(userProfile);
 		
