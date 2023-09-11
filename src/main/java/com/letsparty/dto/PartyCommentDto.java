@@ -13,7 +13,7 @@ import lombok.Setter;
 @ToString
 public class PartyCommentDto {
 
-	private int no;
+	private long no;
 	private UserProfile profile;
 	private String content;
 	private LocalDateTime updatedAt;

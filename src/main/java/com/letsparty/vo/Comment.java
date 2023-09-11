@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @ToString
 public class Comment {
-		private int no;
+		private long no;
 		private Post post;
 		private User user;
 		private String content;

@@ -326,7 +326,7 @@ public class PartyController {
 	@ResponseBody
 	public List<PartyCommentDto> getAllComments(@PathVariable int partyNo, @PathVariable int postNo, @AuthenticationPrincipal LoginUser loginUser) {
 		Post post = postService.getPostByPostNoAndPartyNo(partyNo, postNo);
-	    List<PartyCommentDto> allComments = partyService.getAllCommentsByPostId(post.getId()); // postNo 전달
+	    List<PartyCommentDto> allComments = partyService.getAllCommentsByPostId(post.getId()); 
 	    for (PartyCommentDto comment : allComments) {
 	    	UserProfile profile = comment.getProfile();
 	    	if (!profile.getIsUrl()) {
