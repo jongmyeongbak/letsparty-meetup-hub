@@ -2,7 +2,7 @@ var pathSegments = window.location.href.split('/');
 	        var partyNoIndex = pathSegments.indexOf('party') + 1;
 	        var partyId = pathSegments[partyNoIndex];
 		    function loadContent(partyId, contentPath) {
-		        var fullUrl = "http://localhost/party/" + partyId + "/" + contentPath;
+		        var fullUrl = "/party/" + partyId + "/" + contentPath;
 		        $.ajax({
 		            url: fullUrl,
 		            method: "GET",
