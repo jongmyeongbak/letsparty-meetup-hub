@@ -16,26 +16,59 @@ $(function () {
 
   const chatUsers = {};
   let nicknames;
+  const deferreds = [];
+  let lastReadMessageNo;
 
   $.ajax({
     async: false,
     type: "GET",
-    url: `/chat/members/${roomId}`,
+    url: `/chat/init/${roomId}`,
     dataType: "json",
   })
-    .done(function (response) {
-      $.each(response, function (index, chatUser) {
+    .done(function (initInfo) {
+      let chatUserResponses = initInfo[0];
+      let chatMessages = initInfo[1];
+      lastReadMessageNo = initInfo[2];
+
+      $.each(chatUserResponses, function (_, chatUser) {
         const { userNo, nickname, filename, url } = chatUser;
         chatUsers[userNo] = { nickname, filename, url };
       });
+
+      let requiredUserNos = new Set();
+      $.each(chatMessages, function (_, log) {
+        let no = log.userNo;
+        if (!chatUsers[no] && no !== myNo) {
+          requiredUserNos.add(no);
+        }
+      });
+
       if (isPrivate) {
         $chatHeadLeft.text(setNickTitle(chatUsers));
+      }
+
+      if (requiredUserNos.size) {
+        addUserInfoBatch(requiredUserNos).then(function () {
+          $.each(chatMessages, function (_, log) {
+            const deferred = $.Deferred();
+            addLogForInit(log, deferred);
+          });
+        });
+      } else {
+        $.each(chatMessages, function (_, log) {
+          const deferred = $.Deferred();
+          addLogForInit(log, deferred);
+        });
       }
     })
     .fail(function (error) {
       alert("입장 실패: 창을 다시 열거나 새로고침하세요: ", error.statusText);
       window.close();
     });
+
+  $.when(...deferreds).done(() => {
+    adjustScroll(lastReadMessageNo);
+  });
 
   stompClient.connect({}, function () {
     // 구독한 채팅방에서 메시지 들어옴
@@ -69,13 +102,20 @@ $(function () {
       // TALK
       case 0:
         if (log.userNo === myNo) {
-          logData.appendChild(getLogMyElem(log, date));
+          addLogMyElem(log, date, yearMonthDay);
         } else {
           let chatUser = chatUsers[log.userNo];
           if (chatUser) {
-            addLogFriendElem(logData, log, date);
+            addLogFriendElem(logData, log, date, yearMonthDay);
           } else {
-            addUserInfo(log.userNo, addLogFriendElem, logData, log, date);
+            addUserInfo(
+              log.userNo,
+              addLogFriendElem,
+              logData,
+              log,
+              date,
+              yearMonthDay
+            );
           }
         }
         break;
@@ -83,9 +123,11 @@ $(function () {
       // JOIN
       case 1:
         const { userNo, nickname, filename, url } = log;
-        chatUsers[userNo] = { nickname, filename, url };
+        if (!chatUsers[userNo]) {
+          chatUsers[userNo] = { nickname, filename, url };
+        }
 
-        addLogMoveElem(logData, log, date, "들어왔습니다");
+        addLogMoveElem(logData, log, date, "들어왔습니다", yearMonthDay);
         $chatHeadRight.text(parseInt($chatHeadRight.text()) + 1);
         appendNickToTitle(nickname);
         break;
@@ -97,7 +139,7 @@ $(function () {
           return;
         }
         decreaseUnreadCntAfter(log.unreadCnt);
-        addLogMoveElem(logData, log, date, "나갔습니다");
+        addLogMoveElem(logData, log, date, "나갔습니다", yearMonthDay);
         $chatHeadRight.text($chatHeadRight.text() - 1);
         removeNickFromTitle(chatUsers[log.userNo].nickname);
         break;
@@ -107,14 +149,73 @@ $(function () {
     }
   }
 
-  function addLogMoveElem(logData, log, date, action) {
+  function addLogForInit(log, deferred) {
+    const date = new Date(log.createdAt);
+    const yearMonthDay = getYearMonthDay(date);
+    let logData = document.getElementById(yearMonthDay);
+
+    if (!logData) {
+      logData = getLogDataElem(date, yearMonthDay);
+    }
+
+    switch (log.type) {
+      // TALK
+      case 0:
+        if (log.userNo === myNo) {
+          addLogMyElem(log, date, yearMonthDay);
+        } else {
+          addLogFriendElem(logData, log, date, yearMonthDay);
+        }
+        break;
+
+      // JOIN
+      case 1:
+        addLogMoveElem(logData, log, date, "들어왔습니다", yearMonthDay);
+        break;
+
+      // EXIT
+      case 2:
+        addLogMoveElem(logData, log, date, "나갔습니다", yearMonthDay);
+        break;
+
+      default:
+        break;
+    }
+    deferred.resolve();
+  }
+
+  function insertLog(logElement, newLogNo, yearMonthDay) {
+    const targetContainer = $(`#${yearMonthDay}`);
+    let inserted = false;
+
+    targetContainer.find(".log-talk").each(function () {
+      const currentLogNo = parseInt($(this).attr("data-log-no"), 10);
+
+      if (newLogNo < currentLogNo) {
+        $(this).before(logElement);
+        inserted = true;
+        return false;
+      }
+    });
+
+    if (!inserted) {
+      targetContainer.append(logElement);
+    }
+  }
+
+  function addLogMoveElem(logData, log, date, action, yearMonthDay) {
     const logMoveElem = document.createElement("div");
-    logMoveElem.className = "log-move text-center";
+    logMoveElem.className = "log log-move text-center";
+    logMoveElem.dataset.logNo = log.no;
 
     const pElem = document.createElement("p");
-    pElem.textContent = `${chatUsers[log.userNo].nickname} 님이 ${action}.`;
+    if (log.userNo === myNo) {
+      pElem.textContent = `채팅방에 ${action}.`;
+    } else {
+      pElem.textContent = `${chatUsers[log.userNo].nickname}님이 ${action}.`;
+    }
     logMoveElem.appendChild(pElem);
-    logData.appendChild(logMoveElem);
+    insertLog(logMoveElem, log.no, yearMonthDay);
   }
 
   function decreaseUnreadCntAfter(lastReadCnt) {
@@ -149,9 +250,9 @@ $(function () {
     return logDataElem;
   }
 
-  function addLogFriendElem(logData, log, date) {
+  function addLogFriendElem(logData, log, date, yearMonthDay) {
     const logFriendElem = document.createElement("div");
-    logFriendElem.className = "log-talk log-friend";
+    logFriendElem.className = "log log-talk log-friend";
     logFriendElem.dataset.logNo = log.no;
 
     const pfImageElem = document.createElement("div");
@@ -205,14 +306,14 @@ $(function () {
     logContentElem.appendChild(logSectionElem);
     logFriendElem.appendChild(logContentElem);
 
-    logData.appendChild(logFriendElem);
+    insertLog(logFriendElem, log.no, yearMonthDay);
   }
 
-  function getLogMyElem(log, date) {
+  function addLogMyElem(log, date, yearMonthDay) {
     let chatUser = chatUsers[log.userNo];
 
     const logMyElem = document.createElement("div");
-    logMyElem.className = "log-talk log-my";
+    logMyElem.className = "log log-talk log-my";
     logMyElem.dataset.logNo = log.no;
 
     const logContentElem = document.createElement("div");
@@ -242,7 +343,7 @@ $(function () {
     logContentElem.appendChild(logSectionElem);
     logMyElem.appendChild(logContentElem);
 
-    return logMyElem;
+    insertLog(logMyElem, log.no, yearMonthDay);
   }
 
   function addUserInfo(userNo, callback, ...args) {
@@ -262,6 +363,28 @@ $(function () {
         alert("연결 실패: 창을 다시 열거나 새로고침하세요: ", error.statusText);
         window.close();
       });
+  }
+
+  function addUserInfoBatch(userNos) {
+    return new Promise((resolve, reject) => {
+      $.ajax({
+        type: "POST",
+        url: `/chat/members/${roomId}`,
+        data: JSON.stringify(Array.from(userNos)),
+        contentType: "application/json",
+        dataType: "json",
+      })
+        .done(function (responses) {
+          $.each(responses, function (_, response) {
+            const { userNo, nickname, filename, url } = response;
+            chatUsers[userNo] = { nickname, filename, url };
+          });
+          resolve();
+        })
+        .fail(function (error) {
+          reject(error);
+        });
+    });
   }
 
   function getYearMonthDay(date) {
@@ -408,6 +531,31 @@ $(function () {
       nicknames = nicknames.filter((nickname) => nickname !== oldNick);
       const joinedNicknames = nicknames.join(", ");
       $chatHeadLeft.text(joinedNicknames);
+    }
+  }
+
+  function adjustScroll(lastReadMessageNo) {
+    let targetElem = null;
+
+    $(".log-talk[data-log-no]").each((_, elem) => {
+      const dataLogNo = parseInt($(elem).attr("data-log-no"));
+      if (
+        dataLogNo > lastReadMessageNo &&
+        (targetElem === null ||
+          dataLogNo < parseInt($(targetElem).attr("data-log-no")))
+      ) {
+        targetElem = elem;
+      }
+    });
+
+    if (targetElem) {
+      $chatDialogue
+        .stop()
+        .animate({ scrollTop: $(targetElem).position().top - 155 }, 500);
+    } else {
+      $chatDialogue
+        .stop()
+        .animate({ scrollTop: $chatDialogue[0].scrollHeight }, 500);
     }
   }
 });
