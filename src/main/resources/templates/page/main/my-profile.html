@@ -57,7 +57,7 @@
 												<img th:src="${upa.party.filename}" alt="">
 											</div>
 											<div class="party-name">
-												<a th:href="@{/party/{partyNo}(partyNo=${upa.party.no})}"><span th:text="${upa.party.name}">파티명1</span></a>
+												<a th:href="@{/party/{partyNo}(partyNo=${upa.party.no})}"><span class="name-ellipse" th:text="${upa.party.name}">파티명1</span></a>
 												<input type="hidden" th:value="${upa.no}" name="upaNo[]">
 											</div>
 										</div>

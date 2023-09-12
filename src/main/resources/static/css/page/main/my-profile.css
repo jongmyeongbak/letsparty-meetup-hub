@@ -141,5 +141,13 @@ ul .list-group-item {
 		width: 100%;
 		margin-left: 0;
 	}
+	.name-ellipse {
+		display: block;
+	    overflow: hidden;
+	    text-overflow: ellipsis;
+	    word-wrap: normal;
+	    white-space: nowrap;
+	    max-width: 100px;
+	}
 	
 }
