@@ -58,6 +58,13 @@ public class MyController {
 		return "/page/main/my-profile";
 	}
 	
+	@GetMapping("/party")
+	public String myPartyList(@AuthenticationPrincipal LoginUser loginUser, Model model) {
+		List<UserPartyApplication> myUpa = userPartyApplicationService.findAllByUserId(loginUser.getId());
+		model.addAttribute("myUpa", myUpa);
+		return "/page/main/my-party";
+	}
+	
 	@PostMapping("/change-my-profile")
 	public String changeMyProfile(@AuthenticationPrincipal LoginUser loginUser, UserProfileForm userProfileForm) {
 		userProfileForm.setId(loginUser.getId());

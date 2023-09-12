@@ -3,7 +3,7 @@
 	layout:decorate="~{layout/common-base}">
 <!-- 고유 CSS -->
 <head>
-	<link rel="stylesheet" th:href="@{/css/page/main/home.css}" >
+	<link rel="stylesheet" th:href="@{/css/page/main/my-party.css}" >
 </head>
 <!-- 고유 content -->
 <div layout:fragment="content-top" class="container">
@@ -16,15 +16,17 @@
 						<div class="party-container">
 							<ul>
 								<li th:each="upa : ${myUpa}" class="party-item d-flex align-items-center">
-									<div class="party-info">
-										<div class="party-cover">
-											<img th:src="${upa.party.filename}" alt="">
+									<a th:href="@{/party/{partyNo}(partyNo=${upa.party.no})}">
+										<div class="party-info">
+											<div class="party-cover">
+												<img th:src="${upa.party.filename}" alt="">
+											</div>
+											<div class="party-name">
+												<span class="name-ellipse" th:text="${upa.party.name}">파티명1</span>
+											</div>
 										</div>
-										<div class="party-name">
-											<a th:href="@{/party/{partyNo}(partyNo=${upa.party.no})}"><span class="name-ellipse" th:text="${upa.party.name}">파티명1</span></a>
-											<input type="hidden" th:value="${upa.no}" name="upaNo[]">
-										</div>
-									</div>
+										<div class="nickname" th:text="${upa.userProfile.nickname}">2번프로필</div>
+									</a>
 								</li>
 							</ul>
 						</div>
