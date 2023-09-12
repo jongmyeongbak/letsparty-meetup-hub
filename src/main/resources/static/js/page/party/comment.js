@@ -24,9 +24,15 @@ document.addEventListener("DOMContentLoaded", function () {
         var day = createdAt.getDate();
         var hours = createdAt.getHours();
         var minutes = createdAt.getMinutes();
-        var seconds = createdAt.getSeconds();
-        return `${year}년 ${month}월 ${day}일 - ${hours} : ${minutes} : ${seconds}`;
+        return `${year}.${month}.${day} ${getTimeString(hours, minutes)}`;
     }
+    
+	function getTimeString(hours, minutes) {
+		const displayHours = ((hours + 11) % 12) + 1;
+
+		return `${hours < 12 ? "오전 " : "오후 "}${displayHours}:${minutes}`;
+	}
+    
 
     // 댓글 목록 불러오기 함수
     function loadComments() {

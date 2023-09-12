@@ -10,7 +10,12 @@
 			<div class="container m-search">
 				<ul class="navbar-nav me-auto justify-content-center">
 					<h1 class="fs-1 text-center logo">
-						<span id="home" class="align-middle"><a th:href="@{/}">로고</a></span>
+						<span id="home" class="align-middle">
+							<a th:href="@{/}">
+								<img class="full" th:src="@{/images/party/logo-box.png}">
+								<img class="mobile" th:src="@{/images/party/logo1.png}">
+							</a>
+						</span>
 					</h1>
 					<li class="nav-item">
 						<div class="form mt-3">
@@ -29,90 +34,96 @@
 			<div class="container m-login">
 				<ul class="navbar-nav justify-content-end"
 					sec:authorize="isAnonymous()">
-					<li class="nav-item"><a th:href="@{/login}" class="nav-link">로그인</a>
+					<li class="nav-item login"><a th:href="@{/login}" class="nav-link">로그인</a>
 					</li>
-					<li class="nav-item"><a th:href="@{/signup}" class="nav-link">회원가입</a>
+					<li class="nav-item signup"><a th:href="@{/signup}" class="nav-link">회원가입</a>
 					</li>
 				</ul>
-				<ul class="navbar-nav justify-content-end"
-					sec:authorize="isAuthenticated()">
-					<li class="nav-item me-3 news"><a href="#"
-						class="nav-link noti noti-outside"> <i
-							class="fa-solid fa-bell noti" id="bell"></i>
-							<div class="noti-no-read">
-								<span>50</span>
-							</div>
-					</a>
-						<div class="noti-container news-container none">
-							<div class="arrow"></div>
-							<div class="title">새소식</div>
-							<div class="news-items">
-								<ul>
-									<li class="news-item"><a href="">
-											<div class="img-container">
-												<img th:src="@{|${coversPath}cover-default7.png|}" alt="">
-											</div>
-											<div class="news-info">
-												<div class="type">공지</div>
-												<div class="content">새 공지가 등록되었습니다</div>
-												<div class="time">
-													<span>홍길동파티</span> &#183 <span>21시간전</span>
-												</div>
-											</div>
-									</a></li>
-									<li class="news-item"><a href="">
-											<div class="img-container">
-												<img th:src="@{|${coversPath}cover-default1.png|}" alt="">
-											</div>
-											<div class="news-info">
-												<div class="type">댓글</div>
-												<div class="content">내 게시글에 댓글이 달렸습니다.</div>
-												<div class="time">
-													<span>강감찬파티</span> &#183 <span>21시간전</span>
-												</div>
-											</div>
-									</a></li>
-									<li class="news-item"><a href="">
-											<div class="img-container">
-												<img th:src="@{|${coversPath}cover-default7.png|}" alt="">
-											</div>
-											<div class="news-info">
-												<div class="type">가입</div>
-												<div class="content">
-													<span>홍길동파티</span>파티에 가입되었습니다.
-												</div>
-												<div class="time">
-													<span>홍길동파티</span> &#183 <span>21시간전</span>
-												</div>
-											</div>
-									</a></li>
-									<li class="news-item"><a href="">
-											<div class="img-container">
-												<img th:src="@{|${coversPath}cover-default2.png|}" alt="">
-											</div>
-											<div class="news-info">
-												<div class="type">강퇴</div>
-												<div class="content">강퇴당하셨습니다.</div>
-												<div class="time">
-													<span>이승규파티</span> &#183 <span>21시간전</span>
-												</div>
-											</div>
-									</a></li>
-									<li class="news-item"><a href="">
-											<div class="img-container">
-												<img th:src="@{|${coversPath}cover-default7.png|}" alt="">
-											</div>
-											<div class="news-info">
-												<div class="type">일정</div>
-												<div class="content">일정이 등록되었습니다.</div>
-												<div class="time">
-													<span>홍길동파티</span> &#183 <span>21시간전</span>
-												</div>
-											</div>
-									</a></li>
-								</ul>
-							</div>
-						</div></li>
+				<ul class="navbar-nav justify-content-end" sec:authorize="isAuthenticated()">
+<!-- 					<li class="nav-item me-3 news"> -->
+<!-- 						<a href="#" class="nav-link noti noti-outside">  -->
+<!-- 							<i class="fa-solid fa-bell noti" id="bell"></i> -->
+<!-- 							<div class="noti-no-read"> -->
+<!-- 								<span>50</span> -->
+<!-- 							</div> -->
+<!-- 						</a> -->
+<!-- 						<div class="noti-container news-container none"> -->
+<!-- 							<div class="arrow"></div> -->
+<!-- 							<div class="title">새소식</div> -->
+<!-- 							<div class="news-items"> -->
+<!-- 								<ul> -->
+<!-- 									<li class="news-item"><a href=""> -->
+<!-- 											<div class="img-container"> -->
+<!-- 												<img th:src="@{|${coversPath}cover-default7.png|}" alt=""> -->
+<!-- 											</div> -->
+<!-- 											<div class="news-info"> -->
+<!-- 												<div class="type">공지</div> -->
+<!-- 												<div class="content">새 공지가 등록되었습니다</div> -->
+<!-- 												<div class="time"> -->
+<!-- 													<span>홍길동파티</span> &#183 <span>21시간전</span> -->
+<!-- 												</div> -->
+<!-- 											</div> -->
+<!-- 										</a> -->
+<!-- 									</li> -->
+<!-- 									<li class="news-item"><a href=""> -->
+<!-- 											<div class="img-container"> -->
+<!-- 												<img th:src="@{|${coversPath}cover-default1.png|}" alt=""> -->
+<!-- 											</div> -->
+<!-- 											<div class="news-info"> -->
+<!-- 												<div class="type">댓글</div> -->
+<!-- 												<div class="content">내 게시글에 댓글이 달렸습니다.</div> -->
+<!-- 												<div class="time"> -->
+<!-- 													<span>강감찬파티</span> &#183 <span>21시간전</span> -->
+<!-- 												</div> -->
+<!-- 											</div> -->
+<!-- 										</a> -->
+<!-- 									</li> -->
+<!-- 									<li class="news-item"><a href=""> -->
+<!-- 											<div class="img-container"> -->
+<!-- 												<img th:src="@{|${coversPath}cover-default7.png|}" alt=""> -->
+<!-- 											</div> -->
+<!-- 											<div class="news-info"> -->
+<!-- 												<div class="type">가입</div> -->
+<!-- 												<div class="content"> -->
+<!-- 													<span>홍길동파티</span>파티에 가입되었습니다. -->
+<!-- 												</div> -->
+<!-- 												<div class="time"> -->
+<!-- 													<span>홍길동파티</span> &#183 <span>21시간전</span> -->
+<!-- 												</div> -->
+<!-- 											</div> -->
+<!-- 										</a> -->
+<!-- 									</li> -->
+<!-- 									<li class="news-item"><a href=""> -->
+<!-- 											<div class="img-container"> -->
+<!-- 												<img th:src="@{|${coversPath}cover-default2.png|}" alt=""> -->
+<!-- 											</div> -->
+<!-- 											<div class="news-info"> -->
+<!-- 												<div class="type">강퇴</div> -->
+<!-- 												<div class="content">강퇴당하셨습니다.</div> -->
+<!-- 												<div class="time"> -->
+<!-- 													<span>이승규파티</span> &#183 <span>21시간전</span> -->
+<!-- 												</div> -->
+<!-- 											</div> -->
+<!-- 										</a> -->
+<!-- 									</li> -->
+<!-- 									<li class="news-item"> -->
+<!-- 										<a href=""> -->
+<!-- 											<div class="img-container"> -->
+<!-- 												<img th:src="@{|${coversPath}cover-default7.png|}" alt=""> -->
+<!-- 											</div> -->
+<!-- 											<div class="news-info"> -->
+<!-- 												<div class="type">일정</div> -->
+<!-- 												<div class="content">일정이 등록되었습니다.</div> -->
+<!-- 												<div class="time"> -->
+<!-- 													<span>홍길동파티</span> &#183 <span>21시간전</span> -->
+<!-- 												</div> -->
+<!-- 											</div> -->
+<!-- 										</a> -->
+<!-- 									</li> -->
+<!-- 								</ul> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 					</li> -->
 					<li class="nav-item me-3 bell"><a href="#"
 						class="nav-link noti noti-outside"> <i
 							class="fa-solid fa-message noti" id="message"></i>

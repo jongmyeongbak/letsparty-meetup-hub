@@ -59,3 +59,30 @@
     font-weight: 700;
     transition: .3s;
 }
+
+@media screen and (max-width: 570px) {
+	.pf-image {
+		width: 35px;
+		height: 35px;
+		margin-top: 5px;
+	}
+	.user-info .name {
+		margin-top: -3px;
+		max-width: 60px;
+		white-space: nowrap;
+    	overflow: hidden;
+    	text-overflow: ellipsis;
+	}
+	.user-info .name span{
+		line-height: 3em;
+		font-size: 13px;
+	}
+	.user-info .role {
+		height: 20px;
+		line-height: 0.3em;
+		margin-top: 14px;
+	}
+	.user-info .role span{
+		font-size: 10px	;
+	}
+}

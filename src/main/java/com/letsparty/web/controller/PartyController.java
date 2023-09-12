@@ -330,7 +330,7 @@ public class PartyController {
 	    for (PartyCommentDto comment : allComments) {
 	    	UserProfile profile = comment.getProfile();
 	    	if (!profile.getIsUrl()) {
-	    		profile.setFilename(coversPath + profile.getFilename());
+	    		profile.setFilename(profilesPath + profile.getFilename());
 			}
 	    }
 	    return allComments;

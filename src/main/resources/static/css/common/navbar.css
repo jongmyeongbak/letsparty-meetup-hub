@@ -29,6 +29,13 @@
 .logo {
     line-height: 1.5em;
 }
+.logo img {
+	width: 130px;
+	object-fit: contain;
+}
+.logo .mobile {
+	display: none;
+}
 .search {
     display: inline-block;
     text-align: center;
@@ -90,9 +97,6 @@ nav:nth-of-type(2) {
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
 }
-/* .news-container::-webkit-scrollbar {
-    border-radius: 8px;
-} */
 .noti-container .title {
     padding-left: 10px;
     padding-top: 10px;
@@ -259,9 +263,18 @@ nav:nth-of-type(2) {
     .m-lp a{
 		font-size: 0.9em;
 	}
+	.m-search {
+		margin-top: -20px
+	}
     .container .m-search {
         width: 40%;
     }
+	.logo .full{
+		display: none;
+	}
+	.logo .mobile {
+		display: block;
+	}
     .m-search input {
 		width: 100%;
 	}
@@ -280,15 +293,34 @@ nav:nth-of-type(2) {
     .m-search h1 {
 		margin-bottom: -20px
 	}
-	.m-login li {
+	.dropdown {
+		width: 48px;
+	}
+	.navbar-nav .dropdown-menu {
+		position: absolute;
+    	--bs-dropdown-min-width: 7rem;
+	}
+	.m-login .login, .m-login .signup {
 		padding-left: 10%;
 		display: block;
 		height: 30px;
 		font-size: 0.9em;
 		text-align: right;
 	}
-	.m-login .news, .m-login .bell{
-		display: none;
+	.m-login .justify-content-end{
+		flex-direction: unset;
+	}
+	.nav-item i{
+		font-size: 20px;
+	}
+	.message-no-read {
+		top: 1px;
+	    left: 23px;
+	    width: 15px;
+	    height: 15px;
+	}
+	.message-no-read span{
+		font-size: 10px;
 	}
 	.container .nav2 {
 		flex-direction: row;

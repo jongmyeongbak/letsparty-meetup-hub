@@ -147,7 +147,7 @@
 
 						<!-- 지도 -->
 						<div th:if="${pa.place}" class="background-color-gray my-3" id="place">
-							<a th:href="@{https://map.kakao.com/(itemId=${pa.place.id})}" target="_blank">
+							<a th:href="@{https://map.kakao.com/(itemId=${pa.place.id})}" onclick="window.open(this.href, '_blank', 'width=1200, height=644'); return false;">
 								<div class="border d-flex align-items-center">
 									<div class="col-1 me-2 d-flex justify-content-center align-items-center">
 										<div class="">
@@ -294,7 +294,7 @@
                         </div>
 
                         <!-- 댓글 작성 폼 -->
-						<div class="Comment-write-pop-up">
+						<div th:if="${member}" class="Comment-write-pop-up">
 		                     <form method="post" th:action="@{/party/{partyNo}/post/{postNo}/comment/create(partyNo=${partyNo}, postNo=${postNo})}">
 			                        <div class="row pe-3 mb-2 ms-2 d-flex justify-content-center align-items-center" >
 			                        	<input type="hidden" id="" value="">
@@ -312,7 +312,8 @@
 		</div>
 	</div>
 </div>
-
-<script layout:fragment="script" th:src="@{/js/page/party/post.js}"></script>
-<script layout:fragment="script" th:src="@{/js/page/party/comment.js}"></script>
+<th:block layout:fragment="script">
+	<script th:src="@{/js/page/party/post.js}"></script>
+	<script th:src="@{/js/page/party/comment.js}"></script>
+</th:block>
 </html>

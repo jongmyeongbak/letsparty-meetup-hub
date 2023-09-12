@@ -113,3 +113,14 @@ a:hover {
 	border-color: #6DA1FF;
 	background-color: #6DA1FF;
 }
+
+@media screen and (max-width: 570px) {
+	.cat-button {
+		padding: 0px 3px;
+		flex-wrap: wrap;
+	}
+	.cat-button button {
+		width: 90px;
+		font-size: 14px;
+	}
+}

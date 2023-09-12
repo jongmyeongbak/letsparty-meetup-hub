@@ -1,6 +1,11 @@
 @charset "UTF-8";
 
 /* home화면 디자인 */
+.home-logo img {
+	width: 200px;
+	margin: -20px 10px -20px 10px;
+}
+
 table {
     text-align: center;
 }
@@ -205,5 +210,35 @@ td .party-description {
 @media screen and (max-width: 570px) {
 	.board-list{
 		display: block;
+	}
+	.lets-party {
+		width: 100%;
+	}
+	.lets-party .col-11 {
+		width: 100%;
+	}
+	.my-party-list {
+		width: 100%;
+	}
+	td .post-name, td .party-name {
+		width: 80px;
+	}
+	td .post-title {
+		width: 120px;
+	}
+	td .party-description {
+	    width: 170px;
+	}
+	colgroup {
+		display: none;
+	}
+	.category-container {
+	    flex-wrap: wrap;
+	}
+	.category-item {
+		margin-bottom: 10px;
+	}
+	.box {
+		width: 130px;
 	}
 }
