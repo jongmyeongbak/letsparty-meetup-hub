@@ -26,7 +26,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 		registry.addEndpoint("/ws")
 				// HttpSession을 WS로 변경할 때 오직 roomId를 전달하기 위한 Interceptor
 				.addInterceptors(new HttpSessionHandshakeInterceptor())
-//				// apic 테스트 및 외부 url 접속을 위함
+				// apic 테스트 및 외부 url 접속을 위함
 				.setAllowedOriginPatterns("*")
 				.withSockJS();
 	}
