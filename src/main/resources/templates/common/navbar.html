@@ -127,7 +127,7 @@
 								<ul>
 									<li class="message-item" th:each="chat : ${chatSummaryDtos}">
 										<a th:href="@{/chat/{roomId}(roomId=${chat.roomId})}"
-										onclick="window.open(this.href, '_blank', 'width=400, height=644'); return false;">
+										onclick="openPopup(this.href); return false;">
 											<div class="img-container">
 												<img th:src="@{|${coversPath}${chat.partyFilename}|}" alt="">
 											</div>

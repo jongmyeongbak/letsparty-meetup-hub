@@ -6,7 +6,7 @@
 			<ul>
 				<li th:each="chatRoom, iterStat : ${chatRooms}" class="chat-item">
 					<a th:href="@{/chat/{roomId}(roomId=${chatRoom.id})}"
-					onclick="window.open(this.href, '_blank', 'width=400, height=644'); return false;">
+					onclick="openPopup(this.href); return false;">
 						<div class="img-container">
 							<img th:src="${iterStat.first ? party.filename : (#lists.size(chatRoom.chatUsers) == 1 ? chatRoom.chatUsers[0].filename : '/images/party/profile-default.png')}" alt="">
 						</div>
