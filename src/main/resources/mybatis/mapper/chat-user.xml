@@ -170,7 +170,7 @@
 				ELSE p.party_name
 			END AS display_name,
 			p.party_filename,
-			SUM(CASE WHEN cm.message_no > cu.last_read_message_no THEN 1 ELSE 0 END) AS message_count,
+			SUM(CASE WHEN cm.message_no > cu.last_read_message_no AND cm.message_type = 0 THEN 1 ELSE 0 END) AS message_count,
 			lm.message_type,
 			lm.message_text,
 			up_latest.profile_nickname AS latest_message_nickname
