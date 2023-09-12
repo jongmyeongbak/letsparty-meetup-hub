@@ -148,7 +148,7 @@
 														th:text="${chat.displayName}"></span> (<span
 														th:text="${chat.chattersCnt}">123</span>)
 												</div>
-												<div class="content" th:case="0"
+												<div class="content" th:case="0" th:unless="${chat.latestMessageNickname == null}"
 													th:text="|${chat.latestMessageNickname}: ${chat.messageText}|">언제와??</div>
 												<div class="content" th:case="1"
 													th:text="|${chat.latestMessageNickname}님이 들어왔습니다.|">홍길동님이

@@ -4,8 +4,6 @@ function openPopup(url) {
   let left = (window.innerWidth - width) / 2 + window.screenX;
   let top = (window.innerHeight - height) / 2 + window.screenY;
 
-  console.log(left);
-  console.log(top);
   let popup = window.open(
     url,
     "_blank",
