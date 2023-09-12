@@ -1,0 +1,39 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/common-base}">
+<!-- 고유 CSS -->
+<head>
+	<link rel="stylesheet" th:href="@{/css/page/main/home.css}" >
+</head>
+<!-- 고유 content -->
+<div layout:fragment="content-top" class="container">
+	<div class="row justify-content-md-center">
+		<div class="col-8">
+			<div class="card">
+				<h3 class="card-header">내 파티 리스트</h3>
+				<ul class="list-group list-group-flush">
+					<li class="list-group-item">
+						<div class="party-container">
+							<ul>
+								<li th:each="upa : ${myUpa}" class="party-item d-flex align-items-center">
+									<div class="party-info">
+										<div class="party-cover">
+											<img th:src="${upa.party.filename}" alt="">
+										</div>
+										<div class="party-name">
+											<a th:href="@{/party/{partyNo}(partyNo=${upa.party.no})}"><span class="name-ellipse" th:text="${upa.party.name}">파티명1</span></a>
+											<input type="hidden" th:value="${upa.no}" name="upaNo[]">
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 고유 script -->
+<script layout:fragment="script" th:src="@{/js/page/main/home.js}"></script>
+</html>

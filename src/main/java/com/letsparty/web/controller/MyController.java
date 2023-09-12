@@ -47,6 +47,7 @@ public class MyController {
 		model.addAttribute("userInfo", user);
 		return "/page/main/mypage";
 	}
+	
 	@GetMapping("/profile")
 	public String myProfile(@AuthenticationPrincipal LoginUser loginUser, Model model) {
 		List<UserProfile> profileList = myService.getAllProfileByUserId(loginUser.getId());

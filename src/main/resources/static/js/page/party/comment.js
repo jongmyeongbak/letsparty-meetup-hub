@@ -144,19 +144,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // 댓글 제출 폼에서 유효성 검사
-    var commentForm = document.getElementById("party-comment-form");
-
-    commentForm.addEventListener("submit", function (event) {
-        var contentField = document.querySelector("input[name='content']");
-        var content = contentField.value.trim();
-
-        if (!content) {
-            alert("댓글 내용을 입력해주세요.");
-            event.preventDefault();
-        }
-    });
-
     // 무한 스크롤 이벤트 리스너 추가
     window.addEventListener("scroll", function () {
         if (loadingComments) return; // 댓글을 로딩 중인 경우, 무시

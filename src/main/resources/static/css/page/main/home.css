@@ -6,8 +6,16 @@
 	margin: -20px 10px -20px 10px;
 }
 
-table {
+.lets-party table, .my-party-list table {
     text-align: center;
+    margin-bottom: 0;
+}
+.more {
+	margin-top: 10px;
+	margin-bottom: 30px;
+}
+.more .btn {
+	margin-bottom: 10px;
 }
 td a, td a:active, td a:visited {
     color: #333;
@@ -240,5 +248,8 @@ td .party-description {
 	}
 	.box {
 		width: 130px;
+	}
+	.more.row {
+		margin-top: 10px;
 	}
 }
