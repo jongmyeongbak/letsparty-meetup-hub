@@ -45,14 +45,14 @@
                 <div class="card-body">
                     <div class="d-flex jutstify-content-start mb-3">
                         <select class="form-select me-3" style="width: 150px;" name="sort">
-						    <option th:value="latest" th:selected="${#request.getParameter('sort') == 'latest'}">최신순</option>
-  							<option th:value="oldest" th:selected="${#request.getParameter('sort') == 'oldest'}">오래된 순</option>
-  							<option th:value="popular" th:selected="${#request.getParameter('sort') == 'popular'}">인기순</option>
+						    <option value="latest" th:selected="${#request.getParameter('sort') == 'latest'}">최신순</option>
+  							<option value="oldest" th:selected="${#request.getParameter('sort') == 'oldest'}">오래된 순</option>
+  							<option value="popular" th:selected="${#request.getParameter('sort') == 'popular'}">인기순</option>
 						</select>
 						<select class="form-select me-3" style="width: 150px;" name="rows">
-						    <option th:value="10" th:selected="${#request.getParameter('rows') == '10'}">10개씩</option>
-						    <option th:value="20" th:selected="${#request.getParameter('rows') == '20'}">20개씩</option>
-						    <option th:value="50" th:selected="${#request.getParameter('rows') == '50'}">50개씩</option>
+						    <option value="10" th:selected="${#request.getParameter('rows') == '10'}">10개씩</option>
+						    <option value="20" th:selected="${#request.getParameter('rows') == '20'}">20개씩</option>
+						    <option value="50" th:selected="${#request.getParameter('rows') == '50'}">50개씩</option>
 						</select>
                     </div>
                     <table class="table">
@@ -122,9 +122,9 @@
 							<input type="hidden" name="page" th:value="${param.page}"/>
                                 <div class="col-12">
                                     <select class="form-select" name="opt">
-                                        <option th:value="title" th:selected="${#request.getParameter('opt') == 'title'}">제목</option>
-                                        <option th:value="content" th:selected="${#request.getParameter('opt') == 'content'}">내용</option>
-                                        <option th:value="party" th:selected="${#request.getParameter('opt') == 'party'}">파티명</option>
+                                        <option value="title" th:selected="${#request.getParameter('opt') == 'title'}">제목</option>
+                                        <option value="content" th:selected="${#request.getParameter('opt') == 'content'}">내용</option>
+                                        <option value="party" th:selected="${#request.getParameter('opt') == 'party'}">파티명</option>
                                     </select>
                                 </div>
                                 <div class="col-12">
