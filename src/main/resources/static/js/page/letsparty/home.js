@@ -12,12 +12,12 @@ $(function(){
     const categoryValue = new URL(window.location.href).searchParams.get("categoryNo") || "0";
     const categoryElements = $("#letsparty-categorys .nav-link").toArray();
 
-    categoryElements.forEach(function(el){
-        if (el.getAttribute("data-value") === categoryValue) {
-            el.classList.add("active");
-        } else {
-            el.classList.remove("active");
-        }
+	$(categoryElements).each(function() {
+	    if ($(this).data("value").toString() === categoryValue) {
+	        $(this).addClass("active");
+	    } else {
+	        $(this).removeClass("active");
+	    }
     });
     
 	// 카테고리 변경
@@ -57,5 +57,5 @@ $(function(){
 // 페이지 변경
 function changePage(e, page) {
    e.preventDefault();
-   updateAndSubmit("page", page, resetPage = false);
+   updateAndSubmit("page", page, false);
 }
