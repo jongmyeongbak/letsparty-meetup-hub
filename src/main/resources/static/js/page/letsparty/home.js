@@ -49,7 +49,6 @@ $(function(){
 	        return;
 	    }
 	    $("input[name=page]").val(1);
-	    $("#form-letsparty-search").submit();
 	    updateAndSubmit("keyword", keyword);
 	});
 	
