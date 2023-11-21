@@ -1,12 +1,10 @@
 package com.letsparty.web.interceptor;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.letsparty.dto.UserChatSummaryDto;
+import com.letsparty.security.user.LoginUser;
+import com.letsparty.service.ChatService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.lang.Nullable;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,11 +12,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.letsparty.dto.UserChatSummaryDto;
-import com.letsparty.security.user.LoginUser;
-import com.letsparty.service.ChatService;
-
-import lombok.RequiredArgsConstructor;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -30,7 +26,7 @@ public class NavbarInterceptor implements HandlerInterceptor {
 
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
-			@Nullable ModelAndView modelAndView) throws Exception {
+			ModelAndView modelAndView) throws Exception {
 		if (!"GET".equals(request.getMethod())) {
 			return;
 		}
